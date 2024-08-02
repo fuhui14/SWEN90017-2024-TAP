@@ -12,13 +12,14 @@
 |------|---|----------|
 | Tianyi Zhong | [+]| Product Owner, Front-end Team Member |
 | Fuhui Yang | [+] | Scrum Master, Back-end Team Member  |
-|               | [+] | Development Lead (Front-end)  |
-|               | [+] | Development Lead (Back-end)   |
-|               | [+] | Architecture Lead    |
-|               | [+] | Quality Assurance         |
-|               | [+] |                      |
-|               | [+] |                    |
-|               | [+] |              |
+| Zixuan Zhang | [+] | Development Lead (Back-end)  |
+| Lecheng Chen | [+] | Development Lead (Front-end)   |
+| Claire Shou | [+] | Architecture Lead, Back-end Team Member |
+| Yingrong Chen | [+] | User Experience Lead, Front-end Team Member |
+| Yongjie Ba | [+] | Quality Assurance Lead, Front-end Team Member |
+| Pengyuan Yu | [+] | Quality Assurance Member, Back-end Team Member |
+| Jiangyu Chen | [+] | Back-end Team Member |
+  
 *Status: [+] - Participated, [-] - Not Participated.*  
 
 
