@@ -28,6 +28,14 @@ A: Current requirement is that the project being a standalone application. Bette
 
 A: Current requirement is that the project being a standalone application. Better be able to access via Web Browser (No need to install software on computer).
 
+#### Q: As mentioned in the slides, it takes Raspberry Pi 5 around 9 hours to transcribe a 1-hour audio file. So how much time do you expect our system to process the same file? (Pengyuan Yu)
+
+A: 
+
+#### Q: Do we need to store the result in the local database or in another format. If so, should they be kept indefinitely, or is there a retention policy? (Pengyuan Yu)
+
+A: 
+
 
 ### Meeting Recording
 
