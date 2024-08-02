@@ -36,6 +36,10 @@ A:
 
 A: 
 
+#### Q: Which core features do you expect the platform to have? For example, are file upload, transcription status monitoring, transcription result download or email delivery, and speaker identification sufficient? Additionally, when you mentioned a "simple web interface," do you mean having a simple color design and minimal interactive buttons (like only buttons for uploading files, downloading transcripts, and sending transcripts via email)? (Yingrong Chen)
+
+A:
+
 
 ### Meeting Recording
 
