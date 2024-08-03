@@ -2,27 +2,24 @@
 
 ## Project Overview
 
-### Project Goal
-This project aims to build a transcription platform in a local environment based on OpenAI's Whisper software.  
+### Introduction
+This project aims to develop a transcription platform that operates in a local environment using OpenAI's Whisper software. The platform is designed for a team working within a secure local area network (LAN), allowing team members to upload audio files for transcription without the need for user login.
 
-​The platform has two main components: 
+### Key Components
+#### 1. Web Interface
+- **File Upload**: A simple web interface enables users to upload audio files directly to the local machine.
+- **User Simplicity**: No login is required, making the process straightforward for team members.
+- **Email Input**: Users can provide an email address to receive the transcription once it's completed.
 
-1.  **Web Interface**: A simple web interface that allows users to upload audio files to a local machine to execute the transcription software.  
+#### 2. Local Machine Execution
+- **Transcription Software**: The local machine runs OpenAI's Whisper software to transcribe the uploaded audio files.
+- **Speaker Identification**: The transcription process includes diarisation to identify different speakers within the audio.
+- **Output Format**: The primary output is a readable text file (.txt) that captures the transcription with identified speakers and timing.
 
-2.  **Local Machine Execution**: The local machine processes the uploaded audio files and generates readable transcriptions, identifying different speakers.  
-
-​The web platform is designed to be simple and does not require a login, as it will be used within a team in a local network.
-
-### Core Functionality
-
-### Ideal Functionality
-
-
-## Repository Information
-
-### Purpose
-
-This repository serves as a platform for students to participate in an engineering project that involves the development of a sophisticated and technologically advanced software application.  
+### Deployment & Performance
+- **Secure LAN**: The platform is deployed within a secure local area network to ensure data privacy.
+- **Hardware Requirements**: The system can run on a Raspberry Pi 5.
+- **Scalability**: The platform can handle the transcription of multiple files concurrently.
 
 ### About the Project Team
 
@@ -50,6 +47,9 @@ Mingye Li. Email Address: [ming.li1@unimelb.edu.au]()
 ### Directory Structure
 
 ```
+├── code
+│   ├── backend
+│   ├── frontend
 ├── data samples
 ├── docs
 │   ├── Agile Ceremonies
@@ -60,7 +60,6 @@ Mingye Li. Email Address: [ming.li1@unimelb.edu.au]()
 │   └── project background
 ├── prototypes
 ├── tests
-└── ui
 └── README.md
 ```
 
@@ -69,13 +68,10 @@ Mingye Li. Email Address: [ming.li1@unimelb.edu.au]()
 ### Sprint 1
 
 - Initialized the file structure
-- Added project background documentation
-- Added Requirements Elicitation documentation
-- Added Minutes of meetings during sprint 1 
-- Updated the README
+- Added meetings minutes during sprint 1 
+- Updated the README file
 
 ### Sprint 2
-
 
 
 ### Sprint 3
