@@ -40,6 +40,19 @@ A:
 
 A:
 
+#### Q: What security measures do you expect us to implement for the platform, especially considering it will be used within a secure LAN? Are there any specific security protocols we should follow? (Claire Shou)
+
+A: 
+
+#### Q: Are there any specific performance requirements for the application? For example, do you expect it to handle a certain number of concurrent users or process a certain amount of data within a given time frame? (Claire Shou)
+
+A:
+
+#### Q: What are the expected input file formats for the application? Should it support audio files only, or are other formats like video or text files also required? (Claire Shou)
+
+A:
+
+
 #### Q: For the frontend design, can we use frameworks? Do you recommend us to use any specific framework? (Lecheng Chen)
 
 A:

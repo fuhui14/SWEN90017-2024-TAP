@@ -14,7 +14,7 @@
 | Fuhui Yang | [+] | Scrum Master, Back-end Team Member  |
 | Zixuan Zhang | [+] | Development Lead (Back-end)  |
 | Lecheng Chen | [+] | Development Lead (Front-end)   |
-| Claire Shou | [+] | Architecture Lead, Back-end Team Member |
+| Jiacheng(Claire) Shou | [+] | Architecture Lead, Back-end Team Member |
 | Yingrong Chen | [+] | User Experience Lead, Front-end Team Member |
 | Yongjie Ba | [+] | Quality Assurance Lead, Front-end Team Member |
 | Pengyuan Yu | [+] | Quality Assurance Member, Back-end Team Member |
