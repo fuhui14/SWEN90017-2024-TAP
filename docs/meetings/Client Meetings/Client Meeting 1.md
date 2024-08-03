@@ -77,7 +77,17 @@ A:
 
 A:
 
-#### 
+#### Q: For the function of identifying different speaker, can we use other open source library on GitHub base on OpenAI Whisper? (Zixuan Zhang)
+
+A:
+
+#### Q: Considering future project updates, are there any requirements for the language used in backend server development? (Zixuan Zhang)
+
+A:
+
+#### Q: For the output results, what other file formats do you expect, such as pdf, jpg? (Zixuan Zhang)
+
+A:
 
 ### Meeting Recording
 
