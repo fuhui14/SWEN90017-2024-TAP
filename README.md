@@ -36,7 +36,7 @@ Mingye Li. Email Address: [ming.li1@unimelb.edu.au]()
 | <img src="docs/imgs/README/Tianyi.jpg" width="240" /> | <img src="docs/imgs/README/Fuhui.jpg" width="240" /> | <img src="docs/imgs/README/Zixuan.jpg" width="240" /> |
 |Tianyi Zhong<br>*zhong17@student.unimelb.edu.au*|Fuhui Yang<br>*fuhui.yang@student.unimelb.edu.au*|Zixuan Zhang<br>*zixuzhang2@student.unimelb.edu.au*|
 |**Development Lead (Front-end)**| **Architecture Lead, Back-end Team Member** | **User Experience Lead, Front-end Team Member** |
-| <img src="docs/imgs/README/Lecheng.jpg" width="240" /> | <img src="docs/imgs/README/Claire.jpg" width="240" /> | <img src="docs/imgs/README/Yingrong.jpg" width="240" /> |
+| <img src="docs/imgs/README/chengg.jpg" width="240" /> | <img src="docs/imgs/README/Claire.jpg" width="240" /> | <img src="docs/imgs/README/Yingrong.jpg" width="240" /> |
 |Lecheng Chen<br>*lechengc@student.unimelb.edu.au*|Claire Shou<br>*jssho@student.unimelb.edu.au*|Yingrong Chen<br>*yingrong@student.unimelb.edu.au*|
 |**Quality Assurance Lead, Front-end Team Member** | **Quality Assurance Member, Back-end Team Member** | **Back-end Team Member** |
 | <img src="docs/imgs/README/Yongjie.jpg" width="240" /> | <img src="docs/imgs/README/Pengyuan.jpg" width="240" /> | <img src="docs/imgs/README/Jiangyu.jpg" width="240" /> |
