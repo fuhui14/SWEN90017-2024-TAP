@@ -20,11 +20,11 @@
 
 ### Question & Answer
 
-#### Q: Is the application a standalone application or a plug-in for existing game engine? //样例格式
+#### Q: Is the application a standalone application or a plug-in for existing game engine? //Sample format
 
 A: Current requirement is that the project being a standalone application. Better be able to access via Web Browser (No need to install software on computer).
 
-#### Q: Is the application a standalone application or a plug-in for existing game engine? //样例格式
+#### Q: Is the application a standalone application or a plug-in for existing game engine? //Sample format
 
 A: Current requirement is that the project being a standalone application. Better be able to access via Web Browser (No need to install software on computer).
 
@@ -60,6 +60,24 @@ A:
 #### Q: do you have any requirements for the web interface's interactivity? For example, should we implement drag-and-drop functionality for file uploads? Do we need to make this project accessible on mobile platforms, or should it only be implemented for desktop use? (Lecheng Chen)
 
 A:
+
+#### Q: Whisper currently outputs the transcription as a single line of text. Do you need the text to be formatted into more readable paragraphs or sentences? (Fuhui Yang)
+
+A:
+
+#### Q: Do you have specific expectations regarding the accuracy of speaker identification(in terms of Whisper's confidence level)? (Fuhui Yang)
+
+A:
+
+#### Q: Do you need the speaker's timestamps to be marked in the transcription results? (Fuhui Yang)
+
+A:
+
+#### Q: Noticing that you mentioned in the introduction slides, does the platform need regular backups? If so, do you have any preferred frequency or method for the backups? (Fuhui Yang)
+
+A:
+
+#### 
 
 ### Meeting Recording
 
