@@ -3,9 +3,9 @@
 **Date & Time:** xx/Aug/2024, 16:00-17:00
 
 **Participant & Role:**
-|Client|Supervisor|Product Owner|Scrum Master|Frontend Development Lead|Backend Development Lead|Quality Assurance Lead|Member|Member|Member|Member|
+|Client|Supervisor|Product Owner|Scrum Master|Frontend Development Lead|Backend Development Lead|Quality Assurance Lead|Architecture Lead|User Experience Lead|Member|Member|
 |---|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|
-|Diego Munoz Saez|Mingye Li|Tianyi Zhong|Fuhui Yang|Lecheng Chen|xxx|xxx|xxx|xxx|xxx|xxx|
+|Diego Munoz Saez|Mingye Li|Tianyi Zhong|Fuhui Yang|Lecheng Chen|Zixuan Zhang|Yongjie Ba|Claire Shou|Yingrong Chen|Jiangyu Chen|Pengyuan Yu|
 
 ### Agenda
 
@@ -40,6 +40,13 @@ A:
 
 A:
 
+#### Q: For the frontend design, can we use frameworks? Do you recommend us to use any specific framework? (Lecheng Chen)
+
+A:
+
+#### Q: do you have any requirements for the web interface's interactivity? For example, should we implement drag-and-drop functionality for file uploads? Do we need to make this project accessible on mobile platforms, or should it only be implemented for desktop use? (Lecheng Chen)
+
+A:
 
 ### Meeting Recording
 
