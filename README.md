@@ -18,7 +18,6 @@ This project aims to develop a transcription platform that operates in a local e
 
 ### Deployment & Performance
 - **Secure LAN**: The platform is deployed within a secure local area network to ensure data privacy.
-- **Hardware Requirements**: The system can run on a Raspberry Pi 5.
 - **Scalability**: The platform can handle the transcription of multiple files concurrently.
 
 ### About the Project Team
