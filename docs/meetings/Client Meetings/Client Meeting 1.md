@@ -20,13 +20,6 @@
 
 ### Question & Answer
 
-#### Q: Is the application a standalone application or a plug-in for existing game engine? //Sample format
-
-A: Current requirement is that the project being a standalone application. Better be able to access via Web Browser (No need to install software on computer).
-
-#### Q: Is the application a standalone application or a plug-in for existing game engine? //Sample format
-
-A: Current requirement is that the project being a standalone application. Better be able to access via Web Browser (No need to install software on computer).
 
 #### Q: As mentioned in the slides, it takes Raspberry Pi 5 around 9 hours to transcribe a 1-hour audio file. So how much time do you expect our system to process the same file? (Pengyuan Yu)
 
@@ -102,6 +95,10 @@ A:
 A:
 
 #### Q: Could you provide us with some user cases in various scenarios? (Yongjie Ba)
+
+A:
+
+#### Q: Should the system include automated alerts or notifications for users when transcriptions are complete or if there are issues during processing? （Tianyi Zhong)
 
 A:
 
