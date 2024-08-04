@@ -89,6 +89,14 @@ A:
 
 A:
 
+#### Q: If other open source libraries can provide both translation and voiceprint recognition, do we still need to use Whisper for the implementation? (Jiangyu Chen)
+
+A:
+
+#### Q: Does this project have any special performance requirements, such as the need to address high concurrency or handle large files, etc.? (Jiangyu Chen)
+
+A:
+
 ### Meeting Recording
 
 [The video recording of the meeting is on OneDrive](https://unimelbcloud-my.sharepoint.com/:v:/g/personal/xxxxxx)
