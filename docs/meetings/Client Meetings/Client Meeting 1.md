@@ -97,6 +97,14 @@ A:
 
 A:
 
+#### Q: When identifying speakers, how specific do the details need to be? Is noting their gender sufficient, or is it also necessary to include a description of their voice type? (Yongjie Ba)
+
+A:
+
+#### Q: Could you provide us with some user cases in various scenarios? (Yongjie Ba)
+
+A:
+
 ### Meeting Recording
 
 [The video recording of the meeting is on OneDrive](https://unimelbcloud-my.sharepoint.com/:v:/g/personal/xxxxxx)
