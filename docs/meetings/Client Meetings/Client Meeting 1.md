@@ -7,18 +7,39 @@
 |---|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|
 |Diego Munoz Saez|Mingye Li|Tianyi Zhong|Fuhui Yang|Lecheng Chen|Zixuan Zhang|Yongjie Ba|Claire Shou|Yingrong Chen|Jiangyu Chen|Pengyuan Yu|
 
-### Agenda
-
-### Decisions
+## Agenda
 
 
-### Action Items
+### 1. **Welcome and Introductions (5 minutes)**
+   - Brief introductions by each participant.
+   - Outline of the meeting's objectives.
+
+### 2. **Project Overview (15 minutes)**
+   - High-level overview of project goals and expected outcomes.
+   - Client to describe their business needs and what they aim to achieve with the project.
+
+### 3. **Project Requirements Discussion (30 minutes)**
+   - Detailed discussion on specific project requirements.
+   - Clarification of technical and business requirements.
+   - Discussion of initial questions prepared by the team (see Question & Answer section).
+
+### 4. **Closing Remarks (5 minutes)**
+   - Thank the client and all participants for their time and input.
+   - Express enthusiasm for the project’s commencement.
+   - Scheduling of the next meeting.
+
+
+
+## Decisions
+
+
+## Action Items
 
 
 
 
 
-### Question & Answer
+## Question & Answer
 
 
 #### Q: As mentioned in the slides, it takes Raspberry Pi 5 around 9 hours to transcribe a 1-hour audio file. So how much time do you expect our system to process the same file? (Pengyuan Yu)
