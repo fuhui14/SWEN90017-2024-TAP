@@ -66,7 +66,6 @@ A:
 
 A:
 
-
 #### Q: For the frontend design, can we use frameworks? Do you recommend us to use any specific framework? (Lecheng Chen)
 
 A:
@@ -122,6 +121,10 @@ A:
 #### Q: Should the system include automated alerts or notifications for users when transcriptions are complete or if there are issues during processing? （Tianyi Zhong)
 
 A:
+
+#### Q: Although there is no login section, do you think it would be good if we save the transcription history? If the user wants to access the history, our system could send a link to his email account; then, the user can access the history interface through the link. （Tianyi Zhong)
+
+A: 
 
 ### Meeting Recording
 
