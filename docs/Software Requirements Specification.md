@@ -25,13 +25,14 @@ Functional requirements describe the specific functions and features the system 
 
 - **File Upload and Management**:
   - Initial support for uploading audio files, with potential future support for other formats.
-  - Optional drag-and-drop functionality for file uploads.
+  - Drag-and-drop functionality for file uploads (optional).
   - Temporary storage of files with an automated deletion policy after 30 days.
 
 - **Transcription Processing**:
-  - Improvement in transcription processing time, aiming for less than 4 hours for 1-hour audio files.
   - Implementation of a queue system to handle multiple file transcriptions.
   - Send transcription results through email.
+  - Support docx output format (optional).
+  - Support different languages (optional).
 
 - **Speaker Identification**:
   - Ability to differentiate speakers labeled as "Speaker 1, 2, 3, etc."
@@ -52,6 +53,8 @@ Non-functional requirements describe how the system operates and the quality sta
 - **Performance Requirements**:
   - The system should efficiently handle up to 3 concurrent (or in queue) transcriptions.
   - Expected to manage audio files up to 4 hours in length.
+  - Improvement in transcription processing time, aiming for less than 4 hours for 1-hour audio files.
+
 
 - **Security Requirements**:
   - Ensuring data privacy for sensitive research information.
