@@ -31,6 +31,7 @@ Functional requirements describe the specific functions and features the system 
 - **Transcription Processing**:
   - Improvement in transcription processing time, aiming for less than 4 hours for 1-hour audio files.
   - Implementation of a queue system to handle multiple file transcriptions.
+  - Send transcription results through email.
 
 - **Speaker Identification**:
   - Ability to differentiate speakers labeled as "Speaker 1, 2, 3, etc."
