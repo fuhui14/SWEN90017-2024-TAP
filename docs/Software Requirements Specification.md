@@ -24,6 +24,7 @@
 Functional requirements describe the specific functions and features the system must provide, focusing on what the system is supposed to do.
 
 - **File Upload and Management**:
+  - Users can input their emails to receive the result.
   - Initial support for uploading audio files, with potential future support for other formats.
   - Drag-and-drop functionality for file uploads (optional).
   - Temporary storage of files with an automated deletion policy after 30 days.
@@ -36,7 +37,6 @@ Functional requirements describe the specific functions and features the system 
 
 - **Speaker Identification**:
   - Ability to differentiate speakers labeled as "Speaker 1, 2, 3, etc."
-  - Optional use of additional open-source libraries to enhance speaker diarization capabilities.
 
 ### Non-Functional Requirements
 Non-functional requirements describe how the system operates and the quality standards it must meet, focusing on how the system should perform.
@@ -54,6 +54,8 @@ Non-functional requirements describe how the system operates and the quality sta
   - The system should efficiently handle up to 3 concurrent (or in queue) transcriptions.
   - Expected to manage audio files up to 4 hours in length.
   - Improvement in transcription processing time, aiming for less than 4 hours for 1-hour audio files.
+  - Optional use of additional open-source libraries to enhance speaker diarization capabilities.
+
 
 
 - **Security Requirements**:
