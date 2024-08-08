@@ -33,8 +33,7 @@ Mingye Li. Email Address: [ming.li1@unimelb.edu.au]()
 #### Team Members
 | Product Owner, Front-end Team Member | Scrum Master, Back-end Team Member |Development Lead (Back-end)|
 |:-------:|:-------:|:-------:|
-|Defining the product vision and prioritizing the backlog to align with stakeholder requirements and business value.
-Gather and parse the opinions of multiple stakeholders, acting as the middleman between the development team and clients. Developing and optimizing user interfaces for accessibility and performance. | Facilitating Scrum ceremonies, removing impediments, and coaching the team on Agile practices to ensure continuous improvement. | Providing technical leadership and guidance, ensuring code quality, and designing the back-end architecture.|
+|Defining the product vision and prioritizing the backlog to align with stakeholder requirements and business value. Gather and parse the opinions of multiple stakeholders, acting as the middleman between the development team and clients. | Facilitating Scrum ceremonies, removing impediments, and coaching the team on Agile practices to ensure continuous improvement. | Providing technical leadership and guidance, ensuring code quality, and designing the back-end architecture.|
 | <img src="docs/imgs/README/Tianyi.jpg" width="240" /> | <img src="docs/imgs/README/Fuhui.jpg" width="240" /> | <img src="docs/imgs/README/Zixuan.jpg" width="240" /> |
 |Tianyi Zhong<br>*zhong17@student.unimelb.edu.au*|Fuhui Yang<br>*fuhui.yang@student.unimelb.edu.au*|Zixuan Zhang<br>*zixuzhang2@student.unimelb.edu.au*|
 |**Development Lead (Front-end)**| **Architecture Lead, Back-end Team Member** | **User Experience Lead, Front-end Team Member** |
