@@ -80,4 +80,6 @@ Mingye Li. Email Address: [ming.li1@unimelb.edu.au]()
 
 
 ## Important Links
-- Github: https://github.com/mingyeli/SWEN90017-2024-TAP
+- Github: https://github.com/Eclipsezty/SWEN90017-2024-TAP
+- Kanban: https://github.com/users/Eclipsezty/projects/1/views/1
+- Backlog(issues): https://github.com/Eclipsezty/SWEN90017-2024-TAP/issues
