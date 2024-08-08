@@ -1,4 +1,4 @@
-# SWEN90017 - 2024 - Team002 - Transcription Aide
+# SWEN90017 - 2024 - Team002 - Transcription Aide Platform
 
 ## Project Overview
 
@@ -33,12 +33,16 @@ Mingye Li. Email Address: [ming.li1@unimelb.edu.au]()
 #### Team Members
 | Product Owner, Front-end Team Member | Scrum Master, Back-end Team Member |Development Lead (Back-end)|
 |:-------:|:-------:|:-------:|
+|Defining the product vision and prioritizing the backlog to align with stakeholder requirements and business value.
+Gather and parse the opinions of multiple stakeholders, acting as the middleman between the development team and clients. Developing and optimizing user interfaces for accessibility and performance. | Facilitating Scrum ceremonies, removing impediments, and coaching the team on Agile practices to ensure continuous improvement. | Providing technical leadership and guidance, ensuring code quality, and designing the back-end architecture.|
 | <img src="docs/imgs/README/Tianyi.jpg" width="240" /> | <img src="docs/imgs/README/Fuhui.jpg" width="240" /> | <img src="docs/imgs/README/Zixuan.jpg" width="240" /> |
 |Tianyi Zhong<br>*zhong17@student.unimelb.edu.au*|Fuhui Yang<br>*fuhui.yang@student.unimelb.edu.au*|Zixuan Zhang<br>*zixuzhang2@student.unimelb.edu.au*|
 |**Development Lead (Front-end)**| **Architecture Lead, Back-end Team Member** | **User Experience Lead, Front-end Team Member** |
+|  Providing technical leadership and guidance, ensuring code quality, and designing the front-end architecture. | Designing the overall system architecture, selecting appropriate technologies, and ensuring alignment with business goals. |  Conducting user research and designing intuitive, user-friendly interfaces. |
 | <img src="docs/imgs/README/Lecheng.jpg" width="240" /> | <img src="docs/imgs/README/Claire.jpg" width="240" /> | <img src="docs/imgs/README/Yingrong.jpg" width="240" /> |
 |Lecheng Chen<br>*lechengc@student.unimelb.edu.au*|Jiacheng(Claire) Shou<br>*jssho@student.unimelb.edu.au*|Yingrong Chen<br>*yingrong@student.unimelb.edu.au*|
-|**Quality Assurance Lead, Front-end Team Member** | **Quality Assurance Member, Back-end Team Member** | **Back-end Team Member** |
+|**Quality Assurance Lead, Front-end Team Member** | **Back-end Team Member** | **Back-end Team Member** |
+| Planning and executing tests to ensure product quality and reliability. | Developing and maintaining server-side logic and APIs, optimizing performance, and ensuring data security. | Developing and maintaining server-side logic and APIs, optimizing performance, and ensuring data security. |
 | <img src="docs/imgs/README/Yongjie.jpg" width="240" /> | <img src="docs/imgs/README/Pengyuan.jpg" width="240" /> | <img src="docs/imgs/README/Jiangyu.jpg" width="240" /> |
 |Yongjie Ba<br>*yongjieb@student.unimelb.edu.au*|Pengyuan Yu<br>*pengyuany@student.unimelb.edu.au*|Jiangyu Chen<br>*jiangyuc2@student.unimelb.edu.au*|
 
