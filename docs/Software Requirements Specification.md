@@ -23,20 +23,29 @@
 ### Functional Requirements
 Functional requirements describe the specific functions and features the system must provide, focusing on what the system is supposed to do.
 
-- **File Upload and Management**:
-  - Users can input their emails to receive the result.
-  - Initial support for uploading audio files, with potential future support for other formats.
-  - Drag-and-drop functionality for file uploads (optional).
-  - Temporary storage of files with an automated deletion policy after 30 days.
+- **File Upload**:
+  - Support uploading audio files.
+  - Support uploading video files. (optional)
+  - The user can select a format for the output file. (Optional)
+  - Drag-and-drop functionality for file uploads. (optional)
+  - The user can input his email address to receive the transcription result.
 
 - **Transcription Processing**:
   - Implementation of a queue system to handle multiple file transcriptions.
-  - Send transcription results through email.
-  - Support docx output format (optional).
-  - Support different languages (optional).
-
-- **Speaker Identification**:
+  - Use the up-to-date OpenAI Whisper model. (optional)
   - Ability to differentiate speakers labeled as "Speaker 1, 2, 3, etc."
+  - Send transcription results to the user through email.
+  - Send system error reports to users through email.
+  - Support 'txt' output format.
+  - Support 'docx' output format. (optional)
+  - Support the Chinese language. (optional)
+ 
+- **File Management**:
+  - Save transcription result files in the local database.
+  - Temporary storage of files with an automated deletion policy after 30 days.
+  - Have an admin portal to see the history record.
+  - The system can send a link through email to allow the user to enter the admin portal.
+  - Download history transcription result files in the admin portal.
 
 ### Non-Functional Requirements
 Non-functional requirements describe how the system operates and the quality standards it must meet, focusing on how the system should perform.
