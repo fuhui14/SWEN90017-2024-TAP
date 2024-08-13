@@ -1,9 +1,32 @@
-## Summary
+## Technology stack
 
-## Analysis of Requirements
+- Backend Framework: Django
+- Library: OpenAI Whisper
 
+## Comparison of Different Frontend Framework
 
-## Comparison of Functionality Provided
+| Framework | Introduction | Pros | Cons |
+| :-------: | :----------: | :--: | :--: |
 
+## Comparison of Different Backend Framework
 
-## Requirement Mapping
+| Framework | Introduction | Pros | Cons | Will Use |
+| :-------: | :----------: | :--: | :--: | :------: |
+|  Django   |              |      |      |          |
+|   Flask   |              |      |      |          |
+|  Tornado  |              |      |      |          |
+|  Pyramid  |              |      |      |          |
+| CherryPy  |              |      |      |          |
+
+## Comparison of Different Library
+
+|    Library     | Introduction | Pros | Cons | Will Use |
+| :------------: | :----------: | :--: | :--: | :------: |
+| OpenAI Whisper |              |      |      |          |
+|   DeepSpeech   |              |      |      |          |
+|     Kaldi      |              |      |      |          |
+|      Vosk      |              |      |      |          |
+| pyannote.audio |              |      |      |          |
+|  speechbrain   |              |      |      |          |
+|  Resemblyzer   |              |      |      |          |
+|   AssemblyAI   |              |      |      |          |
