@@ -1,6 +1,6 @@
 # Efficient & Reliable Research Persona: Isabella Harris
 
-![poster](<images/Isabella Harris.png>)
+![poster](<Images/Isabella Harris.png>)
 
 ## Background
 
@@ -22,4 +22,4 @@ For this persona, we wanted to capture a user who is a seasoned researcher speci
   
 ## Uses for the Platform
 
-"The user will be able to achieve high standards of accuracy and efficiency in transcriptions, all while ensuring that their data remains secure and private. The platform's design eliminates the need to upload files to untrusted third-party platforms, allowing the user to focus on their work with confidence in the security and integrity of their sensitive information."
+The user will be able to achieve high standards of accuracy and efficiency in transcriptions, all while ensuring that their data remains secure and private. The platform's design eliminates the need to upload files to untrusted third-party platforms, allowing the user to focus on their work with confidence in the security and integrity of their sensitive information.
