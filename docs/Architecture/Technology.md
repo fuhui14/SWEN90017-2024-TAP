@@ -1,33 +1,31 @@
-## Technology stack
+## Architectural decisions Records
 
 - Backend Framework: Django
 - Library: OpenAI Whisper
 
-## Comparison of Different Frontend Framework
+## Frontend Framework
 
-| Framework | Introduction | Pros | Cons |
-| :-------: | :----------: | :--: | :--: |
+| Framework | Introduction | Version | Pros | Cons | Will Use |
+| :-------: | :----------: | :-----: | :--: | :--: | :------: |
 
-## Comparison of Different Backend Framework
+## Backend Framework
 
 
-| Framework | Introduction                                                                 | Pros                                                                                                      | Cons                                                                                                      | Will Use |
-| :-------: | :--------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------: | :------: |
-|  Django   | A high-level Python web framework that encourages rapid development and clean, pragmatic design. | - **Integration-Friendly**: Django's robust ecosystem allows seamless integration with AI libraries like OpenAI Whisper. <br> - Batteries-included: Comes with built-in features for admin interface, authentication, ORM, etc. <br> - Strong community support and extensive documentation. | - Monolithic: Can be heavyweight for small projects. <br> - Steeper learning curve due to its comprehensive nature. |    Yes   |
-|   Flask   | A lightweight WSGI web application framework in Python.                      | - **Flexibility**: Easy to integrate with OpenAI Whisper and other AI libraries. <br> - Minimalistic: Provides simplicity and ease of use. <br> - Modular and easy to extend. | - Requires additional libraries for full-stack capabilities. <br> - Less opinionated, which can lead to inconsistencies in large teams. |    No    |
-|  Tornado  | A Python web framework and asynchronous networking library, originally developed at FriendFeed. | - **Performance**: Non-blocking and asynchronous, making it suitable for handling real-time audio processing with OpenAI Whisper. <br> - Good for applications needing high concurrency. | - Steeper learning curve for asynchronous programming. <br> - Smaller ecosystem compared to Django or Flask. |    No    |
-|  Pyramid  | A flexible Python web framework suitable for both small and large applications. | - **Scalability**: Can scale with the project size, making it adaptable to evolving needs. <br> - Allows easy integration with different components, including AI libraries like Whisper. | - Less out-of-the-box features compared to Django. <br> - Requires more configuration, which can slow down initial development. |    No    |
-| CherryPy  | A minimalist Python web framework, object-oriented and designed for rapid development. | - **Lightweight**: Minimalist design allows direct integration with Whisper without unnecessary overhead. <br> - Fast and easy to deploy. | - Lacks built-in features, requiring manual integration of many components. <br> - Smaller community and less documentation. |    No    |
+| Framework | Introduction | Version | Pros | Cons | Will Use |
+| :-------: | :----------: | :-----: | :--: | :--: | :------: |
+|  Django   | A high-level Python web framework that encourages rapid development and clean, pragmatic design. | | - **Integration-Friendly**: Django's robust ecosystem allows seamless integration with AI libraries like OpenAI Whisper. <br> - Batteries-included: Comes with built-in features for admin interface, authentication, ORM, etc. <br> - Strong community support and extensive documentation. | - Monolithic: Can be heavyweight for small projects. <br> - Steeper learning curve due to its comprehensive nature. |    x   |
+|   Flask   | A lightweight WSGI web application framework in Python.                      | | - **Flexibility**: Easy to integrate with OpenAI Whisper and other AI libraries. <br> - Minimalistic: Provides simplicity and ease of use. <br> - Modular and easy to extend. | - Requires additional libraries for full-stack capabilities. <br> - Less opinionated, which can lead to inconsistencies in large teams. |        |
+|  Tornado  | A Python web framework and asynchronous networking library, originally developed at FriendFeed. | | - **Performance**: Non-blocking and asynchronous, making it suitable for handling real-time audio processing with OpenAI Whisper. <br> - Good for applications needing high concurrency. | - Steeper learning curve for asynchronous programming. <br> - Smaller ecosystem compared to Django or Flask. |        |
+|  Pyramid  | A flexible Python web framework suitable for both small and large applications. | | - **Scalability**: Can scale with the project size, making it adaptable to evolving needs. <br> - Allows easy integration with different components, including AI libraries like Whisper. | - Less out-of-the-box features compared to Django. <br> - Requires more configuration, which can slow down initial development. |        |
+| CherryPy  | A minimalist Python web framework, object-oriented and designed for rapid development. | | - **Lightweight**: Minimalist design allows direct integration with Whisper without unnecessary overhead. <br> - Fast and easy to deploy. | - Lacks built-in features, requiring manual integration of many components. <br> - Smaller community and less documentation. |        |
 
-## Comparison of Different Library
+## Different Library
 
-|    Library     | Introduction | Pros | Cons | Will Use |
-| :------------: | :----------: | :--: | :--: | :------: |
-| OpenAI Whisper |              |      |      |          |
-|   DeepSpeech   |              |      |      |          |
-|     Kaldi      |              |      |      |          |
-|      Vosk      |              |      |      |          |
-| pyannote.audio |              |      |      |          |
-|  speechbrain   |              |      |      |          |
-|  Resemblyzer   |              |      |      |          |
-|   AssemblyAI   |              |      |      |          |
+
+|    Library     | Introduction | Version | Pros | Cons | Will Use |
+| :------------: | :----------: | :-----: |:--: | :--: | :------: |
+| OpenAI Whisper |  OpenAI Whisper is a large-scale speech recognition model designed specifically for multi-language and multi-task speech recognition and translation tasks. It uses 680,000 hours of diverse audio data for training, can accurately transcribe and translate speech in a variety of contexts and languages, and can perform well on new datasets without fine-tuning.            |  [v20231117](https://github.com/openai/whisper/releases/tag/v20231117) |  1. Multi-language support: supports multiple languages ​​and tasks, and is highly adaptable. <br> 2. High robustness: has good generalization ability in noisy environments and datasets with different distributions. <br> 3. No fine-tuning required: can achieve excellent performance in zero-shot settings.   |  1. Data dependence: Relying on a large amount of weakly supervised data, which may contain noise and annotation errors. <br> 2. Resource requirements: A large amount of computing resources are required during training and inference, especially when processing large-scale data.    |    x    |
+| pyannote.audio |              |         |     |      |          |
+|  speechbrain   |              |         |     |      |          |
+|  Resemblyzer   |              |         |     |      |          |
+|   AssemblyAI   |              |         |     |      |          |
