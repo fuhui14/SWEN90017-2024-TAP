@@ -83,3 +83,4 @@ Mingye Li. Email Address: [ming.li1@unimelb.edu.au]()
 - Github: https://github.com/Eclipsezty/SWEN90017-2024-TAP
 - Kanban: https://github.com/users/Eclipsezty/projects/1/views/1
 - Backlog(issues): https://github.com/Eclipsezty/SWEN90017-2024-TAP/issues
+- Low Fidelity Prototype: https://www.figma.com/design/dUKziZzm2oo8kCkefUN3vS/TAP-Low-Fidelity?node-id=8-2349&t=vUWVQPpejumNpbcV-1
