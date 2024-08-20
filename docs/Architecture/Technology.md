@@ -1,10 +1,13 @@
 ## Technology decisions Records
 
-- Frontend language: Javascript
-- Backend language: python 3.12.3
+- language: 
+    + Frontend: Javascript
+    + Backend : python 3.12.3
 
-- Frontend Framework: React
-- Backend Framework: Django
+- Framework: 
+    + Frontend: React
+    + Backend : Django
+
 - Library: 
     + Transcription: OpenAI Whisper
     + Speaker Identifier: 
