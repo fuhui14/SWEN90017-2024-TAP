@@ -1,4 +1,4 @@
-# SWEN90017 - 2024 - Team002 - Transcription Aide Platform
+# SWEN90017 - 2024 - Transcription Aide Platform (TAP)
 
 ## Project Overview
 
