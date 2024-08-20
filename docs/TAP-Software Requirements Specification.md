@@ -1,4 +1,4 @@
-# Software Requirements Specification (SRS) for Transcription Aide Platform
+# TAP-Software Requirements Specification (SRS)
 
 ## 1. Introduction
 - **Purpose**: To build a transcription platform based on OpenAI's Whisper software to facilitate audio file transcriptions for a research team within a secure local network environment.
