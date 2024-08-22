@@ -1,0 +1,46 @@
+# 2024.08.22 Team Meeting
+
+**Date & Time:** 22/08/2024, 17:15 - 20:15  
+
+**Location:** PAR-104-G-G18A-G18&G20  
+
+**Supervisor:** Mingye Li  
+
+**Participant & Role:** 
+
+| Name | Status | Role |
+|------|---|----------|
+| Tianyi Zhong | [+]| Product Owner, Front-end Team Member |
+| Fuhui Yang | [+] | Scrum Master, Back-end Team Member  |
+| Zixuan Zhang | [+] | Development Lead (Back-end)  |
+| Lecheng Chen | [+] | Development Lead (Front-end)   |
+| Jiacheng(Claire) Shou | [+] | Architecture Lead, Back-end Team Member |
+| Yingrong Chen | [+] | User Experience Lead, Front-end Team Member |
+| Yongjie Ba | [+] | Quality Assurance Lead, Front-end Team Member |
+| Pengyuan Yu | [+] | Quality Assurance Member, Back-end Team Member |
+| Jiangyu Chen | [+] | Back-end Team Member |
+  
+*Status: [+] - Participated, [-] - Not Participated.*  
+## Agenda
+- Discuss technology stack selection
+- Discussion of lofi modifications
+- Choose the appropriate way to record the current project file
+- Discuss the need for a database for data storage
+
+## Discussion Notes
+#### Discuss technology stack selection
+- Selected Django as our backend development framework.
+- Selected React as our backend development framework.
+#### Discussion of lofi modifications
+- Removing icon information from lofi
+#### Choose the appropriate way to record the current project file
+- Creating a wiki page in github for sharing project information
+#### Discuss the need for a database for data storage
+- MangoDB
+
+## Action Items for This Week
+|Actions|Asignee(s)|Due Date|Priority|
+|-|-|-|-|
+| Acceptance Criteria       | Jiangyu Chen                             | 21/08/2024 | Low      |
+| High Fidelity             | Yongjie Ba, Fuhui Yang                   | 22/08/2024 | Medium   |
+| Review                    | All members                              | 25/08/2024 | High     |
