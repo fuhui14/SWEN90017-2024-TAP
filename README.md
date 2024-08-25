@@ -54,13 +54,18 @@ Mingye Li. Email Address: [ming.li1@unimelb.edu.au]()
 │   ├── frontend
 ├── data samples
 ├── docs
-│   ├── Agile Ceremonies
+│   ├── Architecture
+│   ├── imgs
 │   ├── meetings
+│   │   ├── Agile Ceremony
 │   │   ├── Client Meetings
 │   │   ├── Team Meetings
 │   │   └── Meeting Template
-│   └── project background
+│   └── requirement
+│   │   └── Personas
 ├── prototypes
+│   ├── High Fidelity Prototype
+│   ├── Low Fidelity Prototype
 ├── tests
 └── README.md
 ```
@@ -71,7 +76,12 @@ Mingye Li. Email Address: [ming.li1@unimelb.edu.au]()
 
 - Initialized the file structure
 - Added meetings minutes during sprint 1 
-- Updated the README file
+- Create persona with explanation documentation
+- Implement user stories
+- Design the motivation model
+- Add Acceptance Criteria
+- Build low-fidelity & high-fidelity prototype with explanation documentations
+- Make technology selection
 
 ### Sprint 2
 
@@ -84,3 +94,4 @@ Mingye Li. Email Address: [ming.li1@unimelb.edu.au]()
 - Kanban: https://github.com/users/Eclipsezty/projects/1/views/1
 - Backlog(issues): https://github.com/Eclipsezty/SWEN90017-2024-TAP/issues
 - Low Fidelity Prototype: https://www.figma.com/design/dUKziZzm2oo8kCkefUN3vS/TAP-Low-Fidelity?node-id=8-2349&t=vUWVQPpejumNpbcV-1
+- High Fidelity Prototype: https://www.figma.com/design/zgg9tm6Nl6iH9f8ilOzibW/TAP-High-Fidelity?node-id=0-1&t=kjIHFZw31TVJB1zR-1
