@@ -5,6 +5,11 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .forms import UploadFileForm
 
+from resemblyzer import VoiceEncoder, preprocess_wav
+from pathlib import Path
+
+
+
 # Load the Whisper model
 model = whisper.load_model("base")
 
@@ -20,9 +25,17 @@ def index(request):
             
             # Transcribe the audio file using Whisper
             result = model.transcribe('temp_audio')
+            fpath = Path("temp_audio")
 
             # Remove the temporary file
             os.remove('temp_audio')
+
+            wav = preprocess_wav(fpath)
+
+            encoder = VoiceEncoder()
+            embed = encoder.embed_utterance(wav)
+            np.set_printoptions(precision=3, suppress=True)
+            print(embed)
 
             # Return the transcription
             return JsonResponse({'transcription': result['text']})
