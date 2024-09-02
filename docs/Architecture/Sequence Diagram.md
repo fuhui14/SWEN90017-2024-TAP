@@ -1,9 +1,9 @@
-# Transcribtion Aide Platform - UML Sequence Diagram
+# Transcription Aide Platform - UML Sequence Diagram
 This diagram illustrates the user interactions with the transcription system, including uploading files, performing transcription and translation, accessing previous records, and downloading past files.
 
 ## UML Sequence Diagram
 
-![alt text](<Sequence diagram.png>)
+![Sequence_diagram](<../imgs/Architecture%20diagram/Sequence%20diagram.png>)
 
 ## Sequence Diagram Shape Description
 
