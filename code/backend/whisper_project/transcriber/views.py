@@ -7,6 +7,7 @@ from .forms import UploadFileForm
 
 from resemblyzer import VoiceEncoder, preprocess_wav
 from pathlib import Path
+import numpy as np
 
 
 
@@ -25,10 +26,9 @@ def index(request):
             
             # Transcribe the audio file using Whisper
             result = model.transcribe('temp_audio')
-            fpath = Path("temp_audio")
 
-            # Remove the temporary file
-            os.remove('temp_audio')
+
+            fpath = Path("temp_audio")
 
             wav = preprocess_wav(fpath)
 
@@ -36,6 +36,10 @@ def index(request):
             embed = encoder.embed_utterance(wav)
             np.set_printoptions(precision=3, suppress=True)
             print(embed)
+            print(result['text'])
+            
+            # Remove the temporary file
+            os.remove('temp_audio')
 
             # Return the transcription
             return JsonResponse({'transcription': result['text']})
