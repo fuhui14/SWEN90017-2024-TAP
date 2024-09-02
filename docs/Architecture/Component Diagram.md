@@ -6,7 +6,7 @@ interactions. The diagram serves as a visual representation of how different par
 communicate with each other via various APIs and services, ensuring the successful execution of 
 tasks such as file upload, transcription processing, email notifications, and data storage.
 
-## UML Sequence Diagram
+## UML Component Diagram
 
 ![Component_Diagram](<../imgs/Architecture%20diagram/Component_Diagram.jpeg>)
 
