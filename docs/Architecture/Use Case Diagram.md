@@ -6,6 +6,15 @@ The class diagram presented is a visual representation of the core components an
 
 ![Use Case Diagram](../imgs/Architecture%20diagram/Use_Case_Diagram.png)
 
+## Use Case Diagram Relationship Type Description
+
+| **Relationship Type** | **Description** | **Symbol Representation** |
+|------------------------|----------------------------|-------------------------------------------------------------------------------------------------------|
+| **Association**        | Relationship between an actor and a use case                      | Actor ———————— use case |
+| **Generalization**           | Relationship between actors or between parent and child use cases                  | Parent use case <———————— Child use cases |
+| **Include** | Relationship between use cases (the included use case always executes)  | Confirm --<<include>>--> Receive the Results |
+| **Extend**    | Relationship between use cases (the extended use case executes only under certain conditions)       | Receive Error Reports --<<extend>>--> Confirm |
+
 ## Use Case Diagram Explanation
 
 ### 1. User
