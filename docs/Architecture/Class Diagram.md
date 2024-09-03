@@ -1,6 +1,6 @@
 # Transcription Aide Platform - Class Diagram
 
-The class diagram presented is a visual representation of the core components and their relationships within a transcription system designed for the project. The system facilitates the upload, processing, and management of audio and video files, converting them into text transcriptions. The primary goal of the system is to streamline the transcription process while ensuring that users can easily upload files, receive transcription results, and access their submission history.
+The class diagram presented is a visual representation of the core components and their relationships within a transcription system. The system facilitates the upload, processing, and management of audio and video files, converting them into text transcriptions. The primary goal of the system is to streamline the transcription process while ensuring that users can easily upload files, receive transcription results, and access their submission history.
 
 ## Class Diagram
 
