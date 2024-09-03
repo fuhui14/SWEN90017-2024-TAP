@@ -1,7 +1,7 @@
 # Motivation Model
 
 ## Who/Do/Be/Feel table
-![alt text](motivation-model.jpg)
+![alt text](Motivation_Model.jpg)
 
 ### Who
 - The Researcher: The primary user of the system is a researcher who relies on the transcription files to analyze audio data for research purposes. They require accurate, timely, and organized transcriptions to draw meaningful insights from their work.
@@ -45,6 +45,5 @@ File Management
 ### Feel
 - **Reasonable:** The system’s design and functionality are practical and sensible, making researchers feel that their needs are met in a logical manner.
 - **Time Efficient:** Researchers feel that their time is respected, with the system providing quick and effective solutions that allow them to focus on their core work.
-- **Educated:** The system empowers researchers to feel informed and knowledgeable, offering insights and tools that enhance their understanding of their audio data.
-- **Fun:** Despite the serious nature of the work, the system includes elements that make the experience enjoyable, adding a touch of fun to the transcription process.
+- **Guided:** The system helps researchers feel supported and directed, offering clear guidance and intuitive tools that facilitate the transcription process and enhance their understanding of the audio data.
 
