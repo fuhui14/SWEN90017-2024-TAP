@@ -1,5 +1,5 @@
 
-# User Stories and Acceptance Criteria
+# Acceptance Criteria
 
 ## Epic 1: File Upload
 
