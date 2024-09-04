@@ -1,7 +1,8 @@
 # Motivation Model
 
+![motivation-model](https://github.com/user-attachments/assets/623217e4-6ac6-49e9-a31c-7bfae6c7b7db)
+
 ## Who/Do/Be/Feel table
-![alt text](Motivation_Model.jpg)
 
 ### Who
 - The Researcher: The primary user of the system is a researcher who relies on the transcription files to analyze audio data for research purposes. They require accurate, timely, and organized transcriptions to draw meaningful insights from their work.
