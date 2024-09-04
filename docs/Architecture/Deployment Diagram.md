@@ -21,16 +21,6 @@ Deployment diagrams is used in modeling the physical aspects of Transaction Aide
 - **Database**: 
   - This component contains the data necessary for the Transcription Aide Platform to function. It stores, manages, and provides access to the data required by the Web Application, such as transcription records.
 
-### Transcription Engine Component
-
-- **Function**:
-    - Is responsible for converting audio files into text. This component performs the core 
-      functionality of the TAP system.
-
-- **Interactions**:
-    - Receives files for transcription via the **Process Transcription API**.
-    - After processing, the results are stored using the **Data Storage API**.
-
 ### Connections
 
 - **HTTP over Internet**: 
