@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-)=4=#oqdkb3auiom*!z5#8zgq-&$3z3*=3s0+td1gx)ozob8u*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['170.64.142.170', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['www.transaid.software', 'transaid.software', '170.64.161.105', 'localhost', '127.0.0.1']
 
 
 
