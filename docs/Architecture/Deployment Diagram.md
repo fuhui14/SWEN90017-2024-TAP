@@ -1,6 +1,6 @@
 # Transcription Aide Platform - Deployment Diagram
 
-Deployment diagrams is used in modeling the physical aspects of Transaction Aide Platform (TAP) also named as the static deployment view of a system (topology of the hardware).
+Deployment diagrams is used in modeling the physical aspects of Transcription Aide Platform (TAP) also named as the static deployment view of a system (topology of the hardware).
 
 ## Deplotment Diagram
 
