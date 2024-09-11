@@ -22,10 +22,12 @@ The use case diagram presented is a visual representation of the functional requ
   - Represented by a large rectangle, labeled with the system name, defining the scope of the system.
 
 ### 2. Actor
+Represented by a small stick figure. 
+The actor is an external entity and is placed outside the system (the large rectangle).
 - **User**
-  - Represented by a small stick figure. 
-  - In our application, there is one participant, the user (the primary participant)
-  - The participant is an external entity and is placed outside the system (the large rectangle)..
+  - The primary participant.
+- **Email**
+  - The Secondary participant.
  
 ### 3. Use Case
 Represented by an oval shape, placed inside the rectangle, indicating actions that occur within the application.
