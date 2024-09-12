@@ -62,6 +62,6 @@ For a detailed explanation, please refer to the table above.
   - Confirm ----> Receive the Results
   - View History Results ----> Input Email Address
 - **Extend**
-  - (Vedio / Audio) <---- Delete Files
+  - (Video / Audio) <---- Delete Files
   - Confirm <---- Receive Error Reports
   - Input Email Address <---- (Download the Results Manually / Delete the Results)
