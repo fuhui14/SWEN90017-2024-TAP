@@ -61,6 +61,7 @@ For a detailed explanation, please refer to the table above.
 - **Include**
   - Confirm ----> Receive the Results
   - View History Results ----> Input Email Address
+  - Input Email Address ----> View History
 - **Extend**
   - (Video / Audio) <---- Delete Files
   - Confirm <---- Receive Error Reports
