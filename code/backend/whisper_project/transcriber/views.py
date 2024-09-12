@@ -34,7 +34,7 @@ def speaker_identifier(audio):
     # use pydub to load the audio file
     test_audio = AudioSegment.from_file(audio, "m4a")
 
-    # filtered_audio = audio - 10 
+    filtered_audio = test_audio - 20 
 
     # filtered_audio.export("output_audio.wav", format="wav")
 
