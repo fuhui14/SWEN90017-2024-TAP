@@ -1,6 +1,6 @@
 # Motivation Model
 
-![docs/requirement/motivation_model.jpg](motivation_model.jpg)
+![motivation_model](https://github.com/user-attachments/assets/b13893f7-3470-4f35-9db3-212d26a5f186)
 
 ## Who/Do/Be/Feel table
 
