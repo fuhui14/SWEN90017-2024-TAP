@@ -39,6 +39,7 @@ The class diagram presented is a visual representation of the core components an
   - `addToQueue(File file)`: Adds a file to the processing queue.
   - `processNext()`: Processes the next file in the queue.
   - `currentWaitingLength()`: Returns the number of files currently in the queue.
+  -`deletFromQueue(File file)`: Deletes a file from the queue when the user cancels the file.
 - **Relationships:**
   - The `QueueSystem` has a one-to-many relationship with the `File` interface, managing the files that need to be processed.
 
@@ -55,6 +56,7 @@ The class diagram presented is a visual representation of the core components an
 - **Methods:**
   - `generateTranscription()`: Generates the transcription text from the associated file.
   - `identifySpeakers()`: Differentiates and labels different speakers in the transcription.
+  - `cancelTranscription(File file)`: Allow the user to cancel the transcription during the process.
 - **Relationships:**
   - The `Transcription` class is associated with the `File` interface, indicating that each transcription is generated from a specific file.
   - The `Transcription` class interacts with the `EmailService` class to send the completed transcription to the user.
