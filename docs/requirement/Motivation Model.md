@@ -1,5 +1,6 @@
 # Motivation Model
 
+![SWEN9001_mmodel7](https://github.com/user-attachments/assets/b2c1f29f-22ff-4db1-af64-e94866bd9226)
 
 
 ## Who/Do/Be/Feel table
