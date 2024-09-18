@@ -15,9 +15,25 @@ The class diagram presented is a visual representation of the core components an
   - `uploadFile(File file)`: Allows the user to upload a file for transcription.
   - `receiveTranscriptionNotification()`: Allows the user to receive notifications about their transcription status.
 - **Relationships:**
-  - The `User` class has a one-to-many association with the `File` interface (1..*), meaning a user can upload multiple files.
+  - The `User` class has a one-to-many association with the `File` interface, meaning a user can upload multiple files.
 
-### 2. File (Interface)
+
+### 2. QueueSystem
+- **Attributes:**
+  - `waitingQueue`: Queue of `Files`
+  - `estimatedWaitingTime`: Time (available runtime of the system)
+  - `maxConcurrentRuns`: int (maximum number of concurrent file processing)
+- **Methods:**
+  - `addFileToQueue(File)`: Adds a file to the processing queue.
+  - `convertWaitingLength()`: Converts the waiting queue into a processing state.
+  - `processNextInQueue()`: Processes the next file in the queue.
+  - `deleteFromQueue(File)`: Deletes a file from the queue.
+- **Relationships:**
+  - The `QueueSystem` has a one-to-many relationship with the `File` interface, managing the files that need to be processed.
+  - The `QueueSystem` has a one-to-many relationship with the `Transcription` class, which performs the actual transcription process.
+
+
+### 3. File (Interface)
 - **Attributes:**
   - `fileID`: A unique identifier for each file.
   - `fileName`: The name of the uploaded file.
@@ -30,18 +46,10 @@ The class diagram presented is a visual representation of the core components an
 - **Relationships:**
   - The `File` interface is implemented by the `AudioFile` and `VideoFile` classes, indicating that files can be either audio or video types.
   - The `File` class is associated with the `QueueSystem`, where it is added to the queue for processing.
+- **Inheritance**:
+  - This class serves as a parent class to AudioFile and VideoFile subclasses (but they don't seem to have specific attributes or methods in the diagram).
 
-### 3. QueueSystem
-- **Attributes:**
-  - `queue`: A queue structure holding `File` objects awaiting processing.
-  - `maxConcurrent`: The maximum number of files that can be processed simultaneously.
-- **Methods:**
-  - `addToQueue(File file)`: Adds a file to the processing queue.
-  - `processNext()`: Processes the next file in the queue.
-  - `currentWaitingLength()`: Returns the number of files currently in the queue.
-  -`deletFromQueue(File file)`: Deletes a file from the queue when the user cancels the file.
-- **Relationships:**
-  - The `QueueSystem` has a one-to-many relationship with the `File` interface, managing the files that need to be processed.
+
 
 ### 4. Transcription
 - **Attributes:**
@@ -53,13 +61,18 @@ The class diagram presented is a visual representation of the core components an
   - `language`: The language of the transcription.
   - `speakers`: A map of speakers, where each speaker is mapped to their corresponding text.
   - `status`: The current status of the transcription (e.g., "Completed", "Failed").
+  - `processingProgress`: int (progress of the transcription)
+  - `errorReports`: List of Errors
 - **Methods:**
   - `generateTranscription()`: Generates the transcription text from the associated file.
+  -  `generateTranslation()`: Generates the translation of the transcription text to a specified language.
   - `identifySpeakers()`: Differentiates and labels different speakers in the transcription.
   - `cancelTranscription(File file)`: Allow the user to cancel the transcription during the process.
 - **Relationships:**
-  - The `Transcription` class is associated with the `File` interface, indicating that each transcription is generated from a specific file.
   - The `Transcription` class interacts with the `EmailService` class to send the completed transcription to the user.
+  - The `Transcription` class is associated with the `HistoryRecord` class, which stores the history of transcriptions.
+
+
 
 ### 5. EmailService
 - **Attributes:**
@@ -70,11 +83,25 @@ The class diagram presented is a visual representation of the core components an
 - **Relationships:**
   - The `EmailService` class interacts with the `Transcription` class to send the transcription results to the user's email.
 
-### 6. History
+
+
+### 6. HistoryRecord
 - **Attributes:**
-  - `submissionHistory`: A list of `Transcription` objects representing the user's past transcriptions.
-- **Methods:**
-  - `viewSubmissionHistory()`: Allows the user to view the history of their submitted transcriptions.
-  - `deleteOldTranscriptions()`: Deletes transcriptions that are older than a certain threshold (e.g., 30 days).
+  - `file`: Reference to the associated file.
+  - `expireTime`: The time when the record will expire.
+  - `email`: The email address of the user.
 - **Relationships:**
   - The `History` class has a one-to-one relationship with the `User` class, representing that a user can access their transcription history.
+
+
+
+### 7. FileManager
+- **Attributes:**
+  - `historyRecords`: List of HistoryRecord
+- **Methods:**
+  - `viewSubmissionHistory()`: Views the history of submissions.
+  - `viewFileFromHistory()`: Views a file from the submission history.
+  - `downloadFileFromRecord()`: Downloads the file from a particular record.
+- **Relationships:**
+  - The `FileManager` class interacts with the `HistoryRecord` class to manage and access the transcription history.
+
