@@ -1,6 +1,7 @@
 # Motivation Model
 
-![motivation_model](https://github.com/user-attachments/assets/b13893f7-3470-4f35-9db3-212d26a5f186)
+![SWEN9001_mmodel7](https://github.com/user-attachments/assets/b2c1f29f-22ff-4db1-af64-e94866bd9226)
+
 
 ## Who/Do/Be/Feel table
 
@@ -27,9 +28,9 @@ Transcription Result Forwarding
 - **Alternative file type support:** The system supports multiple file types for transcription, providing flexibility in how researchers manage their audio data.
 
 File Management
-- **File temporary storage:** Uploaded files are temporarily stored in the system, ensuring they are available for processing without requiring immediate local storage.
+- **File temporary storage:** Files are stored temporarily in the system and can be set to expire after 30 days, after which they will be permanently deleted.
 - **Download history file:** Researchers can download previously transcribed files, allowing them to access and review past work easily.
-- **History Record:** The system maintains a history record of all transcriptions, providing researchers with a comprehensive overview of their past activities.
+- **Access History Record:** The system maintains a history record of all transcriptions, providing researchers with a comprehensive overview of their past activities.
 
 ### Be
 - **Smooth:** The system is designed to operate smoothly, ensuring that tasks are completed without unnecessary delays or interruptions.
