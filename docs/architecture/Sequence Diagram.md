@@ -3,7 +3,7 @@ This diagram illustrates the user interactions with the transcription system, in
 
 ## UML Sequence Diagram
 
-![Sequence diagram_1](https://github.com/user-attachments/assets/20b8f29c-be98-4c0f-8384-e289e54f5714)
+![alt text](<../imgs/Architecture diagram/Sequence diagram.png>)
 
 
 ## Sequence Diagram Shape Description
