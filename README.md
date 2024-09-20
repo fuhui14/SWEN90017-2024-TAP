@@ -85,6 +85,22 @@ Mingye Li. Email Address: [ming.li1@unimelb.edu.au]()
 
 ### Sprint 2
 
+- Create system architecture diagrams
+  - Class diagram
+  - Use case diagram
+  - Sequence diagram
+  - Component diagram
+  - Domain diagram
+  - Deployment diagram
+  - Activity diagram
+  - ER diagram
+- Acknowledge speaker library
+- Build development environment configuration
+  - Front End
+  - Back End
+- Add risk management document
+- Create communication plan
+- Add mood board for high fidelity prototype
 
 ### Sprint 3
 
