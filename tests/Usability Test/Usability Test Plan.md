@@ -9,40 +9,137 @@ The purpose of this usability test is to evaluate the ease of use, intuitiveness
 ### **1.2 Scope**
 The usability test will cover:
 - The overall user interface (UI) and its ease of navigation.
-- The functionality of core features: audio file upload, speaker identification, and result delivery.
-- The interaction with the transcription process, including user input (email) and understanding of the results.
+- The functionality of core features: audio file upload, process management, result delivery and history management.
 
 ### **1.3 Objectives**
-- Determine if users can upload audio files and configure transcription settings easily.
-- Identify potential difficulties in understanding or interacting with the speaker identification feature.
-- Assess the intuitiveness of the interface and identify any pain points or areas of confusion.
+- Determine if users can upload audio files and configure transcription settings (file format, language, and email) easily.
+- Assess how effectively users can monitor the progress of their transcription tasks during the processing phase.
+- Identify issues with navigation and management in the history section, such as downloading results and understanding task statuses.
 
 ### **1.4 Participants**
-The test will include participants with varied technical skill levels. The participants will simulate real users who may not be familiar with the transcription process but are tasked with using the platform.
+The test will include participants with varied technical skill levels (Team members) and the Client.
 
 
 ## **2. Test Methodology**
 
 ### **2.1 Test Environment**
-- The test will be conducted in a controlled environment where participants will interact with the platform on a laptop connected to a secure LAN.
-- Tools such as screen recording software will be used to capture participant interactions and feedback during the test.
-- The high-fidelity prototype of the TAP platform will be used for the usability test.
+- The test will be conducted remotely or in person using the Figma platform to interact with the high-fidelity prototype of the Transcription Aide Platform (TAP). The prototype will be shared with participants via a Figma link, allowing them to explore and interact with the design. 
+- Participants will use their own devices/our laptops to complete the test, ensuring a more realistic simulation of the actual user environment.
+- Mobile recording and Screen recording software will be used to capture user interactions with the Figma prototype, focusing on their navigation, task completion, and overall interaction with the interface.
+- Observers and facilitators will use online communication tools (such as Zoom or Google Meet) to provide instructions and guide the participants through the test if necessary.
 
 ### **2.2 Test Scenario Overview**
 Participants will be asked to complete a series of tasks representing typical user actions, including:
-- Uploading an audio file containing multiple speakers.
-- Inputting their email address to receive the transcription results.
-- Reviewing the transcription results with speaker identification and timestamps.
+- **Scenario 1: Transcribe**  
+Participants will input email, select transcription settings, upload one or more audio files and initiate the transcription process.
+  
+
+- **Scenario 2: Processing**  
+Participants will monitor the transcription progress, observe system feedback, and manage multiple transcription tasks.
+  
+
+- **Scenario 3: History**  
+Participants will navigate to the history section, view past transcriptions, download completed files.
 
 
 ## **3. Test Objectives and Tasks**
 
-| **Test Objective**                                                                 | **Task Description**                                                                                                   |
-|------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
-| Verify if users can upload audio files and configure transcription settings easily | Task 1: Upload a file with multiple speakers and set the transcription to be sent to an email address.                  |
-| Assess if users can understand and interact with the speaker identification feature| Task 2: Review the transcription results to ensure speaker identification and timing are correctly displayed.           |
-| Identify issues with navigating the user interface                                 | Task 3: Navigate through the platform and interact with the different options (upload, set email, download results).     |
-| Gather overall user feedback                                                       | Task 4: Provide feedback on the overall experience, ease of use, and any areas of confusion or difficulty.              |
+### **3.1 Overview**
+
+| **Test Objective**                                                                                     | **Task Description**                                                                                          |
+|--------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| Evaluate the ease with which users can upload audio files and configure transcription settings         | **Task 1 (Transcribe)**: Input email, select format and language, upload audio files and start transcription. |
+| Assess users' ability to monitor the progress of the transcription process and handle multiple tasks.  | **Task 2 (Processing)**: Monitor transcription progress, review progress bars, and manage multiple tasks.     |
+| Test the navigation and management functionality of the history section                                | **Task 3 (History)**: Access history, download completed transcriptions.                                      |
+
+### **3.2 Details**
+
+#### **Task Scenario 1: Transcribe**
+
+- **Objective**: Evaluate the ease with which users can upload audio files and configure transcription settings.
+  
+
+- **Instruction**: You are using the Transcription Aide Platform to transcribe an important meeting recording that includes multiple speakers. You need the transcription to be emailed to you in txt format and to be transcribed into Spanish.
+  
+
+- **Steps**:
+    1. Navigate to the **Transcription** page on the Figma prototype.  
+    2. Input an email address to receive the transcription results.
+    3. Choose the desired file format for the transcription output (e.g., `.txt` or `.docx` or `.pdf`).
+    4. Select the language for transcription (e.g., English, Spanish, Chinese).
+    5. Select one audio files for upload (via drag-and-drop or file selection).
+    6. Click the "Confirm" button to start the transcription process.
+  
+
+- **Expected Outcome**:
+    - Files are successfully uploaded, and the system provides immediate feedback (e.g., upload progress).
+    - All fields are correctly filled out before the user is able to proceed (valid email format, file format selected).
+    - Users clearly understand the settings they need to configure before transcription.
+  
+
+- **Potential Challenges**:
+    - Difficulty in locating the file upload section.
+    - Confusion about the email input field (e.g., incorrect format, unclear instructions).
+    - Uncertainty about which file format or language to choose for transcription.
+
+---
+
+### **Task Scenario 2: Processing**
+
+- **Objective**: Assess users' ability to monitor the progress of the transcription process and handle multiple tasks.
+
+
+- **Instruction**: After uploading the audio files for transcription, you want to monitor the progress and ensure that the file is being processed correctly. You also want to know if there’s a way to start new transcription tasks while others are still being processed.
+
+
+- **Steps**:
+    1. After submitting a transcription task, users are taken to the **Processing** page.
+    2. View the progress bar or status indicator for each file being transcribed.
+    3. If multiple files are uploaded, monitor the progress of each file.
+    4. Observe the option to either transcribe another file or wait for the current tasks to finish.
+    5. Note any system messages that indicate completion, errors, or warnings.
+
+
+- **Expected Outcome**:
+    - Users can easily track the progress of each file with clear status indicators (e.g., progress bars, “Completed,” “In Progress”).
+    - The system allows users to start a new transcription task without waiting for the previous ones to finish.
+    - Errors are clearly indicated if any files fail to process.
+
+
+- **Potential Challenges**:
+    - Confusion about the meaning of progress indicators.
+    - Difficulty managing multiple tasks at once.
+    - Unclear error messages if a task fails.
+
+---
+
+### **Task Scenario 3: History**
+
+- **Objective**: Test users' ability to access past transcription tasks, download results, and manage files.
+  
+
+- **Instruction**: You have previously submitted several transcription tasks and now need to access the history of completed transcriptions to download a file and review it.
+  
+
+- **Steps**:
+    1. Navigate to the **History** section of the platform.
+    2. Input the email address used for previous transcriptions to access past results.
+    3. Review the table of past transcription tasks, which includes file name, file type, creation date, expiry date, output type, and status (completed, failed, etc.).
+    4. Click on the “Download” button to retrieve the transcription results.
+    5. Check the file’s expiration date or remaining time for storage (e.g., “Expires in 30 days”).
+    6. Handle any failed tasks, reviewing system messages for errors.
+
+
+- **Expected Outcome**:
+    - Users can easily locate and download completed transcriptions from the history section.
+    - The system clearly displays the status of each task (e.g., completed, failed).
+
+
+- **Potential Challenges**:
+    - Difficulty finding the correct transcription task in the history.
+    - Misunderstanding the file expiration warning.
+    - Unclear instructions for handling failed transcriptions.
+
 
 
 ## **4. Test Procedure**
@@ -76,13 +173,13 @@ Participants will be asked to complete a series of tasks representing typical us
 
 ## **6. Roles and Responsibilities**
 
-| **Role**                            | **Team Member**         | **Responsibilities**                                                                                           |
-|-------------------------------------|-------------------------|----------------------------------------------------------------------------------------------------------------|
-| **Test Designer and Facilitator**   | Yingrong Chen            | Design the usability test plan, create tasks, brief participants, and guide them through the testing process.   |
-| **Participant Recruitment**         | Tianyi Zhong             | Recruit participants with various technical backgrounds for the usability test.                                |
-| **Observer and Recorder**           | Yongjie Ba               | Observe user interactions, take notes, and ensure screen recordings capture all interactions.                  |
-| **Test Data Analysis**              | Yingrong Chen, Yongjie Ba| Analyze the data collected during the test, categorize issues, and prepare the final report.                    |
-| **Reporting and Improvements**      | Entire Development Team  | Review the usability report and implement improvements based on the findings.                                   |
+| **Role**                            | **Team Member**                            | **Responsibilities**                                                                                           |
+|-------------------------------------|--------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| **Test Designer and Facilitator**   | Yingrong Chen                              | Design the usability test plan, create tasks, brief participants, and guide them through the testing process.   |
+| **Participant Recruitment**         | Tianyi Zhong                               | Recruit participants with various technical backgrounds for the usability test.                                |
+| **Observer and Recorder**           | Fuhui Yang, and any available team members | Observe user interactions, take notes, and ensure screen recordings capture all interactions.                  |
+| **Test Data Analysis**              | Yingrong Chen, Fuhui Yang                  | Analyze the data collected during the test, categorize issues, and prepare the final report.                    |
+| **Reporting and Improvements**      | Entire Development Team                    | Review the usability report and implement improvements based on the findings.                                   |
 
 
 ## **7. Analysis and Reporting**
