@@ -10,7 +10,7 @@
     justify-content: space-between;
     align-items: center;
     background-color: #003366;
-    padding: 20px;
+    padding: 1px;
 }
 
 .header .logo img {
@@ -23,6 +23,7 @@
     margin-left: 30px;
     font-weight: 600;
     transition: color 0.3s ease;
+    margin-right: 70px;
 }
 
 .nav-links a:hover {
@@ -38,7 +39,7 @@
 }
 
 .input-section, .upload-section {
-    width: 45%;
+    width: 49%;
     background: #fff;
     padding: 30px;
     border-radius: 10px;
@@ -59,9 +60,9 @@ p {
 }
 
 input[type="email"], select {
-    width: 100%;
-    padding: 15px;
-    margin-bottom: 30px;
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1em;
@@ -77,7 +78,7 @@ input[type="email"]:focus, select:focus {
     border: 2px dashed #003366;
     background-color: #f1f7ff;
     text-align: center;
-    padding: 60px;
+    padding: 50px;
     border-radius: 10px;
     transition: background-color 0.3s ease;
     cursor: pointer;
