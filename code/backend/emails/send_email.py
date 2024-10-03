@@ -9,6 +9,10 @@ from text_file import text_file
 import os
 
 
+# file_type {'txt', 'file_path', 'none'}
+# txt means encode the file_content into a txt file and send to the receiver
+# file_path means the file_content is the path of the attached file
+# none means there is no attachment in this email
 def send_email(receiver, subject, content, file_content, file_type='txt'):
     msg = MIMEMultipart()
     msg['From'] = Header(SMTP_USER, 'utf-8')
