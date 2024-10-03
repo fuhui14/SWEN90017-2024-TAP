@@ -114,3 +114,9 @@ REST_FRAMEWORK = {
 
 # CORS settings
 CORS_ALLOW_ALL_ORIGINS = True
+
+# Email settings
+SMTP_SERVER = 'smtp.gmail.com'
+SMTP_PORT = 587
+SMTP_USER = 'perrinyu2001@gmail.com'
+SMTP_PASSWORD = 'thdj houx hcsn hrrt'
