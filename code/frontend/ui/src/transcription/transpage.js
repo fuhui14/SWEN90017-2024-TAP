@@ -1,13 +1,14 @@
 import React from 'react';
 import './transpage.css';
 import { Link } from 'react-router-dom'; // Add this import
+import log from '../logo.svg'
 
 function Transpage(){
   return (
     <>
         <div className="header">
             <div className="logo">
-              <img src="./logo.svg" alt="Logo" />
+              <img src={log} alt="logo"/>
             </div>
             <nav className="nav-links">
               <Link to="/about">About</Link>
