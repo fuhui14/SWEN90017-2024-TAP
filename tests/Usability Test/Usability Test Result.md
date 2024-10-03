@@ -22,6 +22,8 @@ The usability test will cover:
 ### **1.4 Participants**
 The test will include participants with varied technical skill levels (Team members) and the Client.
 
+### **1.5 Usability Test Video**
+**Video Link**: https://youtu.be/aijcIq6SB18?si=y1cq_ljGnRocqNcg
 
 ## **2. Test Tasks and Results**
 
