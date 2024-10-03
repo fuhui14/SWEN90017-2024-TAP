@@ -4,7 +4,7 @@ The class diagram presented is a visual representation of the core components an
 
 ## Class Diagram
 
-![class_diagram](../imgs/Architecture%20diagram/class_diagram.png)
+![class_diagram](../imgs/Architecture%20diagram/class_diagram.jpeg)
 
 ## Class Diagram Explanation
 
