@@ -146,5 +146,3 @@ This document outlines the interface design and functionality for **Epic 1: File
 - **Responsiveness**: The interface should be responsive and adapt to different screen sizes, ensuring optimal user experience on both desktop and mobile devices.
 - **Visual Feedback**: Provide visual feedback (e.g., checkmarks, progress indicators) to inform users that their input has been received and processed.
 
-
-This **Interface Document for Epic 1** provides a detailed overview of the required UI elements, interaction flow, and API endpoints for the file upload and transcription process. The document will serve as a guide for front-end developers to ensure all functionalities are implemented as per the project requirements.
