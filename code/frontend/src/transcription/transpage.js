@@ -1,5 +1,5 @@
 import './transpage.css';
-import { Link } from 'react-router-dom'; // Add this import
+import { Link } from 'react-router-dom';
 import log from '../logo.svg';
 import React, { useState } from 'react';
 
@@ -69,13 +69,40 @@ function Transpage() {
     setUploaded(updatedUploaded);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!isEmailValid || files.length === 0) {
       alert("Please fill out all required fields."); // Alert for missing fields
       return;
     }
-    // Proceed with form submission logic
-    alert("Files uploaded successfully!"); // Confirmation message
+
+    // Prepare the form data
+    const formData = new FormData();
+    formData.append('email', email);
+    files.forEach((file) => {
+      formData.append('file', file); // Append each file
+    });
+    const outputFormat = document.querySelector('select[name="outputFormat"]').value; // Get selected output format
+    const language = document.querySelector('select[name="language"]').value; // Get selected language
+    formData.append('outputFormat', outputFormat);
+    formData.append('language', language);
+    console.log(formData);
+    // Send data to the backend
+    try {
+      const API_BASE_URL = process.env.REACT_APP_API_URL;
+      const response = await fetch(`${API_BASE_URL}/api/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        alert("Files uploaded successfully!"); // Confirmation message
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.message}`); // Handle error response
+      }
+    } catch (error) {
+      alert("An error occurred while uploading files."); // Handle network errors
+    }
   };
 
   return (
