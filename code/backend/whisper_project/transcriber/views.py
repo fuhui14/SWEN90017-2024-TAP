@@ -87,29 +87,48 @@ def speaker_identifier(audioPath):
                             min_silence_len=300,  
                             silence_thresh=-40  
                             )
+    
+    # Calculate start times for all chunks (before filtering)
+    chunk_times = []
+    # Initialize the start time and total audio duration
+    start_time = 0
+    
+
+    for chunk in chunks:
+        chunk_duration = len(chunk)
+        chunk_times.append((start_time, start_time + chunk_duration))
+        start_time += chunk_duration
+
+    for i, label in enumerate(chunk_times):
+        print(f"Chunk {i} (from {chunk_times[i][0]/1000:.2f} to {chunk_times[i][1]/1000:.2f} seconds)")
+
+    print('\n')
 
     # filter out chunks that are less than 600 ms
-    filtered_chunks = [chunk for chunk in chunks if len(chunk) >= 600]
+    # filtered_chunks = [chunk for chunk in chunks if len(chunk) >= 600]
+    filtered_chunks = [(chunk, chunk_times[i]) for i, chunk in enumerate(chunks) if len(chunk) >= 600]
+    # Now `filtered_chunks` is a list of tuples: (chunk, (start_time, end_time))
 
-    # save each chunk to a separate wav file
-    for i, chunk in enumerate(filtered_chunks):
-        chunk.export(f"chunk{i}.wav", format="wav")
+
+    # # save each chunk to a separate wav file
+    # for i, chunk in enumerate(filtered_chunks):
+    #     chunk.export(f"chunk{i}.wav", format="wav")
 
     encoder = VoiceEncoder()
-
     # embed each chunk
     embeddings = []
-    chunk_times = []
-    start_time = 0
+    filtered_chunk_times = []  # To store times of filtered chunks
 
-    for i, chunk in enumerate(filtered_chunks):
+
+    # Save each filtered chunk to a separate wav file and process
+    for i, (chunk, times) in enumerate(filtered_chunks):
+        chunk.export(f"chunk{i}.wav", format="wav")
         wav_chunk = preprocess_wav(f"chunk{i}.wav")
         embed = encoder.embed_utterance(wav_chunk)
         embeddings.append(embed)
 
-        chunk_duration = len(chunk)
-        chunk_times.append((start_time, start_time + chunk_duration))
-        start_time += chunk_duration
+        # Keep the times only for the filtered chunks
+        filtered_chunk_times.append(times)
 
     # transform the embeddings into a numpy array
     embeddings = np.array(embeddings)
@@ -122,16 +141,19 @@ def speaker_identifier(audioPath):
     num_speakers = len(set(labels))
     print(f"Number of speakers detected: {num_speakers}")
 
-    for i, label in enumerate(labels):
-        print(f"Chunk {i} is from speaker {label}")
+    
 
-    # # remove the temporary files
+    for i, label in enumerate(labels):
+        print(f"Chunk {i} (from {filtered_chunk_times[i][0]/1000:.2f} to {filtered_chunk_times[i][1]/1000:.2f} seconds) is from speaker {label}")
+
+    
+    # remove the temporary files
     for i in range(len(filtered_chunks)):
         os.remove(f"chunk{i}.wav")
 
     os.remove(audioPath)
 
-    return labels, chunk_times
+    return labels, filtered_chunk_times
 
 
 def assign_speakers_to_transcription(result):
@@ -150,6 +172,7 @@ def assign_speakers_to_transcription(result):
         start = segment['start'] * 1000  # convert to milliseconds
         end = segment['end'] * 1000
         text = segment['text']
+        print(segment['start'], segment['end'], text)
 
         # find the speaker label for the segment
         speaker_label = None
@@ -173,6 +196,7 @@ def assign_speakers_to_transcription(result):
     for entry in transcriptions:
         if isinstance(entry["speaker"], np.int64):
             entry["speaker"] = int(entry["speaker"])
+
 
     # merge the speaker segments with same speaker identifies
     merged_data = []
