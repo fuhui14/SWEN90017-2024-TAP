@@ -33,15 +33,15 @@
 .container {
     display: flex;
     justify-content: space-between;
-    padding: 60px;
-    max-width: 1200px;
+    padding: 5%;
+    max-width: 80%;
     margin: auto;
 }
 
 .input-section, .upload-section {
     width: 49%;
     background: #fff;
-    padding: 30px;
+    padding: 3%;
     border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -54,7 +54,7 @@ h3 {
 }
 
 p {
-    margin-bottom: 15px;
+    margin-bottom: 3%;
     color: #666;
     line-height: 1.5;
 }
@@ -69,6 +69,7 @@ input[type="email"], select {
 }
 
 input[type="email"]:focus, select:focus {
+    width: 80%;
     border-color: #003366;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 51, 102, 0.3);
@@ -78,11 +79,15 @@ input[type="email"]:focus, select:focus {
     border: 2px dashed #003366;
     background-color: #f1f7ff;
     text-align: center;
-    padding: 50px;
     border-radius: 10px;
     transition: background-color 0.3s ease;
     cursor: pointer;
 }
+
+.upload-box p {
+    text-align: center;
+}
+
 
 .upload-box:hover {
     background-color: #e0ebff;
@@ -102,6 +107,12 @@ input[type="email"]:focus, select:focus {
 .confirm-button {
     text-align: center;
     margin-top: 40px;
+    position: absolute;
+    bottom: 20px;
+    left: 0 ;
+    right: 0 ;
+    text-align: center;
+    
 }
 
 .confirm-button button {
@@ -118,4 +129,108 @@ input[type="email"]:focus, select:focus {
 
 .confirm-button button:hover {
     background-color: #002244;
+}
+
+.uploaded-files {
+    margin-top: 20px;
+}
+
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    transition: background-color 0.3s ease;
+    position: relative; /* Set relative positioning to place progress bar underneath */
+}
+
+.file-item:hover {
+    background-color: #e0ebff; /* Change background on hover */
+}
+
+.file_area{
+    margin-top: 2%;
+    background-color: #ffffff;
+}
+
+.uploaded-files h5{
+    text-align: left;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.file-icon {
+    font-size: 24px;
+    margin-right: 10px;
+    color: #003366; /* Change icon color */
+}
+
+.file-name {
+    margin-right: 55%;
+    flex-grow: 1;
+    font-weight:lighter;
+    color: #666; /* Change text color to a darker shade */
+    font-size: 11px; /* Adjust font size */
+    overflow: hidden; /* Ensure text doesn't overflow */
+    text-overflow: ellipsis; /* Add ellipsis for overflowed text */
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+
+.file-size {
+    margin-left: 10px;
+    font-size: 11px;
+    color: #666;
+    font-weight:lighter;
+}
+
+/* Style the delete button to match the design */
+.delete-button {
+    background: none;
+    border: none;
+    color: #ff0000;
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    margin-left: 10px;
+}
+
+.delete-button:hover {
+    color: #cc0000; /* Darker red on hover */
+}
+
+.file-progress {
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    width: 100%; /* Ensure the progress bar spans the entire width of the box */
+    height: 1px; /* Height of the progress bar */
+    background-color: #e0e0e0; /* Background for the empty portion of the progress bar */
+    border-bottom-left-radius: 5px; /* Rounded corners to match file box */
+    border-bottom-right-radius: 5px;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+/* Grey color during upload progress */
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background-color: #ccc; /* Grey during upload */
+    transition: width 0.4s ease, background-color 0.4s ease; /* Smooth transition for width and color */
+}
+
+/* Blue color when upload is complete */
+.progress-bar.uploaded {
+    background-color: #1e7fff; /* Light blue for completed upload */
+}
+p{
+    text-align: left;
 }

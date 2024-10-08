@@ -1,9 +1,9 @@
 import './transpage.css';
 import { Link } from 'react-router-dom'; // Add this import
-import log from '../logo.svg'
+import log from '../logo.svg';
 import React, { useState } from 'react';
 
-function Transpage(){
+function Transpage() {
   const [email, setEmail] = useState(''); // State for email
   const [isEmailValid, setIsEmailValid] = useState(false); // State for email validation
   const [files, setFiles] = useState([]); // State for file uploads
@@ -20,44 +20,41 @@ function Transpage(){
   const handleFileChange = (e) => {
     const newFiles = [...e.target.files]; // Get new files
     setFiles(newFiles); // Update files state
-
+    
     // Simulate file upload progress for each file
     const progressArray = new Array(newFiles.length).fill(0);
     setUploadProgress(progressArray);
     
-    // Simulate upload status for files
-    const uploadedArray = new Array(newFiles.length).fill(false);
-    setUploaded(uploadedArray);
-    
-    simulateUploadProgress(newFiles.length);
+    // Simulate file upload for each file
+    newFiles.forEach((file, index) => {
+      simulateUpload(file, index);
+    });
   };
 
-  // Simulate file upload progress
-  const simulateUploadProgress = (fileCount) => {
+  const simulateUpload = (file, index) => {
+    // Simulate upload progress using intervals
     const interval = setInterval(() => {
       setUploadProgress((prevProgress) => {
-        let allUploaded = true;
-        const updatedProgress = prevProgress.map((prog, index) => {
-          if (prog < 100) {
-            allUploaded = false;
-            return prog + 10; // Increment progress
-          }
-          return prog;
-        });
-        if (allUploaded) clearInterval(interval); // Stop simulation when all files are uploaded
+        const updatedProgress = [...prevProgress];
+        if (updatedProgress[index] < 100) {
+          updatedProgress[index] += 49; // Increase progress by 10%
+        } else {
+          clearInterval(interval); // Clear interval when upload completes
+          setUploaded((prevUploaded) => {
+            const updatedUploaded = [...prevUploaded];
+            updatedUploaded[index] = true; // Mark as uploaded
+            return updatedUploaded;
+          });
+        }
         return updatedProgress;
       });
-
-      setUploaded((prevUploaded) =>
-        prevUploaded.map((status, index) => uploadProgress[index] >= 100)
-      );
-    }, 500); // Simulate progress every 500ms
+    }, 500); // Simulate progress every 0.5 seconds
   };
 
   const handleDrop = (e) => {
     e.preventDefault(); // Prevent default behavior
     const droppedFiles = e.dataTransfer.files; // Get files from dataTransfer
-    handleFileChange({ target: { files: droppedFiles }}); // Call handleFileChange with dropped files
+    handleFileChange({ target: { files: droppedFiles } }); // Call handleFileChange with dropped files
   };
 
   const handleDeleteFile = (index) => {
@@ -83,104 +80,110 @@ function Transpage(){
 
   return (
     <>
-        <div className="header">
-            <div className="logo">
-              <img src={log} alt="logo"/>
-            </div>
-            <nav className="nav-links">
-              <Link to="/about">About</Link>
-              <Link to="/transcription">Transcription</Link>
-              <Link to="/history">History</Link>
-            </nav>
-          </div>
-    
-          <div className="container">
-            <div className="input-section">
-              <h3>Input your Email Address</h3>
-              <p>Please enter your email address to receive your transcription results.</p>
+      <div className="header">
+        <div className="logo">
+          <img src={log} alt="logo" />
+        </div>
+        <nav className="nav-links">
+          <Link to="/about">About</Link>
+          <Link to="/transcription">Transcription</Link>
+          <Link to="/history">History</Link>
+        </nav>
+      </div>
+
+      <div className="container">
+        <div className="input-section">
+          <h3>Input your Email Address</h3>
+          <p>Please enter your email address to receive your transcription results.</p>
+          <input 
+            type="email" 
+            placeholder="Enter your email"
+            value={email} 
+            onChange={handleEmailChange}
+            required 
+          />
+          {isEmailValid && 
+          <span className="valid-email">✔️</span>} {/* Validation feedback */}
+          <h3>Select a format for the output file</h3>
+          <select name="outputFormat">
+            <option value="docx">docx</option>
+            <option value="pdf">pdf</option>
+            <option value="txt">txt</option>
+          </select>
+
+          <h3>Select transcription language</h3>
+          <p>Please choose the language in which you would like your transcribed text to be translated.</p>
+          <select name="language">
+            <option value="english">English</option>
+            <option value="spanish">Spanish</option>
+            <option value="french">French</option>
+          </select>
+        </div>
+
+        <div 
+          className="upload-section"
+          onDragOver={(e) => e.preventDefault()} // Prevent default behavior
+          onDrop={handleDrop}
+          style={{ position: 'relative' }} // Ensure the upload section is positioned relatively
+          > 
+          
+          <h3>Upload</h3>
+          <p>
+            Our platform supports the following file formats:<strong> WAV (.wav), MP3 (.mp3), M4A (.m4a), FLAC (.flac), OGG (.ogg), and AAC (.aac)</strong>.
+          </p>
+          {/* Display uploaded files */}
+          {files.length === 0 ? (
+            <div className="upload-box">
               <input 
-              type="email" 
-              placeholder="Enter your email"
-              value={email} 
-              onChange={handleEmailChange}
-              required 
-              />
-              {isEmailValid && 
-              <span className="valid-email">✔️</span>} {/* Validation feedback */}
-              <h3>Select a format for the output file</h3>
-              <select name="outputFormat">
-                <option value="docx">docx</option>
-                <option value="pdf">pdf</option>
-                <option value="txt">txt</option>
-              </select>
-    
-              <h3>Select transcription language</h3>
-              <p>Please choose the language in which you would like your transcribed text to be translated.</p>
-              <select name="language">
-                <option value="english">English</option>
-                <option value="spanish">Spanish</option>
-                <option value="french">French</option>
-              </select>
-            </div>
-    
-            <div 
-              className="upload-section"
-              onDragOver={(e) => e.preventDefault()} // Prevent default behavior
-              onDrop={handleDrop}> 
-              <h3>Upload</h3>
-              <p>
-                Our platform supports the following file formats: WAV (.wav), MP3 (.mp3), M4A (.m4a), FLAC (.flac), OGG
-                (.ogg), and AAC (.aac).
-              </p>
-              {/* Display uploaded files */}
-              {files.length === 0 ? (
-                <div className="upload-box">
-                <input 
                 type="file" 
                 id="file-upload"
-                accept="audio/*"
+                accept=".wav,.mp3,.m4a,.flac,.ogg,.aac"
                 multiple  
                 onChange={handleFileChange} // Handle file change
                 style={{ display: 'none' }}
-                />
-                <label htmlFor="file-upload" className="file-upload-label">
-                  <div className="upload-icon">&#8682;</div>
-                  <p>Drag a file here or choose a file to upload</p>
-                </label>
-              </div>
-            ) : (
-              <div className="uploaded-files">
+              />
+              <label htmlFor="file-upload" className="file-upload-label">
+                <div className="upload-icon">&#8682;</div>
+                <p>Drag a file here or choose a file to upload</p>
+              </label>
+            </div>
+          ) : (
+            <div className="uploaded-files">
               <h5>File Added:</h5>
-              <ul>
-                {Array.from(files).map((file, index) => ( // Convert FileList to array to map
-                  <ul key={index}>
-                    {file.name}
+              <ul className='file_area'>
+                {Array.from(files).map((file, index) => (
+                  <div key={index} className="file-item">
+                    <div className="file-info">
+                      <span className="file-icon">
+                        {file.type.startsWith('audio/') ? '🎧' : file.type.startsWith('video/') ? '🎬' : '📄'}
+                      </span>
+                      <span className="file-name">{file.name}</span>
+                      <span className="file-size">{(file.size / (1024 * 1024)).toFixed(1)}MB</span>
+                      <button className="delete-button" onClick={() => handleDeleteFile(index)}>
+                        &times; {/* Close icon */}
+                      </button>
+                    </div>
                     <div className="file-progress">
                       <div
                         className={`progress-bar ${uploaded[index] ? 'uploaded' : ''}`}
                         style={{
-                          width: `${uploadProgress[index]}%`,
-                          backgroundColor: uploaded[index] ? '#4caf50' : '#ccc'
+                          width: `${uploadProgress[index]}%`,  // Update the width based on upload progress
                         }}
                       >
                         {uploadProgress[index]}%
                       </div>
                     </div>
-                    <button 
-                    onClick={() => handleDeleteFile(index)}>
-                      Delete
-                      </button> {/* Delete button for each file */}
-                  </ul> // Display file name
+                  </div>
                 ))}
               </ul>
             </div>
-            )} 
-              <div className="confirm-button">
-                <button type="submit" onClick={handleConfirm}>Confirm</button>{/* Updated button to handle confirmation */}
-              </div>
-            </div>
+          )}
+          <div className="confirm-button">
+            <button type="submit" onClick={handleConfirm}>Confirm</button>{/* Updated button to handle confirmation */}
           </div>
-      </>
+        </div>
+      </div>
+    </>
   );
 }
 
