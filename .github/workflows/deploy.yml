@@ -18,7 +18,7 @@ jobs:
     - name: Deploy feature/backend/whisper to Droplet
       if: github.ref == 'refs/heads/feature/backend/whisper'
       run: |
-        ssh root@170.64.161.105"
+        ssh -o StrictHostKeyChecking=no root@170.64.161.105"
         cd /root/tap/SWEN90017-2024-TAP/code/backend/whisper_project &&
         git pull origin feature/backend/whisper &&
         systemctl restart app_whisper.service
