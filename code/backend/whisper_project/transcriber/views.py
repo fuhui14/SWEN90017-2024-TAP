@@ -80,11 +80,12 @@ def speaker_identifier(audioPath):
     audioPath = convert_to_wav(audioPath)
 
     test_audio = preprocess_audio(audioPath)
+    # test_audio = AudioSegment.from_file(audioPath, "wav")
 
     # split the audio file into chunks based on silence detection
     chunks = split_on_silence(test_audio, 
                             min_silence_len=300,  
-                            silence_thresh=-50  
+                            silence_thresh=-40  
                             )
 
     # filter out chunks that are less than 600 ms
@@ -98,11 +99,17 @@ def speaker_identifier(audioPath):
 
     # embed each chunk
     embeddings = []
+    chunk_times = []
+    start_time = 0
+
     for i, chunk in enumerate(filtered_chunks):
         wav_chunk = preprocess_wav(f"chunk{i}.wav")
         embed = encoder.embed_utterance(wav_chunk)
         embeddings.append(embed)
 
+        chunk_duration = len(chunk)
+        chunk_times.append((start_time, start_time + chunk_duration))
+        start_time += chunk_duration
 
     # transform the embeddings into a numpy array
     embeddings = np.array(embeddings)
@@ -124,6 +131,70 @@ def speaker_identifier(audioPath):
 
     os.remove(audioPath)
 
+    return labels, chunk_times
+
+
+def assign_speakers_to_transcription(result):
+    if result is None:
+        return None
+    
+    # Get the speaker segments
+    segments = result['segments']
+
+    # Get the speaker labels and chunk times using the speaker_identifier function
+    labels, chunk_times = speaker_identifier('temp_audio')
+
+    # Process the speaker segments and associate them with the speaker labels
+    transcriptions = []
+    for segment in segments:
+        start = segment['start'] * 1000  # convert to milliseconds
+        end = segment['end'] * 1000
+        text = segment['text']
+
+        # find the speaker label for the segment
+        speaker_label = None
+        for i, (chunk_start, chunk_end) in enumerate(chunk_times):
+            if (chunk_start <= start <= chunk_end) or (chunk_start <= end <= chunk_end):
+                speaker_label = labels[i]
+                break
+        
+        # Add the transcription to the list
+        transcriptions.append({
+            'speaker': speaker_label if speaker_label is not None else 'Unknown',
+            'text': text.strip(),
+            'start': start / 1000,  # convert back to seconds
+            'end': end / 1000
+        })
+
+    # speaker_identifier('temp_audio')
+    print(transcriptions)
+
+    # convert np.int64 to int
+    for entry in transcriptions:
+        if isinstance(entry["speaker"], np.int64):
+            entry["speaker"] = int(entry["speaker"])
+
+    # merge the speaker segments with same speaker identifies
+    merged_data = []
+    current_segment = transcriptions[0]
+
+    for i in range(1, len(transcriptions)):
+        next_segment = transcriptions[i]
+        
+        # if the speaker is the same, merge the segments
+        if current_segment['speaker'] == next_segment['speaker']:
+            current_segment['text'] += ' ' + next_segment['text']
+            current_segment['end'] = next_segment['end']
+        else:
+            # if the speaker is different, add the current segment to the merged data and start a new segment
+            merged_data.append(current_segment)
+            current_segment = next_segment
+    
+    # add the last segment to the merged data
+    merged_data.append(current_segment)
+
+    return merged_data
+
 # Load the Whisper model
 model = whisper.load_model("base")
 
@@ -139,14 +210,16 @@ def index(request):
             
             # Transcribe the audio file using Whisper
             result = model.transcribe('temp_audio')
+            print(result['text'])
 
-            speaker_identifier('temp_audio')
-            
+            transcription_with_speaker = assign_speakers_to_transcription(result)
+
             # Remove the temporary file
             os.remove('temp_audio')
 
             # Return the transcription
-            return JsonResponse({'transcription': result['text']})
+            # return JsonResponse({'transcription': result['text']})
+            return JsonResponse({"transcription": transcription_with_speaker}, safe=False)
 
     else:
         form = UploadFileForm()
