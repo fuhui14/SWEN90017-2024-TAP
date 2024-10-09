@@ -11,6 +11,7 @@ import numpy as np
 
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
+from pydub.silence import detect_silence
 from scipy.spatial.distance import cosine
 from sklearn.cluster import DBSCAN
 import librosa
@@ -88,21 +89,34 @@ def speaker_identifier(audioPath):
                             silence_thresh=-40  
                             )
     
+    silence_times = detect_silence(test_audio, 
+                                min_silence_len=300, 
+                                silence_thresh=-40)
+    
+    for silence_start, silence_end in silence_times:
+        print(f"Silence: Start = {silence_start/1000} s, End = {silence_end/1000} s")
+    
     # Calculate start times for all chunks (before filtering)
     chunk_times = []
-    # Initialize the start time and total audio duration
-    start_time = 0
-    
+    # Initialize the original start time to 0
+    current_time = 0
 
-    for chunk in chunks:
-        chunk_duration = len(chunk)
-        chunk_times.append((start_time, start_time + chunk_duration))
-        start_time += chunk_duration
+    # Calculate the start and end times of each non-silent chunk based on silence
+    for start, end in silence_times:
+        # If there is audio before the current silence, add a chunk for it
+        if current_time < start:
+            # The chunk starts with the current time and ends where the silence starts
+            chunk_times.append((current_time, start))
+
+        # Update the previous end to the end of the current silence
+        current_time = end
+
+    # Add the final chunk if there is any audio after the last silence
+    if current_time < len(test_audio):
+        chunk_times.append((current_time, len(test_audio)))
 
     for i, label in enumerate(chunk_times):
         print(f"Chunk {i} (from {chunk_times[i][0]/1000:.2f} to {chunk_times[i][1]/1000:.2f} seconds)")
-
-    print('\n')
 
     # filter out chunks that are less than 600 ms
     # filtered_chunks = [chunk for chunk in chunks if len(chunk) >= 600]
@@ -111,8 +125,8 @@ def speaker_identifier(audioPath):
 
 
     # # save each chunk to a separate wav file
-    # for i, chunk in enumerate(filtered_chunks):
-    #     chunk.export(f"chunk{i}.wav", format="wav")
+    for i, chunk in enumerate(chunks):
+        chunk.export(f"chunk{i}.wav", format="wav")
 
     encoder = VoiceEncoder()
     # embed each chunk
@@ -122,7 +136,6 @@ def speaker_identifier(audioPath):
 
     # Save each filtered chunk to a separate wav file and process
     for i, (chunk, times) in enumerate(filtered_chunks):
-        chunk.export(f"chunk{i}.wav", format="wav")
         wav_chunk = preprocess_wav(f"chunk{i}.wav")
         embed = encoder.embed_utterance(wav_chunk)
         embeddings.append(embed)
@@ -141,12 +154,9 @@ def speaker_identifier(audioPath):
     num_speakers = len(set(labels))
     print(f"Number of speakers detected: {num_speakers}")
 
-    
-
     for i, label in enumerate(labels):
         print(f"Chunk {i} (from {filtered_chunk_times[i][0]/1000:.2f} to {filtered_chunk_times[i][1]/1000:.2f} seconds) is from speaker {label}")
 
-    
     # remove the temporary files
     for i in range(len(filtered_chunks)):
         os.remove(f"chunk{i}.wav")
@@ -177,7 +187,7 @@ def assign_speakers_to_transcription(result):
         # find the speaker label for the segment
         speaker_label = None
         for i, (chunk_start, chunk_end) in enumerate(chunk_times):
-            if (chunk_start <= start <= chunk_end) or (chunk_start <= end <= chunk_end):
+            if (chunk_start <= end) and (chunk_end >= start):
                 speaker_label = labels[i]
                 break
         
