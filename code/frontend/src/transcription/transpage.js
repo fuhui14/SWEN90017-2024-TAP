@@ -1,6 +1,7 @@
 import './transpage.css';
 import { Link } from 'react-router-dom';
-import log from '../logo.svg';
+import log from '../logo-blue.png';
+// import log from '../logo.svg';
 import React, { useState } from 'react';
 
 function Transpage() {
@@ -37,7 +38,7 @@ function Transpage() {
       setUploadProgress((prevProgress) => {
         const updatedProgress = [...prevProgress];
         if (updatedProgress[index] < 100) {
-          updatedProgress[index] += 49; // Increase progress by 10%
+          updatedProgress[index] += 10; // Increase progress by 10%
         } else {
           clearInterval(interval); // Clear interval when upload completes
           setUploaded((prevUploaded) => {
@@ -48,7 +49,7 @@ function Transpage() {
         }
         return updatedProgress;
       });
-    }, 500); // Simulate progress every 0.5 seconds
+    }, 200); // Simulate progress every 0.2 seconds
   };
 
   const handleDrop = (e) => {
@@ -129,14 +130,20 @@ function Transpage() {
             onChange={handleEmailChange}
             required 
           />
-          {isEmailValid && 
+          {isEmailValid &&
           <span className="valid-email">✔️</span>} {/* Validation feedback */}
+
+          <hr />
+
           <h3>Select a format for the output file</h3>
+          <p>Please choose the desired file format for your transcription output.</p>
           <select name="outputFormat">
             <option value="docx">docx</option>
             <option value="pdf">pdf</option>
             <option value="txt">txt</option>
           </select>
+
+          <hr />
 
           <h3>Select transcription language</h3>
           <p>Please choose the language in which you would like your transcribed text to be translated.</p>

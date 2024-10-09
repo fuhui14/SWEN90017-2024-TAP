@@ -9,12 +9,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #003366;
-    padding: 1px;
+    padding: 10px 50px;
+    font-size: 1.2em;
 }
 
 .header .logo img {
-    height: 50px;
+    height: 5em;
+    width: auto;
 }
 
 .nav-links a {
@@ -24,6 +25,7 @@
     font-weight: 600;
     transition: color 0.3s ease;
     margin-right: 70px;
+    font-size: 1.2em;
 }
 
 .nav-links a:hover {
@@ -48,7 +50,7 @@
 
 h3 {
     margin-bottom: 15px;
-    font-size: 1.2em;
+    font-size: 1.5em;
     font-weight: bold;
     color: #333;
 }
@@ -56,32 +58,43 @@ h3 {
 p {
     margin-bottom: 3%;
     color: #666;
+    font-size: 1.2em;
+
     line-height: 1.5;
 }
 
+hr {
+    border: none;
+    height: 1px;
+    /*background-color: #094183;*/
+    margin: 20px 0;
+}
 input[type="email"], select {
     width: 80%;
     padding: 10px;
     margin-bottom: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 1em;
+    font-size: 1.2em;
 }
 
 input[type="email"]:focus, select:focus {
     width: 80%;
-    border-color: #003366;
+    border-color: #094183;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 51, 102, 0.3);
 }
 
 .upload-box {
-    border: 2px dashed #003366;
+    border: 2px dashed #094183;
     background-color: #f1f7ff;
     text-align: center;
     border-radius: 10px;
     transition: background-color 0.3s ease;
     cursor: pointer;
+    width: 80%;
+    height: 250px;
+    margin: 65px auto;
 }
 
 .upload-box p {
@@ -95,12 +108,13 @@ input[type="email"]:focus, select:focus {
 
 .upload-box .upload-icon {
     font-size: 60px;
-    color: #003366;
+    color: #094183;
+    margin-top: 60px;
 }
 
 .upload-box p {
-    font-size: 1em;
-    color: #003366;
+    font-size: 1.2em;
+    color: #094183;
     margin-top: 20px;
 }
 
@@ -108,15 +122,17 @@ input[type="email"]:focus, select:focus {
     text-align: center;
     margin-top: 40px;
     position: absolute;
-    bottom: 20px;
+    bottom: 40px;
     left: 0 ;
     right: 0 ;
     text-align: center;
-    
+    font-size: 1.2em;
+
+
 }
 
 .confirm-button button {
-    background-color: #003366;
+    background-color: #094183;
     color: white;
     padding: 15px 30px;
     border: none;
@@ -158,6 +174,7 @@ input[type="email"]:focus, select:focus {
 
 .uploaded-files h5{
     text-align: left;
+    font-size: 1.2em;
 }
 
 .file-info {
@@ -167,9 +184,9 @@ input[type="email"]:focus, select:focus {
 }
 
 .file-icon {
-    font-size: 24px;
+    font-size: 1.5em;
     margin-right: 10px;
-    color: #003366; /* Change icon color */
+    color: #094183; /* Change icon color */
 }
 
 .file-name {
@@ -177,7 +194,7 @@ input[type="email"]:focus, select:focus {
     flex-grow: 1;
     font-weight:lighter;
     color: #666; /* Change text color to a darker shade */
-    font-size: 11px; /* Adjust font size */
+    font-size: 1em; /* Adjust font size */
     overflow: hidden; /* Ensure text doesn't overflow */
     text-overflow: ellipsis; /* Add ellipsis for overflowed text */
     white-space: nowrap; /* Prevent text from wrapping */
@@ -186,7 +203,7 @@ input[type="email"]:focus, select:focus {
 
 .file-size {
     margin-left: 10px;
-    font-size: 11px;
+    font-size: 1em;
     color: #666;
     font-weight:lighter;
 }
@@ -196,7 +213,7 @@ input[type="email"]:focus, select:focus {
     background: none;
     border: none;
     color: #ff0000;
-    font-size: 20px;
+    font-size: 30px;
     cursor: pointer;
     transition: color 0.3s ease;
     margin-left: 10px;
@@ -234,3 +251,5 @@ input[type="email"]:focus, select:focus {
 p{
     text-align: left;
 }
+
+
