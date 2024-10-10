@@ -1,5 +1,5 @@
 import numpy as np
-from code.backend.speaker_identify.identify_service import speaker_identifier
+from .identify_service import speaker_identifier
 
 
 def assign_speakers_to_transcription(result):

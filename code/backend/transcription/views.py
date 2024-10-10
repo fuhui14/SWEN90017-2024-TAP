@@ -2,7 +2,7 @@ import os
 from django.shortcuts import render
 from django.http import JsonResponse
 
-from code.backend.speaker_identify.assign_speaker_service import assign_speakers_to_transcription
+from speaker_identify.assign_speaker_service import assign_speakers_to_transcription
 from .forms import UploadFileForm
 from .transcribe_service import transcribe_audio
 
