@@ -1,7 +1,7 @@
 import React from "react";
 import './process.css';
 import { Link , useNavigate} from 'react-router-dom';
-import log from '../logo.svg';
+import log from '../logo-blue.png';
 
 function Process(){
     const navigate = useNavigate(); // Initialize useHistory
