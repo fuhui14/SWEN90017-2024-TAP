@@ -4,7 +4,10 @@
 
 ## **Overview**
 
-This document outlines the necessary steps and considerations for integrating the frontend with the backend for the Transcription Aide Platform (TAP). The goal is to ensure that the frontend can correctly communicate with the backend API, particularly for file uploads and transcription requests, ensuring smooth interaction between both teams.
+This document outlines the necessary steps and considerations for integrating the frontend with the backend for the Transcription Aide Platform (TAP). The goal is to ensure that the frontend can correctly communicate with the backend API, particularly for file uploads and transcription requests, ensuring smooth interaction between both teams. Below is the current frontend interface.
+
+![image](https://github.com/user-attachments/assets/7955c88a-79a0-4a88-a471-693a4292f960)
+
 
 
 ## **1. API Interaction Details**
