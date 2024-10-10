@@ -2,7 +2,7 @@ import numpy as np
 from .identify_service import speaker_identifier
 
 
-def assign_speakers_to_transcription(result):
+def assign_speakers_to_transcription(result, temp_audio):
     if result is None:
         return None
     
@@ -10,7 +10,7 @@ def assign_speakers_to_transcription(result):
     segments = result['segments']
 
     # Get the speaker labels and chunk times using the speaker_identifier function
-    labels, chunk_times = speaker_identifier('temp_audio')
+    labels, chunk_times = speaker_identifier(temp_audio)
 
     # Process the speaker segments and associate them with the speaker labels
     transcriptions = []
