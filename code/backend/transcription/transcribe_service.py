@@ -1,3 +1,4 @@
+from .celery import app
 import os
 import uuid
 from core.models import db, Transcription
@@ -7,28 +8,23 @@ import whisper
 # Load the Whisper model once during app startup
 model = whisper.load_model("base")
 
-def handle_file_upload(file_path):
+@app.task
+def handle_file_upload(file_id, file_path):
     try:
         # use whisper model to transcribe the audio
         result = model.transcribe(file_path)
 
-        # create the unique file ID
-        file_id = str(uuid.uuid4())
-        expiration_date = datetime.datetime.utcnow() + datetime.timedelta(days=30)
-
-        # save the transcription result to db
-        transcription = Transcription(
-            file_id=file_id,
-            file_name=os.path.basename(file_path),
-            transcription_text=result['text'],
-            status="Completed",
-            created_at=datetime.datetime.utcnow(),
-            expiration_date=expiration_date
-        )
-        db.session.add(transcription)
-        db.session.commit()
-
-        return {"success": True, "file_id": file_id}
+        # update the transcription result in the database
+        transcription = Transcription.query.filter_by(file_id=file_id).first()
+        if transcription:
+            transcription.transcription_text = result['text']
+            transcription.status = "Completed"
+            db.session.commit()
+        return {"success": True}
     except Exception as e:
+        # update the transcription status as failed
+        transcription = Transcription.query.filter_by(file_id=file_id).first()
+        if transcription:
+            transcription.status = "Failed"
+            db.session.commit()
         return {"success": False, "error": str(e)}
-
