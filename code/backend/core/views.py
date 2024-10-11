@@ -55,3 +55,33 @@ def upload_audio_file(request):
         "fileId": file_id,
         "estimatedProcessingTime": "10 minutes"
     }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_transcription_history(request):
+    # get email address from request
+    email = request.query_params.get('email', None)
+
+    if not email:
+        return Response({"error": "Email is required to retrieve the transcription history."},
+                        status=status.HTTP_400_BAD_REQUEST)
+
+    # search all transcription results related to this email
+    transcriptions = Transcription.query.filter_by(email=email).all()
+
+    if not transcriptions:
+        return Response({"message": "No transcription history found."},
+                        status=status.HTTP_404_NOT_FOUND)
+
+    # get history records from the return
+    history = []
+    for transcription in transcriptions:
+        history.append({
+            "fileId": transcription.file_id,
+            "fileName": transcription.file_name,
+            "status": transcription.status,
+            "created_at": transcription.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "expiration_date": transcription.expiration_date.strftime("%Y-%m-%d %H:%M:%S"),
+            "transcription_text": transcription.transcription_text if transcription.status == "Completed" else None
+        })
+
+    return Response({"history": history}, status=status.HTTP_200_OK)
