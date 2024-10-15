@@ -118,3 +118,7 @@ SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
 SMTP_USER = 'perrinyu2001@gmail.com'
 SMTP_PASSWORD = 'thdj houx hcsn hrrt'
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+]
