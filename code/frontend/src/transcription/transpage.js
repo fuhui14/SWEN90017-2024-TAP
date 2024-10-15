@@ -89,7 +89,7 @@ function Transpage() {
     // Send data to the backend
     try {
       const API_BASE_URL = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${API_BASE_URL}/transcription`, {
+      const response = await fetch(`${API_BASE_URL}/transcription/`, {
         method: 'POST',
         body: formData,
       });
@@ -98,7 +98,7 @@ function Transpage() {
         alert("Files uploaded successfully!"); // Confirmation message
       } else {
         const errorData = await response.json();
-        alert(`Error: ${errorData.message}`); // Handle error response
+        alert(`Error: ${errorData.error}`); // Handle error response
       }
     } catch (error) {
       alert("An error occurred while uploading files."); // Handle network errors
