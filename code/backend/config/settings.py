@@ -20,14 +20,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',           # DRF 用于构建 API
-    'corsheaders',              # 处理跨域请求
+    'rest_framework',           # Django REST framework for building APIs
+    'corsheaders',              # CORS headers
     'core',
     'transcription',
     'users',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # CORS middleware should be at the top
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -35,7 +36,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -58,7 +58,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# settings.py (PostgreSQL Database Configuration)
+# PostgreSQL Database Configuration
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -88,11 +88,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
@@ -113,4 +110,16 @@ REST_FRAMEWORK = {
 }
 
 # CORS settings
+<<<<<<< Updated upstream
 CORS_ALLOW_ALL_ORIGINS = True
+=======
+CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins for development
+# Alternatively, to restrict to specific origins, use the line below:
+# CORS_ALLOWED_ORIGINS = ['http://localhost:3000']  # Update with your React app URL
+
+# Email settings
+SMTP_SERVER = 'smtp.gmail.com'
+SMTP_PORT = 587
+SMTP_USER = 'perrinyu2001@gmail.com'
+SMTP_PASSWORD = 'thdj houx hcsn hrrt'
+>>>>>>> Stashed changes
