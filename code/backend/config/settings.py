@@ -110,9 +110,6 @@ REST_FRAMEWORK = {
 }
 
 # CORS settings
-<<<<<<< Updated upstream
-CORS_ALLOW_ALL_ORIGINS = True
-=======
 CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins for development
 # Alternatively, to restrict to specific origins, use the line below:
 # CORS_ALLOWED_ORIGINS = ['http://localhost:3000']  # Update with your React app URL
@@ -122,4 +119,3 @@ SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
 SMTP_USER = 'perrinyu2001@gmail.com'
 SMTP_PASSWORD = 'thdj houx hcsn hrrt'
->>>>>>> Stashed changes
