@@ -37,7 +37,7 @@ function Transpage() {
       setUploadProgress((prevProgress) => {
         const updatedProgress = [...prevProgress];
         if (updatedProgress[index] < 100) {
-          updatedProgress[index] += 49; // Increase progress by 10%
+          updatedProgress[index] += 49; // Increase progress
         } else {
           clearInterval(interval); // Clear interval when upload completes
           setUploaded((prevUploaded) => {
@@ -69,6 +69,23 @@ function Transpage() {
     setUploaded(updatedUploaded);
   };
 
+  // 添加获取 CSRF 令牌的函数
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // 判断这个 cookie 字符串是否以我们想要的名字开头
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
   const handleConfirm = async () => {
     if (!isEmailValid || files.length === 0) {
       alert("Please fill out all required fields."); // Alert for missing fields
@@ -85,13 +102,20 @@ function Transpage() {
     const language = document.querySelector('select[name="language"]').value; // Get selected language
     formData.append('outputFormat', outputFormat);
     formData.append('language', language);
-    console.log(formData);
+
+    // 获取 CSRF 令牌
+    const csrftoken = getCookie('csrftoken');
+
     // Send data to the backend
     try {
-      const API_BASE_URL = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${API_BASE_URL}/transcription`, {
+      const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000'; // 确保有默认值
+      const response = await fetch(`${API_BASE_URL}/transcription/`, {
         method: 'POST',
+        headers: {
+          'X-CSRFToken': csrftoken, // 添加 CSRF 令牌到请求头
+        },
         body: formData,
+        credentials: 'include', // 包含凭证（cookies 等）
       });
 
       if (response.ok) {

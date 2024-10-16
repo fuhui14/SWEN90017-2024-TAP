@@ -3,13 +3,14 @@ import uuid
 from django.conf import settings
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from speaker_identify.assign_speaker_service import assign_speakers_to_transcription
 from .forms import UploadFileForm
 from .transcribe_service import transcribe_audio
 from .models import File, Transcription  # 确保File和Transcription模型已定义
 
-
+@csrf_exempt
 def transcribe(request):
     print("Received a request to transcribe")
     if request.method == 'POST':

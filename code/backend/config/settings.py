@@ -109,10 +109,19 @@ REST_FRAMEWORK = {
 }
 
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins for development
+# CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins for development
 # Alternatively, to restrict to specific origins, use the line below:
-# CORS_ALLOWED_ORIGINS = ['http://localhost:3000']  # Update with your React app URL
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+]
 
+CORS_ALLOW_CREDENTIALS = True  # 允许凭证（如 Cookies）
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+]
 # Email settings
 SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
