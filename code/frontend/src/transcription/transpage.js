@@ -2,6 +2,7 @@ import './transpage.css';
 import { Link , useNavigate } from 'react-router-dom';
 import log from '../resources/icon/logo.svg';
 import addLog from '../resources/icon/add.svg';
+import correctLog from '../resources/icon/correct.svg';
 import React, { useState } from 'react';
 
 function Transpage() {
@@ -208,7 +209,10 @@ function Transpage() {
             required 
           />
           {isEmailValid && 
-          <span className="valid-email">✔️</span>} {/* Validation feedback */}
+          <span className="valid-email small-feedback">
+            <img className="small-feedback" src={correctLog}
+                  alt="Valid email" ></img>
+            </span>} {/* Validation feedback */}
           <h3>Select a format for the output file</h3>
           <select name="outputFormat">
             <option value="docx">docx</option>

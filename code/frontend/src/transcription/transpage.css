@@ -256,3 +256,10 @@ p{
     margin: 0; /* Adjust as needed */
     align-items: center;
 }
+
+.small-feedback {
+    display: inline-block; /* Keep it inline */
+    margin-left: 5px; /* Space between input and feedback */
+    width: 20px; /* Adjust width to make it smaller */
+    height: 20px; /* Adjust height to make it smaller */
+  }
