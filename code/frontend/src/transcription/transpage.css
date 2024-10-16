@@ -234,3 +234,15 @@ input[type="email"]:focus, select:focus {
 p{
     text-align: left;
 }
+
+.file-add button{
+text-align: right;
+}
+
+.add-icon {
+    width: 20px; /* Set the desired width */
+    height: 20px; /* Set the desired height */
+    /* Optionally, you can add margin for spacing */
+    margin: 0; /* Adjust as needed */
+    align-items: center;
+}

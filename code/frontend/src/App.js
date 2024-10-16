@@ -14,7 +14,7 @@ function App() {
           <Route path="/" element={<Transpage />} />
           <Route path="/transcription" element={<Transpage />} />
           <Route path="/process" element={<Process />} />
-          <Route path="/transcriptionresult" element={<TranscriptionResult />} />
+          <Route path="/transcription/transcriptionresult" element={<TranscriptionResult />} />
         </Routes>
       </div>
     </BrowserRouter>

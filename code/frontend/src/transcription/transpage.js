@@ -1,6 +1,7 @@
 import './transpage.css';
 import { Link , useNavigate } from 'react-router-dom';
 import log from '../resources/icon/logo.svg';
+import addLog from '../resources/icon/add.svg';
 import React, { useState } from 'react';
 
 function Transpage() {
@@ -137,8 +138,15 @@ function Transpage() {
       });
 
       if (response.ok) {
+        const Data = await response.json();
+        console.log(Data);
+
+        // Format the transcription into a conversation style
+        const formattedTranscription = Data.transcription.map(item => 
+          `Speaker ${item.speaker}: ${item.text}`).join('\n\n');
+        console.log(formattedTranscription);
         alert("Files uploaded successfully!"); // Confirmation message
-        demoData.append('result', response);
+        demoData.append('result', formattedTranscription);
         //----------------------------------------------------
         //---------This part is only for the demo use---------
         // Convert formData to a plain object
@@ -146,7 +154,10 @@ function Transpage() {
         demoData.forEach((value, key) => {
           formDataObject[key] = value;
         });
-        navigate('./transcriptionresult', { state: { demoData: formDataObject } }); // Pass formData as state
+        console.log(demoData);
+        console.log(formDataObject);
+        console.log("navigating....");
+        navigate('/transcription/transcriptionresult', { state: { demoData: formDataObject } }); // Pass formData as state
         //----------------------------------------------------
       } else {
         const errorData = await response.json();
@@ -224,12 +235,15 @@ function Transpage() {
               />
               <label htmlFor="file-upload" className="file-upload-label">
                 <div className="upload-icon">&#8682;</div>
-                <p>Drag a file here or choose a file to upload</p>
+                <p>Drag a file(s) here or choose a file to upload</p>
               </label>
             </div>
           ) : (
             <div className="uploaded-files">
-              <h5>File Added:</h5>
+              <span className='file-add'>
+                <h5>File Added:</h5>
+                <img src={addLog} alt="add" className="add-icon" />
+              </span>
               <ul className='file_area'>
                 {Array.from(files).map((file, index) => (
                   <div key={index} className="file-item">

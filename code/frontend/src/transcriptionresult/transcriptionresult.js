@@ -7,7 +7,7 @@ import downloadLogo from '../resources/icon/download.svg';
 function TranscriptionResult(){
     const navigate = useNavigate(); // Initialize useHistory
     const location = useLocation(); // Get location object
-    const demoData = location.state?.formData; // Access formData from state
+    const demoData = location.state.demoData || {}; // Access formData from state
     console.log(demoData); // You can use formData as needed
     return(
         <>
@@ -39,25 +39,27 @@ function TranscriptionResult(){
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>audio1</td>
+                                    <td>{demoData.file.name.replace(/\.[^/.]+$/, '')}</td>
                                     <td>
                                     {demoData.file.type.startsWith('audio/') ? 
                                     'Audio' : demoData.file.type.startsWith('video/') ? 
                                     'Video' : 'File'}
                                     </td>
-                                    <td>{new Date().toLocaleDateString('en-GB', 
+                                    <td>{demoData.file.lastModifiedDate.toLocaleDateString('en-GB', 
                                         { day: '2-digit', 
                                         month: 'short', 
                                         year: 'numeric' })}
                                     </td>
-                                    <td>{new Date(new Date().setMonth(new Date().getMonth() + 1)).toLocaleDateString('en-GB', 
+                                    <td>{new Date(demoData.file.lastModifiedDate.setMonth(demoData.file.lastModifiedDate.getMonth() + 1)).toLocaleDateString('en-GB', 
                                         { day: '2-digit', 
                                         month: 'short', 
                                         year: 'numeric' })}</td>
-                                    <td>${demoData.outputFormat}</td>
+                                    <td>{demoData.outputFormat}</td>
                                     <td><span className="status-completed">Completed</span></td>
                                     <td>
-                                        <a href="path/to/file/audio1.docx" download>
+                                        <a href={URL.createObjectURL(new Blob([demoData.result], 
+                                            { type: demoData.outputFormat }))} 
+                                                download={`${demoData.file.name.replace(/\.[^/.]+$/, '')}.${demoData.outputFormat}`}>
                                             <img src={downloadLogo} alt="Download" className="download-icon" />
                                         </a>
                                     </td>
