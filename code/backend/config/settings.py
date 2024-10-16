@@ -24,7 +24,6 @@ INSTALLED_APPS = [
     'corsheaders',              # 处理跨域请求
     'core',
     'transcription',
-    'users',
 ]
 
 MIDDLEWARE = [
@@ -43,7 +42,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -62,10 +61,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'transcription_db',
-        'USER': 'your_db_user',
-        'PASSWORD': 'your_db_password',
-        'HOST': 'localhost',
+        'NAME': 'tap',
+        'USER': 'sw',
+        'PASSWORD': 'swen90017',
+        'HOST': '170.64.161.105',
         'PORT': '5432',
     }
 }
