@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'; // Import routing components
 import Transpage from './transcription/transpage';
 import Process from './process/process';
 import './App.css';
+import History from "./history/history";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/" element={<Transpage />} />
         <Route path="/transcription" element={<Transpage />} />
         <Route path="/process" element={<Process />} />
+        <Route path="/history" element={<History />} />
       </Routes>
     </div>
   );

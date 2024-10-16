@@ -1,0 +1,143 @@
+/* General Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #003366;
+    padding: 1px;
+}
+
+.header .logo img {
+    height: 50px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 30px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+    margin-right: 70px;
+}
+
+.nav-links a:hover {
+    color: #ffcc00;
+}
+
+/* History Section */
+.history-container {
+    padding: 5%;
+    max-width: 80%;
+    margin: auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 40px;
+}
+
+h3 {
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+p {
+    margin-bottom: 3%;
+    color: #666;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.history-table th, .history-table td {
+    border: 1px solid #ccc;
+    padding: 12px;
+    text-align: left;
+}
+
+.history-table th {
+    background-color: #003366;
+    color: white;
+    font-weight: bold;
+}
+
+.history-table td {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.history-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.history-table tr:hover {
+    background-color: #e0ebff; /* Match hover effect style with transpage */
+}
+
+/* Pagination Styles */
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.pagination button {
+    background-color: #003366;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.pagination button:hover {
+    background-color: #002244;
+}
+
+.pagination span {
+    font-size: 1em;
+    color: #333;
+}
+
+/* Download Button */
+.download-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+    .history-table th, .history-table td {
+        font-size: 0.8em;
+    }
+
+    .pagination button {
+        padding: 8px 16px;
+    }
+}
