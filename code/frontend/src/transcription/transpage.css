@@ -235,9 +235,19 @@ p{
     text-align: left;
 }
 
-.file-add button{
-text-align: right;
-}
+.file-add {
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space between items */
+  }
+  
+  .file-add h5 {
+    margin: 0; /* Remove default margin */
+  }
+  
+  .file-add button {
+    margin-left: auto; /* Push the button to the right */
+  }
 
 .add-icon {
     width: 20px; /* Set the desired width */

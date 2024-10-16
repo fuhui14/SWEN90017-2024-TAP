@@ -11,6 +11,7 @@ function Transpage() {
   const [uploadProgress, setUploadProgress] = useState([]); // Track upload progress
   const [uploaded, setUploaded] = useState([]); // Track upload completion
   const navigate = useNavigate(); // Initialize useHistory
+  const fileInputRef = React.useRef(null); // Create a ref for the file input
 
   // Handle changes to the email input field
   const handleEmailChange = (e) => {
@@ -21,17 +22,27 @@ function Transpage() {
   };
 
    // Handle changes to the email input field
-  const handleFileChange = (e) => {
+   const handleFileChange = (e) => {
     const newFiles = [...e.target.files]; // Get new files
-    setFiles(newFiles); // Update files state
+    setFiles((prevFiles) => [...prevFiles, ...newFiles]); // Update files state to keep previous files
     
     // Simulate file upload progress for each file
-    const progressArray = new Array(newFiles.length).fill(0);
+    const progressArray = new Array(newFiles.length + files.length).fill(0); // Adjust progress array size
     setUploadProgress(progressArray);
     
     // Simulate file upload for each file
-    newFiles.forEach((file, index) => {
-      simulateUpload(file, index);
+    [...files, ...newFiles].forEach((file, index) => {
+      // Check if the file has already been uploaded
+      if (uploaded[index]) {
+        // If already uploaded, set progress to 100%
+        setUploadProgress((prevProgress) => {
+          const updatedProgress = [...prevProgress];
+          updatedProgress[index] = 100; // Set progress to 100% for uploaded files
+          return updatedProgress;
+        });
+      } else {
+        simulateUpload(file, index); // Simulate upload for new files
+      }
     });
   };
 
@@ -121,6 +132,9 @@ function Transpage() {
 
     demoData.append('outputFormat', outputFormat);
     demoData.append('language', language);
+
+    console.log("files: ");
+    console.log(files);
 
     // 获取 CSRF 令牌
     const csrftoken = getCookie('csrftoken');
@@ -242,8 +256,24 @@ function Transpage() {
             <div className="uploaded-files">
               <span className='file-add'>
                 <h5>File Added:</h5>
-                <img src={addLog} alt="add" className="add-icon" />
-              </span>
+                {/* <img src={addLog} alt="add" className="add-icon" /> */}
+                <input 
+                  type="file" 
+                  id="file-upload"
+                  accept=".wav,.mp3,.m4a,.flac,.ogg,.aac"
+                  multiple  
+                  onChange={handleFileChange} // Handle file change
+                  style={{ display: 'none' }}
+                  ref={fileInputRef} // Attach the ref to the file input
+                />
+                <img 
+                  src={addLog} 
+                  alt="Add file" 
+                  className="add-icon" 
+                  onClick={() => fileInputRef.current.click()} // Trigger file input click
+                  style={{ cursor: 'pointer' }} // Change cursor to pointer for better UX
+                />
+                </span>
               <ul className='file_area'>
                 {Array.from(files).map((file, index) => (
                   <div key={index} className="file-item">
