@@ -1,6 +1,6 @@
 import './transpage.css';
-import { Link } from 'react-router-dom';
-import log from '../logo.svg';
+import { Link , useNavigate } from 'react-router-dom';
+import log from '../resources/icon/logo.svg';
 import React, { useState } from 'react';
 
 function Transpage() {
@@ -9,7 +9,9 @@ function Transpage() {
   const [files, setFiles] = useState([]); // State for file uploads
   const [uploadProgress, setUploadProgress] = useState([]); // Track upload progress
   const [uploaded, setUploaded] = useState([]); // Track upload completion
+  const navigate = useNavigate(); // Initialize useHistory
 
+  // Handle changes to the email input field
   const handleEmailChange = (e) => {
     const value = e.target.value;
     setEmail(value);
@@ -17,6 +19,7 @@ function Transpage() {
     setIsEmailValid(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
   };
 
+   // Handle changes to the email input field
   const handleFileChange = (e) => {
     const newFiles = [...e.target.files]; // Get new files
     setFiles(newFiles); // Update files state
@@ -31,6 +34,7 @@ function Transpage() {
     });
   };
 
+  // Simulate the upload process for a file
   const simulateUpload = (file, index) => {
     // Simulate upload progress using intervals
     const interval = setInterval(() => {
@@ -51,12 +55,14 @@ function Transpage() {
     }, 500); // Simulate progress every 0.5 seconds
   };
 
+  // Handle file drop events
   const handleDrop = (e) => {
     e.preventDefault(); // Prevent default behavior
     const droppedFiles = e.dataTransfer.files; // Get files from dataTransfer
     handleFileChange({ target: { files: droppedFiles } }); // Call handleFileChange with dropped files
   };
 
+  // Handle the deletion of a file from the upload list
   const handleDeleteFile = (index) => {
     const updatedFiles = files.filter((_, i) => i !== index); // Remove file at the specified index
     setFiles(updatedFiles); // Update files state
@@ -69,14 +75,14 @@ function Transpage() {
     setUploaded(updatedUploaded);
   };
 
-  // 添加获取 CSRF 令牌的函数
+  // Function to obtain a CSRF token from cookies
   function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
       const cookies = document.cookie.split(';');
       for (let i = 0; i < cookies.length; i++) {
         const cookie = cookies[i].trim();
-        // 判断这个 cookie 字符串是否以我们想要的名字开头
+        // Determine whether this cookie string starts with the name we want
         if (cookie.substring(0, name.length + 1) === (name + '=')) {
           cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
           break;
@@ -86,43 +92,66 @@ function Transpage() {
     return cookieValue;
   }
 
+  // Handle the confirmation of the upload process
   const handleConfirm = async () => {
     if (!isEmailValid || files.length === 0) {
       alert("Please fill out all required fields."); // Alert for missing fields
       return;
     }
 
+    //for demo usage only
+    const demoData = new FormData();
+
     // Prepare the form data
     const formData = new FormData();
     formData.append('email', email);
+    demoData.append('email', email);
     files.forEach((file) => {
       formData.append('file', file); // Append each file
+    });
+
+    files.forEach((file) => {
+      demoData.append('file', file); // Append each file
     });
     const outputFormat = document.querySelector('select[name="outputFormat"]').value; // Get selected output format
     const language = document.querySelector('select[name="language"]').value; // Get selected language
     formData.append('outputFormat', outputFormat);
     formData.append('language', language);
 
+    demoData.append('outputFormat', outputFormat);
+    demoData.append('language', language);
+
     // 获取 CSRF 令牌
     const csrftoken = getCookie('csrftoken');
 
     // Send data to the backend
     try {
-      const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000'; // 确保有默认值
+      const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000'; 
       const response = await fetch(`${API_BASE_URL}/transcription/`, {
         method: 'POST',
         headers: {
-          'X-CSRFToken': csrftoken, // 添加 CSRF 令牌到请求头
+          'X-CSRFToken': csrftoken, // Add CSRF token to request header
         },
         body: formData,
-        credentials: 'include', // 包含凭证（cookies 等）
+        credentials: 'include', // Contains credentials (cookies, etc.)
       });
 
       if (response.ok) {
         alert("Files uploaded successfully!"); // Confirmation message
+        demoData.append('result', response);
+        //----------------------------------------------------
+        //---------This part is only for the demo use---------
+        // Convert formData to a plain object
+        const formDataObject = {};
+        demoData.forEach((value, key) => {
+          formDataObject[key] = value;
+        });
+        navigate('./transcriptionresult', { state: { demoData: formDataObject } }); // Pass formData as state
+        //----------------------------------------------------
       } else {
         const errorData = await response.json();
-        alert(`Error: ${errorData.message}`); // Handle error response
+        const errorMessage = errorData.error
+        alert(`Error: ${errorMessage}`); // Handle error response
       }
     } catch (error) {
       alert("An error occurred while uploading files."); // Handle network errors
@@ -178,7 +207,7 @@ function Transpage() {
           style={{ position: 'relative' }} // Ensure the upload section is positioned relatively
           > 
           
-          <h3>Upload</h3>
+          <h3>Upload file(s)</h3>
           <p>
             Our platform supports the following file formats:<strong> WAV (.wav), MP3 (.mp3), M4A (.m4a), FLAC (.flac), OGG (.ogg), and AAC (.aac)</strong>.
           </p>
