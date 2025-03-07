@@ -41,3 +41,11 @@
 | pyannote.audio | pyannote.audio is an open-source toolkit written in Python for speaker diarization. Based on PyTorch machine learning framework, it comes with state-of-the-art pretrained models and pipelines, that can be further finetuned to your own data for even better performance. | [version3.3.1](https://github.com/pyannote/pyannote-audio/releases/tag/3.3.1) | - Provides pre-trained models, easy to get started. <br> - Supports a variety of speech tasks. | - Requires higher computing resources, especially when processing long audio. <br> - Not easy to use. |          |
 |  speechbrain   | SpeechBrain is an open-source PyTorch toolkit that accelerates Conversational AI development, i.e., the technology behind speech assistants, chatbots, and large language models. <br> It is crafted for fast and easy creation of advanced technologies for Speech and Text Processing. | [v1.0](https://github.com/speechbrain/speechbrain/releases/tag/v1.0.0) | - Supports multi-tasking and modular design. <br> - Has a large number of pre-trained models and rich community support. | - Requires some background knowledge in machine learning. <br> - Configuration and optimization may be complicated. |          |
 |  Resemblyzer   | Resemblyzer allows you to derive a high-level representation of a voice through a deep learning model (referred to as the voice encoder). Given an audio file of speech, it creates a summary vector of 256 values that summarizes the characteristics of the voice spoken. |    [git](https://github.com/resemble-ai/Resemblyzer)     | - Can quickly generate speaker embeddings. <br> - Easy to integrate into other speech processing pipelines. | - Limited processing efficiency for long audio.     |          |
+
+
+## Testing Tools
+
+| **Component** | **Testing Framework** | **Purpose** |
+|--------------|----------------------|------------|
+| **Frontend** | Jest | Test JavaScript logic & React components |
+| **Backend** | Django `unittest` | Test Django models and core functions |
