@@ -55,6 +55,7 @@ function Transpage() {
         const updatedProgress = [...prevProgress];
         if (updatedProgress[index] < 100) {
           updatedProgress[index] += 49; // Increase progress
+
         } else {
           clearInterval(interval); // Clear interval when upload completes
           setUploaded((prevUploaded) => {
@@ -65,7 +66,7 @@ function Transpage() {
         }
         return updatedProgress;
       });
-    }, 500); // Simulate progress every 0.5 seconds
+    }, 200); // Simulate progress every 0.2 seconds
   };
 
   // Handle file drop events
@@ -214,11 +215,14 @@ function Transpage() {
                   alt="Valid email" ></img>
             </span>} {/* Validation feedback */}
           <h3>Select a format for the output file</h3>
+          <p>Please choose the desired file format for your transcription output.</p>
           <select name="outputFormat">
             <option value="docx">docx</option>
             <option value="pdf">pdf</option>
             <option value="txt">txt</option>
           </select>
+
+          <hr />
 
           <h3>Select transcription language</h3>
           <p>Please choose the language in which you would like your transcribed text to be translated.</p>
