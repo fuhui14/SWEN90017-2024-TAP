@@ -2,7 +2,7 @@
 
 ## 1. Introduction
 - **Purpose**: To build a transcription platform based on OpenAI's Whisper software to facilitate audio file transcriptions for a research team within a secure local network environment.
-- **Scope**: The platform will consist of a web interface and local machine execution that handles audio file uploads, transcription, and speaker identification without requiring user login. This system will only be used within the research group
+- **Scope**: The platform will consist of a web interface and local machine execution that handles audio file uploads, transcription, and speaker identification without requiring user login. This system will only be used within the research group.
 
 ## 2. General Description
 - **Product Functions**:
