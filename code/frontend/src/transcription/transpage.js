@@ -1,7 +1,8 @@
 import './transpage.css';
-import { Link } from 'react-router-dom';
-import log from '../logo-blue.png';
-// import log from '../logo.svg';
+import { Link , useNavigate } from 'react-router-dom';
+import log from '../resources/icon/logo.svg';
+import addLog from '../resources/icon/add.svg';
+import correctLog from '../resources/icon/correct.svg';
 import React, { useState } from 'react';
 
 function Transpage() {
@@ -10,7 +11,10 @@ function Transpage() {
   const [files, setFiles] = useState([]); // State for file uploads
   const [uploadProgress, setUploadProgress] = useState([]); // Track upload progress
   const [uploaded, setUploaded] = useState([]); // Track upload completion
+  const navigate = useNavigate(); // Initialize useHistory
+  const fileInputRef = React.useRef(null); // Create a ref for the file input
 
+  // Handle changes to the email input field
   const handleEmailChange = (e) => {
     const value = e.target.value;
     setEmail(value);
@@ -18,27 +22,40 @@ function Transpage() {
     setIsEmailValid(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
   };
 
-  const handleFileChange = (e) => {
+   // Handle changes to the email input field
+   const handleFileChange = (e) => {
     const newFiles = [...e.target.files]; // Get new files
-    setFiles(newFiles); // Update files state
+    setFiles((prevFiles) => [...prevFiles, ...newFiles]); // Update files state to keep previous files
     
     // Simulate file upload progress for each file
-    const progressArray = new Array(newFiles.length).fill(0);
+    const progressArray = new Array(newFiles.length + files.length).fill(0); // Adjust progress array size
     setUploadProgress(progressArray);
     
     // Simulate file upload for each file
-    newFiles.forEach((file, index) => {
-      simulateUpload(file, index);
+    [...files, ...newFiles].forEach((file, index) => {
+      // Check if the file has already been uploaded
+      if (uploaded[index]) {
+        // If already uploaded, set progress to 100%
+        setUploadProgress((prevProgress) => {
+          const updatedProgress = [...prevProgress];
+          updatedProgress[index] = 100; // Set progress to 100% for uploaded files
+          return updatedProgress;
+        });
+      } else {
+        simulateUpload(file, index); // Simulate upload for new files
+      }
     });
   };
 
+  // Simulate the upload process for a file
   const simulateUpload = (file, index) => {
     // Simulate upload progress using intervals
     const interval = setInterval(() => {
       setUploadProgress((prevProgress) => {
         const updatedProgress = [...prevProgress];
         if (updatedProgress[index] < 100) {
-          updatedProgress[index] += 10; // Increase progress by 10%
+          updatedProgress[index] += 49; // Increase progress
+
         } else {
           clearInterval(interval); // Clear interval when upload completes
           setUploaded((prevUploaded) => {
@@ -52,12 +69,14 @@ function Transpage() {
     }, 200); // Simulate progress every 0.2 seconds
   };
 
+  // Handle file drop events
   const handleDrop = (e) => {
     e.preventDefault(); // Prevent default behavior
     const droppedFiles = e.dataTransfer.files; // Get files from dataTransfer
     handleFileChange({ target: { files: droppedFiles } }); // Call handleFileChange with dropped files
   };
 
+  // Handle the deletion of a file from the upload list
   const handleDeleteFile = (index) => {
     const updatedFiles = files.filter((_, i) => i !== index); // Remove file at the specified index
     setFiles(updatedFiles); // Update files state
@@ -70,36 +89,96 @@ function Transpage() {
     setUploaded(updatedUploaded);
   };
 
+  // Function to obtain a CSRF token from cookies
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Determine whether this cookie string starts with the name we want
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  // Handle the confirmation of the upload process
   const handleConfirm = async () => {
     if (!isEmailValid || files.length === 0) {
       alert("Please fill out all required fields."); // Alert for missing fields
       return;
     }
 
+    //for demo usage only
+    const demoData = new FormData();
+
     // Prepare the form data
     const formData = new FormData();
     formData.append('email', email);
+    demoData.append('email', email);
     files.forEach((file) => {
       formData.append('file', file); // Append each file
+    });
+
+    files.forEach((file) => {
+      demoData.append('file', file); // Append each file
     });
     const outputFormat = document.querySelector('select[name="outputFormat"]').value; // Get selected output format
     const language = document.querySelector('select[name="language"]').value; // Get selected language
     formData.append('outputFormat', outputFormat);
     formData.append('language', language);
-    console.log(formData);
+
+    demoData.append('outputFormat', outputFormat);
+    demoData.append('language', language);
+
+    console.log("files: ");
+    console.log(files);
+
+    // 获取 CSRF 令牌
+    const csrftoken = getCookie('csrftoken');
+
     // Send data to the backend
     try {
-      const API_BASE_URL = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${API_BASE_URL}/api/upload`, {
+      const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000'; 
+      const response = await fetch(`${API_BASE_URL}/transcription/`, {
         method: 'POST',
+        headers: {
+          'X-CSRFToken': csrftoken, // Add CSRF token to request header
+        },
         body: formData,
+        credentials: 'include', // Contains credentials (cookies, etc.)
       });
 
       if (response.ok) {
+        const Data = await response.json();
+        console.log(Data);
+
+        // Format the transcription into a conversation style
+        const formattedTranscription = Data.transcription.map(item => 
+          `Speaker ${item.speaker}: ${item.text}`).join('\n\n');
+        console.log(formattedTranscription);
         alert("Files uploaded successfully!"); // Confirmation message
+        demoData.append('result', formattedTranscription);
+        //----------------------------------------------------
+        //---------This part is only for the demo use---------
+        // Convert formData to a plain object
+        const formDataObject = {};
+        demoData.forEach((value, key) => {
+          formDataObject[key] = value;
+        });
+        console.log(demoData);
+        console.log(formDataObject);
+        console.log("navigating....");
+        navigate('/transcription/transcriptionresult', { state: { demoData: formDataObject } }); // Pass formData as state
+        //----------------------------------------------------
       } else {
         const errorData = await response.json();
-        alert(`Error: ${errorData.message}`); // Handle error response
+        const errorMessage = errorData.error
+        alert(`Error: ${errorMessage}`); // Handle error response
       }
     } catch (error) {
       alert("An error occurred while uploading files."); // Handle network errors
@@ -130,11 +209,11 @@ function Transpage() {
             onChange={handleEmailChange}
             required 
           />
-          {isEmailValid &&
-          <span className="valid-email">✔️</span>} {/* Validation feedback */}
-
-          <hr />
-
+          {isEmailValid && 
+          <span className="valid-email small-feedback">
+            <img className="small-feedback" src={correctLog}
+                  alt="Valid email" ></img>
+            </span>} {/* Validation feedback */}
           <h3>Select a format for the output file</h3>
           <p>Please choose the desired file format for your transcription output.</p>
           <select name="outputFormat">
@@ -161,7 +240,7 @@ function Transpage() {
           style={{ position: 'relative' }} // Ensure the upload section is positioned relatively
           > 
           
-          <h3>Upload</h3>
+          <h3>Upload file(s)</h3>
           <p>
             Our platform supports the following file formats:<strong> WAV (.wav), MP3 (.mp3), M4A (.m4a), FLAC (.flac), OGG (.ogg), and AAC (.aac)</strong>.
           </p>
@@ -178,12 +257,31 @@ function Transpage() {
               />
               <label htmlFor="file-upload" className="file-upload-label">
                 <div className="upload-icon">&#8682;</div>
-                <p>Drag a file here or choose a file to upload</p>
+                <p>Drag a file(s) here or choose a file to upload</p>
               </label>
             </div>
           ) : (
             <div className="uploaded-files">
-              <h5>File Added:</h5>
+              <span className='file-add'>
+                <h5>File Added:</h5>
+                {/* <img src={addLog} alt="add" className="add-icon" /> */}
+                <input 
+                  type="file" 
+                  id="file-upload"
+                  accept=".wav,.mp3,.m4a,.flac,.ogg,.aac"
+                  multiple  
+                  onChange={handleFileChange} // Handle file change
+                  style={{ display: 'none' }}
+                  ref={fileInputRef} // Attach the ref to the file input
+                />
+                <img 
+                  src={addLog} 
+                  alt="Add file" 
+                  className="add-icon" 
+                  onClick={() => fileInputRef.current.click()} // Trigger file input click
+                  style={{ cursor: 'pointer' }} // Change cursor to pointer for better UX
+                />
+                </span>
               <ul className='file_area'>
                 {Array.from(files).map((file, index) => (
                   <div key={index} className="file-item">

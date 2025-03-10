@@ -1,7 +1,8 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom'; // Corrected import
+import { Routes, Route } from 'react-router-dom'; // Import routing components
 import Transpage from './transcription/transpage';
 import Process from './process/process';
+import TranscriptionResult from './transcriptionresult/transcriptionresult';
 import './App.css';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<Transpage />} />
           <Route path="/transcription" element={<Transpage />} />
           <Route path="/process" element={<Process />} />
+          <Route path="/transcription/transcriptionresult" element={<TranscriptionResult />} />
         </Routes>
       </div>
     </BrowserRouter>

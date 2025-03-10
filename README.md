@@ -104,6 +104,10 @@ Mingye Li. Email Address: [ming.li1@unimelb.edu.au]()
 
 ### Sprint 3
 
+- Develop user stories for the priority of "Must Have"
+- Separate development of front end and back end
+- Relevant tests
+- Integrate back end and front end
 
 ## Important Links
 - Github: https://github.com/Eclipsezty/SWEN90017-2024-TAP

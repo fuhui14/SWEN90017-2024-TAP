@@ -251,5 +251,32 @@ input[type="email"]:focus, select:focus {
 p{
     text-align: left;
 }
+.file-add {
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space between items */
+  }
+  
+  .file-add h5 {
+    margin: 0; /* Remove default margin */
+  }
+  
+  .file-add button {
+    margin-left: auto; /* Push the button to the right */
+  }
 
+.add-icon {
+    width: 20px; /* Set the desired width */
+    height: 20px; /* Set the desired height */
+    /* Optionally, you can add margin for spacing */
+    margin: 0; /* Adjust as needed */
+    align-items: center;
+}
+
+.small-feedback {
+    display: inline-block; /* Keep it inline */
+    margin-left: 5px; /* Space between input and feedback */
+    width: 20px; /* Adjust width to make it smaller */
+    height: 20px; /* Adjust height to make it smaller */
+  }
 
