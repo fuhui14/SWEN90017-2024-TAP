@@ -1,0 +1,203 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f9f9f9;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #003366;
+    padding: 10px 50px;
+}
+
+.header .logo img {
+    height: 50px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 30px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #ffcc00;
+}
+
+.container2 {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.process-status {
+    margin-bottom: 20px;
+}
+
+.process-status h3 {
+    text-align: left;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.process-status p {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.process-status span {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.process-status p:nth-child(2) {
+    color: #28a745; /* Green color for the queue position */
+    font-weight: bold;
+}
+
+.process-status p:nth-child(3) {
+    color: #28a745; /* Green color for estimated time */
+    font-weight: bold;
+}
+
+.file-result {
+    margin: 30px 0;
+}
+
+.file-result p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.file-result ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.file-result ul li {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.file-result ul li .file-name {
+    background-color: #e0f3ff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #003366;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.file-result ul li .delete-button {
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 16px;
+    padding: 2px 8px;
+    cursor: pointer;
+}
+
+.file-result ul li .delete-button:hover {
+    background-color: #cc0000;
+}
+
+.file-result h3{
+    text-align: left;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center align the buttons */
+    gap: 20px; /* Add space between the buttons */
+}
+
+.buttons button {
+    background-color: #003366;
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 30%; /* Adjust width as needed */
+}
+
+.buttons button:hover {
+    background-color: #002244;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* Ensures borders are collapsed */
+    margin-top: 20px; /* Adds space above the table */
+    font-size: 0.8em; /* Adjust the font size*/
+}
+
+th, td {
+    border: 1px solid #ccc; /* Light gray border for table cells */
+    padding: 10px; /* Adds padding for better spacing */
+    text-align: center; /* Aligns text to the left */
+}
+
+th {
+    background-color: #f9f9f9; /* Light background for header */
+    font-weight: bold; /* Makes header text bold */
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1; /* Light gray background on row hover */
+}
+
+.status-completed {
+    background-color: #d4edda; /* Light green background for completed status */
+    color: #155724; /* Dark green text color */
+    padding: 5px 10px; /* Padding for better appearance */
+    border-radius: 5px; /* Rounded corners */
+    display: inline-block; /* Ensures it behaves like a block element */
+}
+
+button {
+    background-color: #003366; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 5px 10px; /* Padding for buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+button:hover {
+    background-color: #002244; /* Darker shade on hover */
+}
+
+/* Add this new style for the download icon */
+.download-icon {
+    width: 20px; /* Set the desired width */
+    height: 20px; /* Set the desired height */
+    /* Optionally, you can add margin for spacing */
+    margin: 0; /* Adjust as needed */
+    align-items: center;
+}
