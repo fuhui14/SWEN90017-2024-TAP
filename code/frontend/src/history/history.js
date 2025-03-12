@@ -1,5 +1,4 @@
 import React from "react";
-import './transcriptionresult.css';
 import { Link, useNavigate, useLocation} from 'react-router-dom';
 import log from '../resources/icon/logo.svg';
 import downloadLogo from '../resources/icon/download.svg';
