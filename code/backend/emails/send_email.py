@@ -8,6 +8,8 @@ from enum import Enum
 
 from config.settings import *
 from text_file import text_file
+from docx_file import docx_file
+from pdf_file import pdf_file
 import os
 
 
@@ -15,6 +17,8 @@ class FileType(Enum):
     NONE = 1
     PATH = 2
     TXT = 3
+    DOCX = 4
+    PDF = 5
 
 
 # file_type {'txt', 'file_path', 'none'}
@@ -34,6 +38,10 @@ def send_email(receiver, subject, content, file_content, file_type=FileType.TXT)
     file = None
     if file_type == FileType.TXT:
         file = text_file(file_content)
+    elif file_type == FileType.DOCX:
+        file = docx_file(file_content)
+    elif file_type == FileType.PDF:
+        file = pdf_file(file_content)
     elif file_type == FileType.PATH:
         file = file_content
     if file is not None and os.path.exists(file):
@@ -69,4 +77,4 @@ def send_email(receiver, subject, content, file_content, file_type=FileType.TXT)
 
 if __name__ == "__main__":
     send_email('yupengyuanchina@gmail.com', 'test', 'test with file',
-               'This is a test for txt', FileType.TXT)
+               'This is a test for pdf', FileType.PDF)
