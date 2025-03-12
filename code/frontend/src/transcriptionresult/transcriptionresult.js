@@ -7,7 +7,7 @@ import downloadLogo from '../resources/icon/download.svg';
 function TranscriptionResult(){
     const navigate = useNavigate(); // Initialize useHistory
     const location = useLocation(); // Get location object
-    const demoData = location.state.demoData || {}; // Access formData from state
+    const { demoData = {} } = location.state || {}; // 防止 location.state 为 undefined
     console.log(demoData); // You can use formData as needed
     return(
         <>
@@ -39,7 +39,11 @@ function TranscriptionResult(){
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{demoData.file.name.replace(/\.[^/.]+$/, '')}</td>
+                                    {demoData.file ? (
+                                        <td>{demoData.file.name.replace(/\.[^/.]+$/, '')}</td>
+                                    ) : (
+                                        <td>Unknown file</td>
+                                    )}
                                     <td>
                                     {demoData.file.type.startsWith('audio/') ? 
                                     'Audio' : demoData.file.type.startsWith('video/') ? 
