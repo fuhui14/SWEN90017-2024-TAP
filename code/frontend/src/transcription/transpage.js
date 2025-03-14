@@ -194,7 +194,7 @@ function Transpage() {
         <nav className="nav-links">
           <Link to="/about">About</Link>
           <Link to="/transcription">Transcription</Link>
-          <Link to="/history">History</Link>
+          <Link to="/historylogin">History</Link>
         </nav>
       </div>
 
