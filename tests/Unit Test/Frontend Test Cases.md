@@ -1,10 +1,9 @@
 # Unit Test: App Component
 
-## Test Cases
 
-### 1. App.test.js
+## 1. App.test.js
 
-#### **Test Case 1: Renders Transpage component on default route (`/`)**
+### **Test Case 1: Renders Transpage component on default route (`/`)**
 - **Description**: Ensures that when navigating to the root (`/`), the `Transpage` component is rendered correctly.
 - **Expected Behavior**: The page should display the text `Select transcription language`.
 - **Test Code**:
@@ -19,7 +18,7 @@
   });
   ```
 
-#### **Test Case 2: Renders Transpage component on `/transcription` route**
+### **Test Case 2: Renders Transpage component on `/transcription` route**
 - **Description**: Ensures that navigating to `/transcription` renders `Transpage`.
 - **Expected Behavior**: The page should display the text `Select transcription language`.
 - **Test Code**:
@@ -34,7 +33,7 @@
   });
   ```
 
-#### **Test Case 3: Renders Process component on `/process` route**
+### **Test Case 3: Renders Process component on `/process` route**
 - **Description**: Ensures that navigating to `/process` correctly renders the `Process` component.
 - **Expected Behavior**: The page should display the text `status` and `your place in the queue`.
 - **Test Code**:
@@ -50,7 +49,7 @@
   });
   ```
 
-#### **Test Case 4: Renders navigation link for transcription**
+### **Test Case 4: Renders navigation link for transcription**
 - **Description**: Ensures the transcription navigation link is displayed correctly.
 - **Expected Behavior**: The page should contain a link labeled `Transcription`.
 - **Test Code**:
@@ -64,12 +63,14 @@
       expect(screen.getByRole('link', { name: /Transcription/i })).toBeInTheDocument();
   });
   ```
+### Test Result
+![image](https://github.com/user-attachments/assets/acbd2cd7-d3c7-419e-8834-2c913ae91f9b)
 
 ---
 
-### 2. transpage.test.js
+## 2. transpage.test.js
 
-#### **Test Case 1: Renders email input and validates correct email format**
+### **Test Case 1: Renders email input and validates correct email format**
 - **Description**: Ensures the email input field is rendered and validates input correctly.
 - **Expected Behavior**: A valid email should display a checkmark icon.
 - **Test Code**:
@@ -87,7 +88,7 @@
   });
   ```
 
-#### **Test Case 2: Renders file input and allows file upload**
+### **Test Case 2: Renders file input and allows file upload**
 - **Description**: Ensures that files can be uploaded successfully.
 - **Expected Behavior**: The uploaded file should appear in the file list.
 - **Test Code**:
@@ -105,7 +106,7 @@
   });
   ```
 
-#### **Test Case 3: Allows user to delete an uploaded file**
+### **Test Case 3: Allows user to delete an uploaded file**
 - **Description**: Ensures that users can remove files from the uploaded list.
 - **Expected Behavior**: After clicking the delete button, the file should be removed.
 - **Test Code**:
@@ -126,7 +127,7 @@
   });
   ```
 
-#### **Test Case 4: Displays an alert if required fields are missing on confirm**
+### **Test Case 4: Displays an alert if required fields are missing on confirm**
 - **Description**: Ensures that clicking confirm without entering required data triggers an alert.
 - **Expected Behavior**: The alert message should appear.
 - **Test Code**:
@@ -143,7 +144,7 @@
   });
   ```
 
-#### **Test Case 5: Navigates to transcription result page after successful confirmation**
+### **Test Case 5: Navigates to transcription result page after successful confirmation**
 - **Description**: Ensures that a successful form submission redirects the user.
 - **Expected Behavior**: The `useNavigate` function should be called with `/transcription/transcriptionresult`.
 - **Test Code**:
@@ -162,4 +163,6 @@
       await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/transcription/transcriptionresult', expect.any(Object)));
   });
   ```
+### Test Result
+![image](https://github.com/user-attachments/assets/80c7864f-d508-49c0-ac4b-408f6f9a9f7a)
 
