@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import log from '../resources/icon/logo.svg';
 import correctLog from '../resources/icon/correct.svg';
+import './historylogin.css';
 
 function HistoryLogin(){
   const [email, setEmail] = useState(''); // State for email

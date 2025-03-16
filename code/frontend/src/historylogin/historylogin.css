@@ -1,0 +1,26 @@
+.container h3{
+    font-weight: bold;
+}
+
+.container p{
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.container input{
+    margin: auto;
+    margin-top: 2%;
+    width: 40%;
+}
+
+button {
+    margin-bottom: 10%;
+    background-color: gray;
+    color: white;
+    width: 10%;
+    height: 50px;
+}
+
+button.isEmailValid{
+    background-color: blue;
+}
