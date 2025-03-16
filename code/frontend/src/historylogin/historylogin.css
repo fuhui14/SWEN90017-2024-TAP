@@ -7,11 +7,6 @@
     margin-right: 2%;
 }
 
-.container input{
-    margin: auto;
-    margin-top: 2%;
-    width: 40%;
-}
 
 button {
     margin-bottom: 10%;
@@ -19,8 +14,9 @@ button {
     color: white;
     width: 10%;
     height: 50px;
+    border-radius: 15px;
 }
 
 button.isEmailValid{
-    background-color: blue;
+    background-color: #002244;
 }
