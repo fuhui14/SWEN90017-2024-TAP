@@ -5,6 +5,7 @@ import Process from './process/process';
 import TranscriptionResult from './transcriptionresult/transcriptionresult';
 import HistoryLogin from './historylogin/historylogin';
 import History from './history/history';
+import About from './about/about';
 import './App.css';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/transcription/transcriptionresult" element={<TranscriptionResult />} />
           <Route path="/historylogin" element={<HistoryLogin />} />
           <Route path="/history" element={<History />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </div>
   );
