@@ -13,7 +13,7 @@ function App() {
       <div className="App">
         <Routes>
           {/* Define your route paths here */}
-          <Route path="/" element={<Transpage />} />
+          <Route path="/" element={<About />} />
           <Route path="/transcription" element={<Transpage />} />
           <Route path="/process" element={<Process />} />
           <Route path="/transcription/transcriptionresult" element={<TranscriptionResult />} />

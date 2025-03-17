@@ -30,7 +30,7 @@ function TranscriptionResult(){
                 <p>Everything you need to transcribe audio files, 
                     at your fingertips. Our platform is 100% free and easy to use! 
                     Upload, process, and receive your transcriptions with just 
-                    a few clicks—no login required. Identify different speakers, 
+                    a few clicks — no login required. Identify different speakers, 
                     handle multiple files, and receive results directly via email.</p>
             </section >
 
@@ -39,10 +39,12 @@ function TranscriptionResult(){
                 <h2>All the tools you need for transcription in one place</h2>
                 <div className="tools-cards">
                     <div className="tool-card">
+                        <Link to="/Transcription">
                         <div className="about-logo">
                             <h3>Upload your files</h3>
                             <img src={file_upload_icon} alt="file_upload_icon" />
                         </div>
+                        </Link>
                         <p>Upload your audio files from your device or from any cloud storage platform.</p>
                     </div>
 
@@ -51,12 +53,12 @@ function TranscriptionResult(){
                     </div>
                     
                     <div className="tool-card">
-
+                        <Link to="/Transcription">
                         <div className="about-logo">
-
                             <h3>Transcribe</h3>
                             <img src={transcribe_icon} alt="transcribe_icon" />
                         </div>
+                        </Link>
                         <p>Process your files using our advanced speech recognition and speaker identification.</p>
                     </div>
 
@@ -65,10 +67,12 @@ function TranscriptionResult(){
                     </div>
 
                     <div className="tool-card">
+                        <Link to="/historylogin">
                         <div className="about-logo">
                             <h3>Get Results</h3>
                             <img src={result_icon} alt="result_icon" />
                         </div>
+                        </Link>
                         <p>
                             Receive your transcription results in your preferred file format, with advanced
                             formatting for clarity and ease of use.
