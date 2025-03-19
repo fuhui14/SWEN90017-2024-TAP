@@ -142,7 +142,7 @@ select:focus {
 }
 
 .confirm-button button {
-  background-color: gray;
+  background-color: #002244;
   color: white;
   border-radius: 15px;
   cursor: pointer;
@@ -153,9 +153,6 @@ select:focus {
   height: 50px;
 }
 
-.confirm-button button:hover {
-  background-color: #002244;
-}
 
 /* 禁用状态：点击后按钮变为黑色且不可点击 */
 .confirm-button button:disabled {
