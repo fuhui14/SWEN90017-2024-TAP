@@ -233,18 +233,9 @@ select:focus {
 
 /* Delete (X) button */
 .delete-button {
-  background: none;
-  border: none;
-  color: #ff0000;
-  font-size: 30px;
-  cursor: pointer;
-  transition: color 0.3s ease;
   margin-left: 10px;
 }
 
-.delete-button:hover {
-  color: #cc0000;
-}
 
 /* Progress bar container */
 .file-progress {
