@@ -8,7 +8,7 @@ import result_icon from '../resources/icon/test-data-svgrepo-com.svg';
 
 import "./about.css"
 
-function TranscriptionResult(){
+function About(){
     const location = useLocation(); // Get location object
     const { demoData = {} } = location.state || {}; // 防止 location.state 为 undefined
     console.log(demoData); // You can use formData as needed
@@ -87,4 +87,4 @@ function TranscriptionResult(){
             </footer>
         </>
     );
-}export default TranscriptionResult;
+}export default About;
