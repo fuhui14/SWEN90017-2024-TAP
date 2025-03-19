@@ -50,7 +50,7 @@ function HistoryLogin(){
 
     // Send data to the backend
     try {
-      const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';  // modify later:Using history url
+      const API_BASE_URL = process.env.REACT_APP_API_URL;
       const response = await fetch(`${API_BASE_URL}/history/`, {
         method: 'POST',
         headers: {

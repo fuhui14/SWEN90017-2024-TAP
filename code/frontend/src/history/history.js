@@ -3,11 +3,21 @@ import { Link, useNavigate, useLocation} from 'react-router-dom';
 import log from '../resources/icon/logo.svg';
 import downloadLogo from '../resources/icon/download.svg';
 
-function TranscriptionResult(){
+function History(){
     const navigate = useNavigate(); // Initialize useHistory
     const location = useLocation(); // Get location object
     const { demoData = {} } = location.state || {}; // 防止 location.state 为 undefined
     console.log(demoData); // You can use formData as needed
+    
+       // 防止直接访问页面时 location.state 为空
+       if (!location.state) {
+        return <div style={{ textAlign: "center", padding: "20px" }}>
+            <h3>No data available.</h3>
+            <p>Please transcribe a file first.</p>
+            <button onClick={() => navigate('/transcription')}>Go to Transcription</button>
+        </div>;
+    }
+    
     return(
         <>
             <div className="header">
@@ -80,4 +90,4 @@ function TranscriptionResult(){
             </div>
         </>
     );
-}export default TranscriptionResult;
+}export default History;
