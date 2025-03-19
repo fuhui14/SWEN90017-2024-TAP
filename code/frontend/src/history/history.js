@@ -17,7 +17,6 @@ function History(){
             <button onClick={() => navigate('/transcription')}>Go to Transcription</button>
         </div>;
     }
-    
     return(
         <>
             <div className="header">

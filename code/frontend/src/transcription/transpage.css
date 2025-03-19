@@ -142,7 +142,8 @@
   }
   
   .confirm-button button {
-    background-color: gray;
+    margin-bottom: 20%;
+    background-color: #002244;
     color: white;
     border-radius: 15px;
     cursor: pointer;
@@ -153,9 +154,6 @@
     height: 50px;
   }
   
-  .confirm-button button:hover {
-    background-color: #002244;
-  }
   
   .file-add {
     display: flex;
@@ -189,6 +187,7 @@
     background-color: #ffffff;
     transition: background-color 0.3s ease;
     position: relative;
+    height: 50px;
   }
   
   .file-item:hover {
@@ -228,16 +227,14 @@
   /* Delete (X) button */
   .delete-button {
     background: none;
-    border: none;
+    border:#333;
     color: #ff0000;
-    font-size: 30px;
+    font-size: 20px;
     cursor: pointer;
     transition: color 0.3s ease;
+    text-align: right;
     margin-left: 10px;
-  }
-  
-  .delete-button:hover {
-    color: #cc0000;
+
   }
   
   /* Progress bar container */

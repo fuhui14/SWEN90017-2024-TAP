@@ -2,6 +2,7 @@ import './transpage.css';
 import { Link, useNavigate } from 'react-router-dom';
 import log from '../resources/icon/logo.svg';
 import addLog from '../resources/icon/add.svg';
+import closeIcon from '../resources/icon/close.png';
 import correctLog from '../resources/icon/correct.svg';
 import React, { useState } from 'react';
 
@@ -297,9 +298,11 @@ function Transpage() {
                         <span className="file-size">
                           {(file.size / (1024 * 1024)).toFixed(1)}MB
                         </span>
-                        <button className="delete-button" onClick={() => handleDeleteFile(index)}>
-                          &times;
-                        </button>
+                        <img 
+                          className="delete-button" 
+                          src={closeIcon} alt='close icon' 
+                          onClick={() => handleDeleteFile(index)} 
+                          style={{ cursor: 'pointer', width: '16px', height: '16px'}}/>
                       </div>
                       <div className="file-progress">
                         <div
