@@ -12,7 +12,7 @@ import whisper
 from speaker_identify.assign_speaker_service import assign_speakers_to_transcription
 from .forms import UploadFileForm
 from .models import File, Transcription
-from .tasks import process_transcription_and_send_email  # Import Celery task
+from .tasks import process_transcription_and_send_email
 
 # load whisper model when the server starts
 model = whisper.load_model("base")
@@ -96,8 +96,8 @@ def transcribe(request):
                 )
                 print("Transcription saved in database")
 
-                # Trigger email notification asynchronously
-                process_transcription_and_send_email.delay(transcribed_data.id)
+                # Synchronously trigger email notification
+                process_transcription_and_send_email(transcribed_data.id)
 
             except FileNotFoundError as fnf_error:
                 print(f"File not found during transcription: {fnf_error}")

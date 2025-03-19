@@ -6,10 +6,9 @@ from django.utils import timezone
 import datetime
 from .models import File
 
-@shared_task
 def process_transcription_and_send_email(transcription_id):
     """
-    Celery task: Sends transcription results via email when processing is done.
+    Function: Sends transcription results via email when processing is done.
     """
     try:
         transcription = Transcription.objects.get(id=transcription_id)
