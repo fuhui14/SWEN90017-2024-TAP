@@ -1,33 +1,91 @@
-import deepl
-from config.settings import auth_key
+import os
+from langdetect import detect
+from transformers import MarianMTModel, MarianTokenizer
 
-LANGUAGE_MAP = {
-    "Bulgarian": "BG", "Czech": "CS", "Danish": "DA", "German": "DE", "Greek": "EL",
-    "English": "EN", "Spanish": "ES", "Estonian": "ET", "Finnish": "FI", "French": "FR",
-    "Hungarian": "HU", "Indonesian": "ID", "Italian": "IT", "Japanese": "JA", "Korean": "KO",
-    "Lithuanian": "LT", "Latvian": "LV", "Norwegian": "NB", "Dutch": "NL", "Polish": "PL",
-    "Portuguese": "PT", "Romanian": "RO", "Russian": "RU", "Slovak": "SK", "Slovenian": "SL",
-    "Swedish": "SV", "Turkish": "TR", "Ukrainian": "UK", "Chinese": "ZH"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_DIR = os.path.join(BASE_DIR, "..", "models")
+
+ALLOWED_TARGET_LANGS = {
+    "zh", "fr", "en", "es", "de", "ru", "it", "pt", "nl", "ar", "ja", "ko", "tr", "pl",
+    "hi", "th", "vi", "el", "sv", "fi", "id", "da", "no", "cs", "ro", "hu", "sk", "bg",
+    "sr", "uk", "he", "ms", "ta", "mr", "bn", "ml", "kn", "te", "gu", "pa", "or", "ne",
+    "si", "hr", "sl", "lv", "lt", "et", "eu", "ca", "gl", "cy", "sq", "mk", "is", "af",
+    "zu", "xh", "sw", "yo", "am", "km", "lo", "my", "gu", "fil", "sr", "tl"
 }
 
 
-def translate(text, lang_code):
-    if lang_code.capitalize() in LANGUAGE_MAP:
-        lang_code = LANGUAGE_MAP[lang_code]
+def ensure_model_exists(model_name):
+    model_path = os.path.join(MODEL_DIR, model_name)
+    if not os.path.exists(model_path):
+        print(f"Model {model_name} does not exist. Downloading...")
+        tokenizer = MarianTokenizer.from_pretrained(f"Helsinki-NLP/{model_name}")
+        model = MarianMTModel.from_pretrained(f"Helsinki-NLP/{model_name}")
+        tokenizer.save_pretrained(model_path)
+        model.save_pretrained(model_path)
+        print(f"Model {model_name} has been downloaded!")
+    return model_path
 
-    if lang_code.upper() not in LANGUAGE_MAP.values():
-        raise ValueError(
-            f"ERROR: Invalid Language Code '{lang_code}'! Use codes listed below: {', '.join(LANGUAGE_MAP.values())}")
 
-    translator = deepl.Translator(auth_key)
-    translated_text = translator.translate_text(text, target_lang=lang_code.upper())
-    return translated_text.text
+def detect_language(content):
+    res = detect(content)
+    if res == "zh-cn":
+        res = "zh"
+    return res
+
+
+def translate_to_english(content):
+    model_name = "opus-mt-mul-en"
+    model_path = ensure_model_exists(model_name)
+
+    tokenizer = MarianTokenizer.from_pretrained(model_path)
+    model = MarianMTModel.from_pretrained(model_path)
+
+    inputs = tokenizer(content, return_tensors="pt", padding=True, truncation=True)
+    translated = model.generate(**inputs)
+    return tokenizer.batch_decode(translated, skip_special_tokens=True)[0]
+
+
+def translate(content, target_lang="zh"):
+    if detect_language(content) == target_lang:
+        return content
+
+    if target_lang not in ALLOWED_TARGET_LANGS:
+        return f"Error: Unsupported target language '{target_lang}', please use a valid Whisper-supported language."
+
+    english_text = translate_to_english(content)
+    print(f"Translated to English: {english_text}")
+
+    if target_lang == "en":
+        return content
+
+    model_name = f"opus-mt-en-{target_lang}"
+    model_path = ensure_model_exists(model_name)
+
+    tokenizer = MarianTokenizer.from_pretrained(model_path)
+    model = MarianMTModel.from_pretrained(model_path)
+
+    inputs = tokenizer(english_text, return_tensors="pt", padding=True, truncation=True)
+    translated = model.generate(**inputs)
+    return tokenizer.batch_decode(translated, skip_special_tokens=True)[0]
 
 
 if __name__ == "__main__":
-    try:
-        print(translate("Hello, world!", "ZH"))
-        print(translate("Hello, world!", "FR"))
-        print(translate("Hello, world!", "XYZ"))
-    except ValueError as e:
-        print(e)
+    text = "Bonjour, comment ça va ?"
+    print(detect_language(text))
+    result = translate(text, "zh")
+    print(f"Final translation: {result}")
+    result = translate(text, "es")
+    print(f"Final translation: {result}")
+    result = translate(text, "en")
+    print(f"Final translation: {result}")
+    text = "你好，世界"
+    print(detect_language(text))
+    result = translate(text, "en")
+    print(f"Final translation: {result}")
+    result = translate(text, "zh")
+    print(f"Final translation: {result}")
+    result = translate(text, "es")
+    print(f"Final translation: {result}")
+
+    invalid_result = translate(text, "abc")
+    print(invalid_result)

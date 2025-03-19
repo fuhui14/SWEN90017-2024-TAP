@@ -128,9 +128,6 @@ SMTP_PORT = 587
 SMTP_USER = 'perrinyu2001@gmail.com'
 SMTP_PASSWORD = 'thdj houx hcsn hrrt'
 
-# Translation settings
-auth_key = "87dd74b2-ab8f-40a3-a793-9c68dfcf40a9:fx"
-
 # ---- Auto Delete ----
 # Celery Broker 和 Result Backend 配置
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
