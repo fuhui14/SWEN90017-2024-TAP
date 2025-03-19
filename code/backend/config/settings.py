@@ -122,8 +122,12 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
 ]
+
 # Email settings
 SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
 SMTP_USER = 'perrinyu2001@gmail.com'
 SMTP_PASSWORD = 'thdj houx hcsn hrrt'
+
+# Translation settings
+auth_key = "87dd74b2-ab8f-40a3-a793-9c68dfcf40a9:fx"
