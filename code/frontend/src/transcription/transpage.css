@@ -1,273 +1,281 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 50px;
-    font-size: 1.2em;
-  }
-  
-  .header .logo img {
-    height: 5em;
-    width: auto;
-  }
-  
-  .nav-links a {
-    color: white;
-    text-decoration: none;
-    margin-right: 70px;
-    font-weight: 600;
-    font-size: 1.2em;
-    transition: color 0.3s ease;
-  }
-  
-  .nav-links a:hover {
-    color: #ffcc00;
-  }
-  
-  /* Container: places two sections side by side */
-  .container {
-    display: flex;
-    justify-content: space-between;
-    padding: 5%;
-    max-width: 80%;
-    margin: auto;
-  }
-  
-  /* Input section on the left */
-  .input-section {
-    width: 48%;
-    /* Remove background or styling if you want a transparent look:
-       background: none;
-       border: none; 
-    */
-  }
-  
-  /* Upload section on the right, with fixed height & flex layout */
-  .upload-section {
-    width: 48%;
-    display: flex;
-    flex-direction: column;
-    height: 600px; /* Fixed height. Adjust as needed. */
-    /* Remove background or styling if you want a transparent look:
-       background: none;
-       border: none; 
-    */
-  }
-  
-  h3 {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #333;
-    text-align: left;
-    margin-bottom: 10px;
-  }
-  
-  p {
-    margin: 1%;
-    color: #666;
-    font-size: 1em;
-    line-height: 2;
-    text-align: left;
-  }
-  
-  hr {
-    border: none;
-    height: 1px;
-    margin: 20px 0;
-  }
-  
-  input[type="email"],
-  select {
-    width: 80%;
-    padding: 10px;
-    margin-bottom: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1em;
-  }
-  
-  input[type="email"]:focus,
-  select:focus {
-    border-color: #002244;
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 51, 102, 0.3);
-  }
-  
-  /* The blue upload box when no files */
-  .upload-box {
-    background-color: #002244;
-    text-align: center;
-    border-radius: 10px;
-    transition: background-color 0.3s ease;
-    cursor: pointer;
-    width: 80%;
-    margin: auto;
-  }
-  
-  .upload-box:hover {
-    background-color: #094183;
-  }
-  
-  .upload-box .upload-icon {
-    font-size: 60px;
-    color: white;
-    margin-top: 60px;
-  }
-  
-  .upload-box p {
-    font-size: 1em;
-    color: white;
-    margin-top: 20px;
-  }
-  
-  /* The uploaded files container takes up remaining space, scrolls if needed */
-  .uploaded-files {
-    flex: 1;            /* Expand to fill leftover space */
-    overflow-y: auto;   /* Scroll if content is too tall */
-    margin-top: 20px;
-  }
-  
-  /* The confirm button is placed at the bottom */
-  .confirm-button {
-    text-align: center;
-    font-size: 1em;
-    margin-top: 20px; /* Space above button */
-  }
-  
-  .confirm-button button {
-    margin-bottom: 20%;
-    background-color: #002244;
-    color: white;
-    border-radius: 15px;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-    width: 30%;
-    height: 50px;
-  }
-  
-  
-  .file-add {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .file-add h5 {
-    margin: 0;
-  }
-  
-  .add-icon {
-    width: 20px;
-    height: 20px;
-    margin: 0;
-  }
-  
-  .file_area {
-    margin-top: 2%;
-    /* background-color: #fff; (optional) */
-  }
-  
-  /* Each file item (like a row) */
-  .file-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    background-color: #ffffff;
-    transition: background-color 0.3s ease;
-    position: relative;
-    height: 50px;
-  }
-  
-  .file-item:hover {
-    background-color: #e0ebff;
-  }
-  
-  .file-info {
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-  }
-  
-  .file-icon {
-    font-size: 1.5em;
-    margin-right: 10px;
-    color: #094183;
-  }
-  
-  .file-name {
-    margin-right: 55%;
-    flex-grow: 1;
-    font-weight: lighter;
-    color: #666;
-    font-size: 1em;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  
-  .file-size {
-    margin-left: 10px;
-    font-size: 1em;
-    color: #666;
-    font-weight: lighter;
-  }
-  
-  /* Delete (X) button */
-  .delete-button {
-    background: none;
-    border:#333;
-    color: #ff0000;
-    font-size: 20px;
-    cursor: pointer;
-    transition: color 0.3s ease;
-    text-align: right;
-    margin-left: 10px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
 
-  }
-  
-  /* Progress bar container */
-  .file-progress {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background-color: #e0e0e0;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    overflow: hidden;
-    border-radius: 3px;
-  }
-  
-  /* Progress bar fill */
-  .progress-bar {
-    height: 100%;
-    width: 0;
-    background-color: #ccc;
-    transition: width 0.4s ease, background-color 0.4s ease;
-  }
-  
-  .progress-bar.uploaded {
-    background-color: #1e7fff;
-  }
-  
-  /* Small feedback icon (green check) next to valid email */
-  .small-feedback {
-    display: inline-block;
-    margin-left: 5px;
-    width: 20px;
-    height: 20px;
-  }
-  
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 50px;
+  font-size: 1.2em;
+}
+
+.header .logo img {
+  height: 5em;
+  width: auto;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  margin-right: 70px;
+  font-weight: 600;
+  font-size: 1.2em;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #ffcc00;
+}
+
+/* Container: places two sections side by side */
+.container {
+  display: flex;
+  justify-content: space-between;
+  padding: 5%;
+  max-width: 80%;
+  margin: auto;
+}
+
+/* Input section on the left */
+.input-section {
+  width: 48%;
+  /* Remove background or styling if you want a transparent look:
+     background: none;
+     border: none; 
+  */
+}
+
+/* Upload section on the right, with fixed height & flex layout */
+.upload-section {
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+  height: 600px; /* Fixed height. Adjust as needed. */
+  /* Remove background or styling if you want a transparent look:
+     background: none;
+     border: none; 
+  */
+}
+
+h3 {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #333;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+p {
+  margin: 1%;
+  color: #666;
+  font-size: 1em;
+  line-height: 2;
+  text-align: left;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  margin: 20px 0;
+}
+
+input[type="email"],
+select {
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+input[type="email"]:focus,
+select:focus {
+  border-color: #002244;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 51, 102, 0.3);
+}
+
+/* The blue upload box when no files */
+.upload-box {
+  background-color: #002244;
+  text-align: center;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  width: 80%;
+  margin: auto;
+}
+
+.upload-box:hover {
+  background-color: #094183;
+}
+
+.upload-box .upload-icon {
+  font-size: 60px;
+  color: white;
+  margin-top: 60px;
+}
+
+.upload-box p {
+  font-size: 1em;
+  color: white;
+  margin-top: 20px;
+}
+
+/* The uploaded files container takes up remaining space, scrolls if needed */
+.uploaded-files {
+  flex: 1;            /* Expand to fill leftover space */
+  overflow-y: auto;   /* Scroll if content is too tall */
+  margin-top: 20px;
+}
+
+/* The confirm button is placed at the bottom */
+.confirm-button {
+  text-align: center;
+  font-size: 1em;
+  margin-top: 20px; /* Space above button */
+}
+
+.confirm-button button {
+  background-color: gray;
+  color: white;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  width: 30%;
+  height: 50px;
+}
+
+.confirm-button button:hover {
+  background-color: #002244;
+}
+
+/* 禁用状态：点击后按钮变为黑色且不可点击 */
+.confirm-button button:disabled {
+  background-color: black;
+  cursor: not-allowed;
+}
+
+.file-add {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.file-add h5 {
+  margin: 0;
+}
+
+.add-icon {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+}
+
+.file_area {
+  margin-top: 2%;
+  /* background-color: #fff; (optional) */
+}
+
+/* Each file item (like a row) */
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  background-color: #ffffff;
+  transition: background-color 0.3s ease;
+  position: relative;
+}
+
+.file-item:hover {
+  background-color: #e0ebff;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.file-icon {
+  font-size: 1.5em;
+  margin-right: 10px;
+  color: #094183;
+}
+
+.file-name {
+  margin-right: 55%;
+  flex-grow: 1;
+  font-weight: lighter;
+  color: #666;
+  font-size: 1em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-size {
+  margin-left: 10px;
+  font-size: 1em;
+  color: #666;
+  font-weight: lighter;
+}
+
+/* Delete (X) button */
+.delete-button {
+  background: none;
+  border: none;
+  color: #ff0000;
+  font-size: 30px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  margin-left: 10px;
+}
+
+.delete-button:hover {
+  color: #cc0000;
+}
+
+/* Progress bar container */
+.file-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #e0e0e0;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  overflow: hidden;
+  border-radius: 3px;
+}
+
+/* Progress bar fill */
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background-color: #ccc;
+  transition: width 0.4s ease, background-color 0.4s ease;
+}
+
+.progress-bar.uploaded {
+  background-color: #1e7fff;
+}
+
+/* Small feedback icon (green check) next to valid email */
+.small-feedback {
+  display: inline-block;
+  margin-left: 5px;
+  width: 20px;
+  height: 20px;
+}
