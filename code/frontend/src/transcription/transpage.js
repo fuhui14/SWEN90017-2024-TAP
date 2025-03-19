@@ -11,6 +11,7 @@ function Transpage() {
   const [files, setFiles] = useState([]); // State for file uploads
   const [uploadProgress, setUploadProgress] = useState([]); // Track upload progress
   const [uploaded, setUploaded] = useState([]); // Track upload completion
+  const [isSubmitting, setIsSubmitting] = useState(false); // 控制按钮状态
   const navigate = useNavigate();
   const fileInputRef = React.useRef(null);
 
@@ -110,10 +111,11 @@ function Transpage() {
       return;
     }
 
-    // For demo usage only
-    const demoData = new FormData();
+    // Disable the confirm button to prevent duplicate submissions
+    setIsSubmitting(true);
 
     // Prepare formData for submission
+    const demoData = new FormData();
     const formData = new FormData();
     formData.append('email', email);
     demoData.append('email', email);
@@ -127,7 +129,6 @@ function Transpage() {
     const language = document.querySelector('select[name="language"]').value;
     formData.append('outputFormat', outputFormat);
     formData.append('language', language);
-
     demoData.append('outputFormat', outputFormat);
     demoData.append('language', language);
 
@@ -138,7 +139,7 @@ function Transpage() {
 
     // Send data to the backend
     try {
-      const API_BASE_URL = process.env.REACT_APP_API_URL;
+      const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
       const response = await fetch(`${API_BASE_URL}/transcription/`, {
         method: 'POST',
         headers: {
@@ -170,14 +171,18 @@ function Transpage() {
         console.log(formDataObject);
         console.log('navigating....');
 
+        // Re-enable the button and跳转到结果页
+        setIsSubmitting(false);
         navigate('/transcription/transcriptionresult', { state: { demoData: formDataObject } });
       } else {
         const errorData = await response.json();
         const errorMessage = errorData.error;
         alert(`Error: ${errorMessage}`);
+        setIsSubmitting(false);
       }
     } catch (error) {
       alert('An error occurred while uploading files.');
+      setIsSubmitting(false);
     }
   };
 
@@ -318,8 +323,8 @@ function Transpage() {
 
           <hr />
           <div className="confirm-button">
-            <button type="submit" onClick={handleConfirm}>
-              Confirm
+            <button type="submit" onClick={handleConfirm} disabled={isSubmitting}>
+              {isSubmitting ? 'Uploading...' : 'Confirm'}
             </button>
           </div>
         </div>
