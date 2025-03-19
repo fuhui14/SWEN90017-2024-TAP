@@ -13,12 +13,13 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #003366;
+    background-color: #094183;
     padding: 10px 50px;
+    font-size: 1.2em;
 }
 
 .header .logo img {
-    height: 50px;
+    height: 60px;
 }
 
 .nav-links a {
@@ -49,12 +50,12 @@ body {
 
 .process-status h3 {
     text-align: left;
-    font-size: 24px;
+    font-size: 1.5em;
     margin-bottom: 10px;
 }
 
 .process-status p {
-    font-size: 18px;
+    font-size: 1.2em;
     color: #333;
     margin-bottom: 5px;
 }
@@ -79,7 +80,7 @@ body {
 }
 
 .file-process p {
-    font-size: 16px;
+    font-size: 1.2em;
     color: #666;
     margin-bottom: 20px;
 }
@@ -103,7 +104,7 @@ body {
     background-color: #e0f3ff;
     padding: 5px 10px;
     border-radius: 5px;
-    color: #003366;
+    color: #094183;
     font-weight: bold;
     display: inline-block;
 }
@@ -113,7 +114,7 @@ body {
     color: white;
     border: none;
     border-radius: 50%;
-    font-size: 16px;
+    font-size: 1.2em;
     padding: 2px 8px;
     cursor: pointer;
 }
@@ -130,15 +131,15 @@ body {
 }
 
 .buttons button {
-    background-color: #003366;
+    background-color: #094183;
     color: white;
     border: none;
     padding: 10px 30px;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 1.2em;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 30%; /* Adjust width as needed */
+    width: 40%; /* Adjust width as needed */
 }
 
 .buttons button:hover {
