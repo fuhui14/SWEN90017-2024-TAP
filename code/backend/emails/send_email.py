@@ -7,9 +7,9 @@ from email.header import Header
 from enum import Enum
 
 from config.settings import *
-from text_file import text_file
-from docx_file import docx_file
-from pdf_file import pdf_file
+from .text_file import text_file
+from .docx_file import docx_file
+from .pdf_file import pdf_file
 import os
 
 

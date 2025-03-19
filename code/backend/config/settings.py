@@ -127,3 +127,22 @@ SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
 SMTP_USER = 'perrinyu2001@gmail.com'
 SMTP_PASSWORD = 'thdj houx hcsn hrrt'
+
+
+# ---- Auto Delete ----
+# Celery Broker 和 Result Backend 配置
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+# Celery 时区配置（可与 Django TIME_ZONE 保持一致）
+CELERY_TIMEZONE = 'UTC'
+
+# Celery Beat 定时任务配置示例
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+    'cleanup-expired-files-daily': {
+        'task': 'transcription.tasks.cleanup_expired_files',  # 指向你定义的任务
+        'schedule': crontab(minute='*/5'),  # 每天午夜执行一次
+    },
+}
