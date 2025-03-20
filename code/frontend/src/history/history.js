@@ -1,92 +1,107 @@
-import React from "react";
-import { Link, useNavigate, useLocation} from 'react-router-dom';
-import log from '../resources/icon/logo.svg';
-import downloadLogo from '../resources/icon/download.svg';
+import React, { useEffect, useState } from "react";
+import {Link, useSearchParams} from "react-router-dom";
+import log from "../resources/icon/logo.svg";
+import './history.css';
 
-function History(){
-    const navigate = useNavigate(); // Initialize useHistory
-    const location = useLocation(); // Get location object
-    const { demoData = {} } = location.state || {}; // 防止 location.state 为 undefined
-    console.log(demoData); // You can use formData as needed
-    
-       // 防止直接访问页面时 location.state 为空
-       if (!location.state) {
-        return <div style={{ textAlign: "center", padding: "20px" }}>
-            <h3>No data available.</h3>
-            <p>Please transcribe a file first.</p>
-            <button onClick={() => navigate('/transcription')}>Go to Transcription</button>
-        </div>;
-    }
-    return(
+const History = () => {
+    const [searchParams] = useSearchParams();
+    const [historyData, setHistoryData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const token = searchParams.get("token");
+
+    useEffect(() => {
+        if (!token) {
+            setError("Invalid or expired link.");
+            setLoading(false);
+            return;
+        }
+
+        fetch("http://127.0.0.1:8000/api/admin/history/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token }),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setHistoryData(data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError("Failed to load history data.");
+                setLoading(false);
+            });
+    }, [token]);
+
+    return (
         <>
             <div className="header">
                 <div className="logo">
                     <img src={log} alt="logo" />
                 </div>
-            <nav className="nav-links">
-                <Link to="/about">About</Link>
-                <Link to="/transcription">Transcription</Link>
-                <Link to="/historylogin">History</Link>
-            </nav>
+                <nav className="nav-links">
+                    <Link to="/about">About</Link>
+                    <Link to="/transcription">Transcription</Link>
+                    <Link to="/historylogin">History</Link>
+                </nav>
             </div>
-            <div className="container2">
-                <div className="file-result">
-                    <h3>Transcription Finished</h3>
-                    <p>The following file(s) have been transcribed and have been sent to the email address: ${demoData.email}.</p>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>File Name</th>
-                                    <th>Task Format</th>
-                                    <th>Creation Date</th>
-                                    <th>Expiry Date</th>
-                                    <th>Output Type</th>
-                                    <th>Status</th>
-                                    <th>Download</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    {demoData.file ? (
-                                        <td>{demoData.file.name.replace(/\.[^/.]+$/, '')}</td>
-                                    ) : (
-                                        <td>Unknown file</td>
-                                    )}
-                                    <td>
-                                    {demoData.file.type.startsWith('audio/') ? 
-                                    'Audio' : demoData.file.type.startsWith('video/') ? 
-                                    'Video' : 'File'}
-                                    </td>
-                                    <td>{demoData.file.lastModifiedDate.toLocaleDateString('en-GB', 
-                                        { day: '2-digit', 
-                                        month: 'short', 
-                                        year: 'numeric' })}
-                                    </td>
-                                    <td>{new Date(demoData.file.lastModifiedDate.setMonth(demoData.file.lastModifiedDate.getMonth() + 1)).toLocaleDateString('en-GB', 
-                                        { day: '2-digit', 
-                                        month: 'short', 
-                                        year: 'numeric' })}</td>
-                                    <td>{demoData.outputFormat}</td>
-                                    <td><span className="status-completed">Completed</span></td>
-                                    <td>
-                                        <a href={URL.createObjectURL(new Blob([demoData.result], 
-                                            { type: demoData.outputFormat }))} 
-                                                download={`${demoData.file.name.replace(/\.[^/.]+$/, '')}.${demoData.outputFormat}`}>
-                                            <img src={downloadLogo} alt="Download" className="download-icon" />
-                                        </a>
-                                    </td>
-                                </tr>
-                
-                            </tbody>
-                        </table>
-                </div>
 
+        <div className="container">
+            <div className="file-result">
+            <h3>History Transcriptions</h3>
+            <p>This section displays your past transcription tasks, including details like task name, type, creation date,
+                and output format. You can quickly download completed files from this list. The Data will be maintained for 30 Days.</p>
 
-                <div className="buttons">
-                    <button>Go to History Section</button>
-                    <button onClick={() => navigate('/transcription')}>Transcribe a New Task</button>
-                </div>
+            {loading && <p>Loading...</p>}
+            {error && <error className="error">{error}</error>}
+
+            {!loading && !error && (
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Task Name</th>
+                        <th>Task Type</th>
+                        <th>Creation Date</th>
+                        <th>Days Until Expiry</th>
+                        <th>Output type</th>
+                        <th>Download</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {historyData.map((record) => {
+                        // count dys left
+                        const expiryDate = new Date(record.expiryDate);
+                        const today = new Date();
+                        const daysLeft = Math.max(0, Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24)));
+
+                        return (
+                            <tr key={record.id}>
+                                <td>{record.id}</td>
+                                <td>{record.taskName}</td>
+                                <td>{record.taskType}</td>
+                                <td>{new Date(record.creationDate).toLocaleDateString()}</td>
+                                <td className={daysLeft < 7 ? "expiring-soon" : ""}>{daysLeft} Days</td>
+                                <td>{record.outputType}</td>
+
+                                <td style={{ color: daysLeft < 7 ? "red" : "black" }}>{daysLeft} Days</td>
+                                <td>
+                                    <a href={record.downloadUrl} download className="download-btn">⬇️</a>
+                                </td>
+                            </tr>
+                        );
+                    })}
+                    </tbody>
+                </table>
+            )}
+
+            {!loading && !error && historyData.length === 0 && (
+                <p>No transcription history available.</p>
+            )}
             </div>
+        </div>
         </>
     );
-}export default History;
+};
+
+export default History;

@@ -1,0 +1,142 @@
+
+/* 让标题和说明文字对齐 */
+.container h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+    color: #0b3a6f; /* 深蓝色，匹配网站整体风格 */
+}
+
+/* 错误信息样式 */
+.error {
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    margin: 20px auto;
+    background-color: #ffebeb;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 50%;
+}
+
+/* 表格样式 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 16px;
+    text-align: left;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* 表头样式 */
+thead {
+    background-color: #0b3a6f;
+    color: white;
+    font-weight: bold;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 让奇数行和偶数行颜色不同 */
+tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+/* 过期日期高亮 */
+.expiring-soon {
+    color: red;
+    font-weight: bold;
+}
+
+/* 状态标签 */
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* 任务已完成 */
+.status.completed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* 下载按钮 */
+.download-btn {
+    color: black;
+    font-size: 20px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.download-btn:hover {
+    color: #0b3a6f;
+}
+
+
+
+button:hover {
+    background-color: #002244;
+}
+
+/* 调整header样式，与about.css匹配 */
+.header {
+    background-color: #0b3a6f;
+    padding: 1rem 0;
+}
+
+.nav-container {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.nav-links a {
+    color: #fff;
+    margin-left: 1rem;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+/* 页脚（footer）样式，匹配about.css */
+.footer {
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #094183;
+    padding: 10px 50px;
+    font-size: .7em;
+}
+
+.footer p {
+    color: white;
+    font-size: small;
+    font-weight: bold;
+}

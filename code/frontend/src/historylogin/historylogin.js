@@ -4,119 +4,85 @@ import log from '../resources/icon/logo.svg';
 import correctLog from '../resources/icon/correct.svg';
 import './historylogin.css';
 
-function HistoryLogin(){
-  const [email, setEmail] = useState(''); // State for email
-  const [isEmailValid, setIsEmailValid] = useState(false); // State for email validation
+function HistoryLogin() {
+  const [email, setEmail] = useState('');
+  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [message, setMessage] = useState('');
 
-    // Handle changes to the email input field
-    const handleEmailChange = (e) => {
-      const value = e.target.value;
-      setEmail(value);
-      // Simple regex for email validation
-      setIsEmailValid(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
-    };
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+    setIsEmailValid(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
+  };
 
-
-      // Function to obtain a CSRF token from cookies
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        // Determine whether this cookie string starts with the name we want
-        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
-        }
-      }
-    }
-    return cookieValue;
-  }
-
-    // Handle the confirmation of the upload process
   const handleConfirm = async () => {
     if (!isEmailValid) {
-      alert("Please input valid Email address."); // Alert for missing fields
+      alert("Please input a valid Email address.");
       return;
     }
 
-    // Prepare the form data
-    const formData = new FormData();
-    formData.append('email', email);
+    const API_BASE_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
 
-    // 获取 CSRF 令牌
-    const csrftoken = getCookie('csrftoken');
-
-    // Send data to the backend
     try {
-      const API_BASE_URL = process.env.REACT_APP_API_URL;
-      const response = await fetch(`${API_BASE_URL}/history/`, {
+      const response = await fetch(`${API_BASE_URL}/api/send-history-link/`, {
         method: 'POST',
         headers: {
-          'X-CSRFToken': csrftoken, // Add CSRF token to request header
+          'Content-Type': 'application/json',
         },
-        body: formData,
-        credentials: 'include', // Contains credentials (cookies, etc.)
+        body: JSON.stringify({ email }),
       });
 
+      const data = await response.json();
       if (response.ok) {
-        const Data = await response.json();
-        console.log(Data);
-
-        alert("Data recieved successfully!"); // Confirmation message
-
+        setMessage("A login link has been sent to your email. Please check your inbox.");
       } else {
-        const errorData = await response.json();
-        const errorMessage = errorData.error
-        alert(`Error: ${errorMessage}`); // Handle error response
+        setMessage(`Error: ${data.message}`);
       }
     } catch (error) {
-      alert("An error occurred while uploading files."); // Handle network errors
+      setMessage("An error occurred while requesting access.");
     }
   };
 
-    return (
-        <>
-          <div className="header">
-            <div className="logo">
-              <img src={log} alt="logo" />
-            </div>
-            <nav className="nav-links">
-              <Link to="/about">About</Link>
-              <Link to="/transcription">Transcription</Link>
-              <Link to="/historylogin">History</Link>
-            </nav>
+  return (
+      <>
+        <div className="header">
+          <div className="logo">
+            <img src={log} alt="logo" />
           </div>
-    
-          <div className="container">
-            <div className="file-result">
-              <h3>History Transcriptions</h3>
-              <p>This section allows users to access their previously transcribed files. 
-                To maintain efficient storage and remove outdated data, 
-                the system automatically deletes transcriptions older than 30 days, 
-                ensuring that only recent and relevant files are retained for easy access.</p>
+          <nav className="nav-links">
+            <Link to="/about">About</Link>
+            <Link to="/transcription">Transcription</Link>
+            <Link to="/historylogin">History</Link>
+          </nav>
+        </div>
 
-                  <h3>Input your Email Address</h3>
-                  <p>Please enter the email address you used for transcription. 
-                    This will allow you to check your past transcription history.</p>
-                  <input 
-                    type="email" 
-                    placeholder="Enter your email"
-                    value={email} 
-                    onChange={handleEmailChange}
-                    required 
-                  />
-                  {isEmailValid && 
-                    <span className="valid-email small-feedback">
-                    <img className="small-feedback" src={correctLog}
-                      alt="Valid email" ></img>
-                    </span>} {/* Validation feedback */}
+        <div className="container">
+          <div className="file-result">
+            <h3>History Transcriptions</h3>
+            <p>This section allows users to access their previously transcribed files.
+              To maintain efficient storage and remove outdated data,
+              the system automatically deletes transcriptions older than 30 days,
+              ensuring that only recent and relevant files are retained for easy access.</p>
 
-            </div>
+            <h3>Input your Email Address</h3>
+            <p>Please enter the email address you used for transcription.
+              This will allow you to check your past transcription history.</p>
+            <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={handleEmailChange}
+                required
+            />
+            {isEmailValid && <img className="small-feedback" src={correctLog} alt="Valid email" />}
+
           </div>
-          <button type="submit" onClick={handleConfirm}>View History</button>{/* Updated button to handle confirmation */}
-        </>
-      );
+        </div>
+            <button type="submit" onClick={handleConfirm}>View History</button>
+
+            {message && <p className="message">{message}</p>} {/* 显示成功/错误信息 */}
+      </>
+  );
 }
+
 export default HistoryLogin;
