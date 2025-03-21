@@ -72,9 +72,9 @@ const History = () => {
                     <tbody>
                     {historyData.map((record) => {
                         // count dys left
-                        const expiryDate = new Date(record.expiryDate);
-                        const today = new Date();
-                        const daysLeft = Math.max(0, Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24)));
+                        //const expiryDate = new Date(record.expiryDate);
+                        //const today = new Date();
+                        //const daysLeft = Math.max(0, Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24)));
 
                         return (
                             <tr key={record.id}>
@@ -82,7 +82,7 @@ const History = () => {
                                 <td>{record.taskName}</td>
                                 <td>{record.taskType}</td>
                                 <td>{new Date(record.creationDate).toLocaleDateString()}</td>
-                                <td>{daysLeft}</td>
+                                <td>{record.daysLeft}</td>
                                 <td>{record.outputType}</td>
                                 <td>
                                     <span className={`status ${record.status.toLowerCase()}`}>
