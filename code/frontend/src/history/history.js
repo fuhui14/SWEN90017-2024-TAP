@@ -65,6 +65,7 @@ const History = () => {
                         <th>Creation Date</th>
                         <th>Days Until Expiry</th>
                         <th>Output type</th>
+                        <th>Statue</th>
                         <th>Download</th>
                     </tr>
                     </thead>
@@ -81,12 +82,19 @@ const History = () => {
                                 <td>{record.taskName}</td>
                                 <td>{record.taskType}</td>
                                 <td>{new Date(record.creationDate).toLocaleDateString()}</td>
-                                <td className={daysLeft < 7 ? "expiring-soon" : ""}>{daysLeft} Days</td>
+                                <td>{daysLeft}</td>
                                 <td>{record.outputType}</td>
-
-                                <td style={{ color: daysLeft < 7 ? "red" : "black" }}>{daysLeft} Days</td>
                                 <td>
-                                    <a href={record.downloadUrl} download className="download-btn">⬇️</a>
+                                    <span className={`status ${record.status.toLowerCase()}`}>
+                                        {record.status === "Completed" ? "Completed" : "Failed"}
+                                    </span>
+                                </td>
+                                <td>
+                                    {record.status === "Completed" ? (
+                                        <a href={record.downloadUrl} download className="download-btn">⬇️</a>
+                                    ) : (
+                                        <span className="no-download">🚫</span> // 失败状态显示禁用符号
+                                    )}
                                 </td>
                             </tr>
                         );
