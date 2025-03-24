@@ -26,11 +26,11 @@ function About(){
             </div>
             <hr/>
             <section  className="hero-section">
-                <h3>Transcription Aide Plaltform</h3>
-                <p>Everything you need to transcribe audio files, 
-                    at your fingertips. Our platform is 100% free and easy to use! 
-                    Upload, process, and receive your transcriptions with just 
-                    a few clicks — no login required. Identify different speakers, 
+                <h3>Transcription Aide Platform</h3>
+                <p>Everything you need to transcribe audio files,
+                    at your fingertips. Our platform is 100% free and easy to use!
+                    Upload, process, and receive your transcriptions with just
+                    a few clicks — no login required. Identify different speakers,
                     handle multiple files, and receive results directly via email.</p>
             </section >
 
@@ -51,7 +51,7 @@ function About(){
                     <div className="arrow-log">
                         <img src={arrow} alt="arrow" />
                     </div>
-                    
+
                     <div className="tool-card">
                         <Link to="/Transcription">
                         <div className="about-logo">
