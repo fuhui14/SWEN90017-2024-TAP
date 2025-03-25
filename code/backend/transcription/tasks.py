@@ -1,4 +1,3 @@
-from celery import shared_task
 from emails.send_email import send_email, FileType
 from .models import Transcription
 
@@ -27,7 +26,6 @@ def process_transcription_and_send_email(transcription_id):
     except Transcription.DoesNotExist:
         return f"Transcription {transcription_id} not found"
 
-@shared_task
 def cleanup_expired_files():
     # 计算三个月（90 天）之前的时间点
     expiration_date = timezone.now() - datetime.timedelta(days=90)

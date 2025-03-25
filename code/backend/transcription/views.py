@@ -13,6 +13,7 @@ from speaker_identify.assign_speaker_service import assign_speakers_to_transcrip
 from .forms import UploadFileForm
 from .models import File, Transcription
 from .tasks import process_transcription_and_send_email
+from emails.send_email import send_email, FileType
 
 # load whisper model when the server starts
 model = whisper.load_model("base")
@@ -99,11 +100,15 @@ def transcribe(request):
                 # Synchronously trigger email notification
                 process_transcription_and_send_email(transcribed_data.id)
 
-            except FileNotFoundError as fnf_error:
-                print(f"File not found during transcription: {fnf_error}")
-                return JsonResponse({'error': f'Transcription error: File not found {str(fnf_error)}'}, status=500)
             except Exception as e:
                 print(f"Error during transcription or saving transcription for file {file_path}: {e}")
+                send_email(
+                    receiver=email,
+                    subject="Transcription Failed",
+                    content=f"An error occurred during transcription: {str(e)}",
+                    file_content="",
+                    file_type=FileType.NONE
+                )
                 return JsonResponse({'error': f'Transcription error: {str(e)}'}, status=500)
 
             # return the transcription result
