@@ -8,6 +8,7 @@ def assign_speakers_to_transcription(result, temp_audio):
     
     # Get the speaker segments
     segments = result['segments']
+    print(f'\nSegments: \n{segments}\n')
 
     # Get the speaker labels and chunk times using the speaker_identifier function
     labels, chunk_times = speaker_identifier(temp_audio)
@@ -35,8 +36,7 @@ def assign_speakers_to_transcription(result, temp_audio):
             'end': end / 1000
         })
 
-    # speaker_identifier('temp_audio')
-    print(transcriptions)
+    print(f'transcriptions:\n{transcriptions}\n')
 
     # convert np.int64 to int
     for entry in transcriptions:
@@ -62,5 +62,7 @@ def assign_speakers_to_transcription(result, temp_audio):
     
     # add the last segment to the merged data
     merged_data.append(current_segment)
+
+    print(f'merged_data:\n{merged_data}\n')
 
     return merged_data

@@ -10,6 +10,7 @@ import shutil
 import whisper
 
 from speaker_identify.assign_speaker_service import assign_speakers_to_transcription
+from speaker_identify.pyannote_transcrip_speaker import pyannote_transcrip_speaker
 from .forms import UploadFileForm
 from .models import File, Transcription
 from .tasks import process_transcription_and_send_email
@@ -87,9 +88,11 @@ def transcribe(request):
                 if not os.path.exists(file_path):
                     raise FileNotFoundError(f"The file at {file_path} does not exist")
                 # transcribe the audio file
-                transcription = transcribe_audio(file_path)
-                transcription_with_speaker = assign_speakers_to_transcription(transcription,
-                                                                              file_path)
+                # transcription = transcribe_audio(file_path)
+                # transcription_with_speaker = assign_speakers_to_transcription(transcription,
+                #                                                               file_path)
+                transcription_with_speaker = pyannote_transcrip_speaker(file_path)
+                print(f"Transcription result: {transcription_with_speaker}")
 
                 transcribed_data = Transcription.objects.create(
                     file=db_file,
