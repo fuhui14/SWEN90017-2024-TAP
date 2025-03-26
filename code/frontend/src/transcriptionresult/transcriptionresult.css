@@ -165,6 +165,7 @@ th, td {
 th {
     background-color: #f9f9f9; /* Light background for header */
     font-weight: bold; /* Makes header text bold */
+    color: #333;
 }
 
 tbody tr:hover {
