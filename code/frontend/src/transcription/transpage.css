@@ -43,10 +43,6 @@
 /* Input section on the left */
 .input-section {
   width: 48%;
-  /* Remove background or styling if you want a transparent look:
-     background: none;
-     border: none; 
-  */
 }
 
 /* Upload section on the right, with fixed height & flex layout */
@@ -55,10 +51,6 @@
   display: flex;
   flex-direction: column;
   height: 600px; /* Fixed height. Adjust as needed. */
-  /* Remove background or styling if you want a transparent look:
-     background: none;
-     border: none; 
-  */
 }
 
 h3 {
@@ -129,8 +121,8 @@ select:focus {
 
 /* The uploaded files container takes up remaining space, scrolls if needed */
 .uploaded-files {
-  flex: 1;            /* Expand to fill leftover space */
-  overflow-y: auto;   /* Scroll if content is too tall */
+  flex: 1;
+  overflow-y: auto;
   margin-top: 20px;
 }
 
@@ -138,7 +130,7 @@ select:focus {
 .confirm-button {
   text-align: center;
   font-size: 1em;
-  margin-top: 20px; /* Space above button */
+  margin-top: 20px;
 }
 
 .confirm-button button {
@@ -152,7 +144,6 @@ select:focus {
   width: 30%;
   height: 50px;
 }
-
 
 /* 禁用状态：点击后按钮变为黑色且不可点击 */
 .confirm-button button:disabled {
@@ -178,7 +169,6 @@ select:focus {
 
 .file_area {
   margin-top: 2%;
-  /* background-color: #fff; (optional) */
 }
 
 /* Each file item (like a row) */
@@ -232,7 +222,6 @@ select:focus {
 .delete-button {
   margin-left: 10px;
 }
-
 
 /* Progress bar container */
 .file-progress {
