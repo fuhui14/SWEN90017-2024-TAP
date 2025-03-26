@@ -122,7 +122,7 @@ body {
     background-color: #cc0000;
 }
 
-.file-result h3{
+.file-result h3 {
     text-align: left;
 }
 
@@ -193,11 +193,10 @@ button:hover {
     background-color: #002244; /* Darker shade on hover */
 }
 
-/* Add this new style for the download icon */
+/* Download icon style */
 .download-icon {
     width: 20px; /* Set the desired width */
     height: 20px; /* Set the desired height */
-    /* Optionally, you can add margin for spacing */
     margin: 0; /* Adjust as needed */
     align-items: center;
 }
