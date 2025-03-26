@@ -148,3 +148,8 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(minute='*/5'),  # 每天午夜执行一次
     },
 }
+
+CELERY_TASK_ROUTES = {
+    'transcription.tasks.cleanup_expired_files': {'queue': 'cleanup_tasks'},
+    'transcription.tasks.process_file': {'queue': 'process_file'},
+}

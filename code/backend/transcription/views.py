@@ -14,8 +14,14 @@ from .forms import UploadFileForm
 from .models import File, Transcription
 from .tasks import process_transcription_and_send_email  # Import Celery task
 
+import redis
+from .tasks import process_file
+
 # load whisper model when the server starts
 model = whisper.load_model("base")
+
+transcribe_queue_max = 5
+r = redis.from_url(settings.CELERY_BROKER_URL)
 
 @csrf_exempt
 def transcribe(request):
@@ -50,6 +56,17 @@ def transcribe(request):
             # get the full path to save the file
             file_path = os.path.join(storage_dir, original_filename)
             print(f"Storage directory: {storage_dir}, File path: {file_path}")
+            
+            # check if the queue is full
+            if is_queue_overloaded():
+                print("Queue is full")
+                return JsonResponse({'error': 'Queue is full'}, status=503)
+            
+            # check if the file is already in the queue
+            task_id = form.cleaned_data.get('taskid')
+            if is_task_in_queue(task_id):
+                print(f"Task {task_id} already in queue")
+                return JsonResponse({'error': 'Task already in queue'}, status=400)
 
             try:
                 with open(file_path, 'wb') as f:
@@ -85,19 +102,10 @@ def transcribe(request):
                 print(f"Starting transcription for file: {file_path}")
                 if not os.path.exists(file_path):
                     raise FileNotFoundError(f"The file at {file_path} does not exist")
-                # transcribe the audio file
-                transcription = transcribe_audio(file_path)
-                transcription_with_speaker = assign_speakers_to_transcription(transcription,
-                                                                              file_path)
 
-                transcribed_data = Transcription.objects.create(
-                    file=db_file,
-                    transcribed_text=transcription_with_speaker
-                )
-                print("Transcription saved in database")
-
-                # Trigger email notification asynchronously
-                process_transcription_and_send_email.delay(transcribed_data.id)
+                task = process_file.delay(db_file, file_path, model)
+                
+                r.rpush("user_task_queue", task.id)
 
             except FileNotFoundError as fnf_error:
                 print(f"File not found during transcription: {fnf_error}")
@@ -106,9 +114,7 @@ def transcribe(request):
                 print(f"Error during transcription or saving transcription for file {file_path}: {e}")
                 return JsonResponse({'error': f'Transcription error: {str(e)}'}, status=500)
 
-            # return the transcription result
-            print("Returning transcription result")
-            return JsonResponse({"transcription": transcription_with_speaker}, safe=False)
+            return JsonResponse({"task_id": task.id})
 
         else:
             print("Form is not valid")
@@ -121,20 +127,54 @@ def transcribe(request):
         form = UploadFileForm()
     return render(request, 'index.html', {'form': form})
 
-def transcribe_audio(audio_path):
-    print('Transcribing audio file at path: ' + audio_path)
-    try:
-        system_platform = platform.system()
-        # if the system is Windows, convert the path to a raw string
-        if system_platform == 'Windows':
-            audio_path = r'{}'.format(audio_path)
-            print('Path:::' + audio_path)
+# def transcribe_audio(audio_path):
+#     print('Transcribing audio file at path: ' + audio_path)
+#     try:
+#         system_platform = platform.system()
+#         # if the system is Windows, convert the path to a raw string
+#         if system_platform == 'Windows':
+#             audio_path = r'{}'.format(audio_path)
+#             print('Path:::' + audio_path)
 
-        result = model.transcribe(audio_path)
-        return result
-    except FileNotFoundError as fnf_error:
-        print(f"File not found error during transcription: {fnf_error}")
-        raise
-    except Exception as e:
-        print(f"General error during transcription: {e}")
-        raise
+#         result = model.transcribe(audio_path)
+#         return result
+#     except FileNotFoundError as fnf_error:
+#         print(f"File not found error during transcription: {fnf_error}")
+#         raise
+#     except Exception as e:
+#         print(f"General error during transcription: {e}")
+#         raise
+
+
+def get_task_queue():
+    queue = r.lrange("user_task_queue", 0, -1)
+    return [t.decode() for t in queue]
+
+
+def is_task_in_queue(task_id: str) -> bool:
+    return task_id in get_task_queue()
+
+
+def get_task_position(task_id: str) -> int | None:
+    queue = get_task_queue()
+    try:
+        return queue.index(task_id)
+    except ValueError:
+        return None
+
+
+def get_queue_position(request):
+    task_id = request.GET.get("task_id")
+    if not task_id:
+        return JsonResponse({"error": "task_id required"})
+
+    pos = get_task_position(task_id)
+    if pos is None:
+        return JsonResponse({"task_id": task_id, "position": "任务已完成或不存在"})
+    return JsonResponse({"task_id": task_id, "position": pos})
+
+
+def is_queue_overloaded(queue_name="user_task_queue"):
+    r = redis.from_url(settings.CELERY_BROKER_URL)
+    length = r.llen(queue_name)
+    return length > transcribe_queue_max
