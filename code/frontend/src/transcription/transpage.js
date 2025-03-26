@@ -81,10 +81,8 @@ function Transpage() {
   const handleDeleteFile = (index) => {
     const updatedFiles = files.filter((_, i) => i !== index);
     setFiles(updatedFiles);
-
     const updatedProgress = uploadProgress.filter((_, i) => i !== index);
     setUploadProgress(updatedProgress);
-
     const updatedUploaded = uploaded.filter((_, i) => i !== index);
     setUploaded(updatedUploaded);
   };
@@ -111,8 +109,6 @@ function Transpage() {
       alert('Please fill out all required fields.');
       return;
     }
-
-    // Disable the confirm button to prevent duplicate submissions
     setIsSubmitting(true);
 
     // Prepare formData for submission
@@ -153,8 +149,6 @@ function Transpage() {
       if (response.ok) {
         const Data = await response.json();
         console.log(Data);
-
-        // Format the transcription into a conversation style
         const formattedTranscription = Data.transcription
           .map((item) => `Speaker ${item.speaker}: ${item.text}`)
           .join('\n\n');
@@ -172,7 +166,6 @@ function Transpage() {
         console.log(formDataObject);
         console.log('navigating....');
 
-        // Re-enable the button and跳转到结果页
         setIsSubmitting(false);
         navigate('/transcription/transcriptionresult', { state: { demoData: formDataObject } });
       } else {
@@ -238,15 +231,15 @@ function Transpage() {
         </div>
 
         {/* Right side: Upload section */}
-        <div
-          className="upload-section"
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={handleDrop}
-        >
+        <div className="upload-section" onDragOver={(e) => e.preventDefault()} onDrop={handleDrop}>
           <h3>Upload file(s)</h3>
           <p>
             Our platform supports the following file formats:
-            <strong> WAV (.wav), MP3 (.mp3), M4A (.m4a), FLAC (.flac), OGG (.ogg), and AAC (.aac)</strong>.
+            <strong>
+              {' '}
+              WAV (.wav), MP3 (.mp3), M4A (.m4a), FLAC (.flac), OGG (.ogg), AAC (.aac),
+              MP4 (.mp4), AVI (.avi) and MOV (.mov)
+            </strong>.
           </p>
           <hr />
 
@@ -255,7 +248,7 @@ function Transpage() {
               <input
                 type="file"
                 id="file-upload"
-                accept=".wav,.mp3,.m4a,.flac,.ogg,.aac"
+                accept=".wav,.mp3,.m4a,.flac,.ogg,.aac,.mp4,.avi,.mov"
                 multiple
                 onChange={handleFileChange}
                 style={{ display: 'none' }}
@@ -273,7 +266,7 @@ function Transpage() {
                   <input
                     type="file"
                     id="file-upload"
-                    accept=".wav,.mp3,.m4a,.flac,.ogg,.aac"
+                    accept=".wav,.mp3,.m4a,.flac,.ogg,.aac,.mp4,.avi,.mov"
                     multiple
                     onChange={handleFileChange}
                     style={{ display: 'none' }}
@@ -303,11 +296,13 @@ function Transpage() {
                         <span className="file-size">
                           {(file.size / (1024 * 1024)).toFixed(1)}MB
                         </span>
-                        <img 
-                          className="delete-button" 
-                          src={closeIcon} alt='close icon' 
-                          onClick={() => handleDeleteFile(index)} 
-                          style={{ cursor: 'pointer', width: '16px', height: '16px'}}/>
+                        <img
+                          className="delete-button"
+                          src={closeIcon}
+                          alt="close icon"
+                          onClick={() => handleDeleteFile(index)}
+                          style={{ cursor: 'pointer', width: '16px', height: '16px' }}
+                        />
                       </div>
                       <div className="file-progress">
                         <div
