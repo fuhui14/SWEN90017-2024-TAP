@@ -66,6 +66,17 @@ def transcribe_with_speaker_resemblyzer(audioPath):
             Path(seg_filename).unlink()
         print(f"Deleted temporary file: {seg_filename}")
     
+    # remove the original wav file
+    if wav_fpath.exists():
+        wav_fpath.unlink()
+        print(f"Deleted original file: {wav_fpath}")
+
+    # remove the original audio file
+    audioPath = Path(audioPath)
+    if audioPath.exists():
+        audioPath.unlink()
+        print(f"Deleted original file: {audioPath}")
+    
     return transcription
 
 def create_labelling(labels,wav_splits):
