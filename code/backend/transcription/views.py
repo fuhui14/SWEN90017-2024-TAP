@@ -9,7 +9,6 @@ from pathlib import Path
 import shutil
 import whisper
 
-from speaker_identify.assign_speaker_service import assign_speakers_to_transcription
 from speaker_identify.transcribe_with_speaker_resemblyzer import transcribe_with_speaker_resemblyzer
 from .forms import UploadFileForm
 from .models import File, Transcription
@@ -88,8 +87,6 @@ def transcribe(request):
                 if not os.path.exists(file_path):
                     raise FileNotFoundError(f"The file at {file_path} does not exist")
                 # transcribe the audio file
-                # transcription = transcribe_audio(file_path)
-                # transcription_with_speaker = assign_speakers_to_transcription(transcription, file_path)
                 transcription_with_speaker = transcribe_with_speaker_resemblyzer(file_path)
 
                 transcribed_data = Transcription.objects.create(
