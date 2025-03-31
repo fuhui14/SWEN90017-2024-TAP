@@ -14,6 +14,7 @@ from .forms import UploadFileForm
 from .models import File, Transcription
 from .tasks import process_transcription_and_send_email
 from emails.send_email import send_email, FileType
+from emails.utils import send_error_report_email
 
 # load whisper model when the server starts
 model = whisper.load_model("base")
@@ -100,13 +101,7 @@ def transcribe(request):
 
             except Exception as e:
                 print(f"Error during transcription or saving transcription for file {file_path}: {e}")
-                send_email(
-                    receiver=email,
-                    subject="Transcription Failed",
-                    content=f"An error occurred during transcription: {str(e)}",
-                    file_content="",
-                    file_type=FileType.NONE
-                )
+                send_error_report_email(email, str(e))
                 return JsonResponse({'error': f'Transcription error: {str(e)}'}, status=500)
 
             # return the transcription result
