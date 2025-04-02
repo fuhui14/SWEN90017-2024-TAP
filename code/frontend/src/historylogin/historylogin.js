@@ -8,6 +8,7 @@ function HistoryLogin() {
   const [email, setEmail] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false); // Controll button status
 
   const handleEmailChange = (e) => {
     const value = e.target.value;
@@ -20,6 +21,8 @@ function HistoryLogin() {
       alert("Please input a valid Email address.");
       return;
     }
+
+    setIsSubmitting(true);
 
     const API_BASE_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
 
@@ -38,8 +41,10 @@ function HistoryLogin() {
       } else {
         setMessage(`Error: ${data.message}`);
       }
+      setIsSubmitting(false);
     } catch (error) {
       setMessage("An error occurred while requesting access.");
+      setIsSubmitting(false);
     }
   };
 
@@ -78,8 +83,11 @@ function HistoryLogin() {
 
           </div>
         </div>
-            <button type="submit" onClick={handleConfirm}>View History</button>
-
+          <div className="confirm-button">
+            <button type="submit" onClick={handleConfirm} disabled={isSubmitting}>
+              {isSubmitting ? 'Uploading...' : 'View History'}
+            </button>
+          </div>
             {message && <p className="message">{message}</p>} {/* 显示成功/错误信息 */}
       </>
   );
