@@ -105,7 +105,7 @@ def transcribe(request):
                 if not os.path.exists(file_path):
                     raise FileNotFoundError(f"The file at {file_path} does not exist")
 
-                task = process_file.delay(db_file, file_path, model)
+                task = process_file.delay(db_file.id, file_path)
                 
                 r.rpush("user_task_queue", task.id)
 

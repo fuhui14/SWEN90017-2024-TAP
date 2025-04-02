@@ -12,10 +12,9 @@ app = Celery('config')
 # 从 Django 的 settings.py 中加载以 CELERY_ 开头的配置
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
+print("[CELERY INIT] Broker URL:", os.environ.get("CELERY_BROKER_URL"))
+print("[CELERY INIT] From settings:", app.conf.broker_url)
+
 # 自动发现各个 app 下的 tasks.py
 app.autodiscover_tasks()
 
-# 可选：一个简单的调试任务
-@app.task(bind=True)
-def debug_task(self):
-    print(f'Request: {self.request!r}')

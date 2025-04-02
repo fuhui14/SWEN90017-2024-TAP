@@ -4,11 +4,14 @@ from .models import Transcription
 from django.utils import timezone
 import datetime
 from .models import File
+from celery import shared_task
 
 import redis
 from django.conf import settings
-from speaker_identify.assign_speaker_service import assign_speakers_to_transcription
+from speaker_identify.identify_service import transcribe_with_speaker
 import platform
+
+from emails.utils import send_error_report_email
 
 def process_transcription_and_send_email(transcription_id):
     """
@@ -32,7 +35,7 @@ def process_transcription_and_send_email(transcription_id):
 
     except Transcription.DoesNotExist:
         return f"Transcription {transcription_id} not found"
-
+@shared_task
 def cleanup_expired_files():
     # 计算三个月（90 天）之前的时间点
     expiration_date = timezone.now() - datetime.timedelta(days=90)
@@ -61,16 +64,15 @@ def transcribe_audio(audio_path, model):
         raise
 
 @shared_task(bind=True)
-def process_file(self, db_file, file_path, model):
+def process_file(self, db_file_id, file_path):
     task_id = self.request.id
-
+    print(f"[{task_id}] Redis URL: {settings.CELERY_BROKER_URL}")
     r = redis.from_url(settings.CELERY_BROKER_URL)
-
+    db_file = File.objects.get(id=db_file_id)
+    email = db_file.email
     # transcribe the audio file
     try:
-        transcription = transcribe_audio(file_path, model)
-        transcription_with_speaker = assign_speakers_to_transcription(transcription,
-                                                                        file_path)
+        transcription_with_speaker = transcribe_with_speaker(file_path)
 
         transcribed_data = Transcription.objects.create(
             file=db_file,
@@ -82,9 +84,9 @@ def process_file(self, db_file, file_path, model):
         process_transcription_and_send_email(transcribed_data.id)
     except FileNotFoundError as fnf_error:
         print(f"File not found during transcription: {fnf_error}")
-        #TODO send error email
+        send_error_report_email(email, str(e))
     except Exception as e:
         print(f"Error during transcription {file_path}: {e}")
-        #TODO send error email
+        send_error_report_email(email, str(e))
     finally:
         r.lrem("user_task_queue", 0, task_id)
