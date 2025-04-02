@@ -11,6 +11,7 @@ class File(models.Model):
     upload_timestamp = models.DateTimeField(auto_now_add=True)  # 文件上传的时间戳
     processing_start_time = models.DateTimeField(null=True, blank=True)  # 处理开始时间
     processing_end_time = models.DateTimeField(null=True, blank=True)  # 处理结束时间
+    portal_token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)  # secure access link
 
     class Meta:
         db_table = 'file'  # Specify exact table name in the database
