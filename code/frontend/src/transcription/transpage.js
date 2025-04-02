@@ -12,7 +12,7 @@ function Transpage() {
   const [files, setFiles] = useState([]); // State for file uploads
   const [uploadProgress, setUploadProgress] = useState([]); // Track upload progress
   const [uploaded, setUploaded] = useState([]); // Track upload completion
-  const [isSubmitting, setIsSubmitting] = useState(false); // 控制按钮状态
+  const [isSubmitting, setIsSubmitting] = useState(false); // Controll button status
   const navigate = useNavigate();
   const fileInputRef = React.useRef(null);
 
