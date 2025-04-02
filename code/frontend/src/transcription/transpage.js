@@ -318,13 +318,11 @@ function Transpage() {
               </div>
             </>
           )}
-
-          <hr />
-          <div className="confirm-button">
-            <button type="submit" onClick={handleConfirm} disabled={isSubmitting}>
-              {isSubmitting ? 'Uploading...' : 'Confirm'}
-            </button>
-          </div>
+            <div className="confirm-button">
+              <button type="submit" onClick={handleConfirm} disabled={isSubmitting}>
+                  {isSubmitting ? 'Uploading...' : 'Confirm'}
+              </button>
+            </div>
         </div>
       </div>
     </>

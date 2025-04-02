@@ -1,33 +1,33 @@
 
 .container h3{
-    font-weight: bold;
-    margin-bottom: 15px;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
 .container p{
-    margin-left: 2%;
-    margin-right: 2%;
+  margin-left: 2%;
+  margin-right: 2%;
 }
 
 .confirm-button {
-    text-align: center;
-    font-size: 1em;
-    margin-top: 20px;
-  }
-  
-  .confirm-button button {
-    background-color: #002244;
-    color: white;
-    border-radius: 15px;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-    width: 30%;
-    height: 50px;
-  }
+  text-align: center;
+  font-size: 1em;
+  margin-top: 20px;
+}
+
+.confirm-button button {
+  background-color: #002244;
+  color: white;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  width: 30%;
+  height: 50px;
+}
 
 .confirm-button button:disabled {
-    background-color: black;
-    cursor: not-allowed;
-  }
+  background-color: black;
+  cursor: not-allowed;
+}
