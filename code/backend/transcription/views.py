@@ -97,6 +97,8 @@ def transcribe(request):
                 )
                 print("Transcription saved in database")
 
+
+
                 # Synchronously trigger email notification
                 process_transcription_and_send_email(transcribed_data.id)
 
@@ -129,12 +131,27 @@ def transcribe(request):
 def transcribe_audio(audio_path):
     print('Transcribing audio file at path: ' + audio_path)
     try:
-        system_platform = platform.system()
-        # if the system is Windows, convert the path to a raw string
-        if system_platform == 'Windows':
-            audio_path = r'{}'.format(audio_path)
-            print('Path:::' + audio_path)
+        # Convert the relative path to an absolute path and normalize it
+        audio_path = os.path.abspath(audio_path)
+        audio_path = os.path.normpath(audio_path)
+        print("Normalized absolute path:", audio_path)
 
+        # If running on Windows, check if ffmpeg is available in the system PATH
+        if platform.system() == 'Windows':
+            ffmpeg_path = shutil.which("ffmpeg")
+            print("DEBUG: ffmpeg found:", ffmpeg_path)
+            if ffmpeg_path:
+                print("Found ffmpeg in system PATH:", ffmpeg_path)
+            else:
+                print("ffmpeg not found in system PATH. Please install ffmpeg or add it to the system PATH.")
+                # Print all environment variables for debugging
+                print("Current environment variables:")
+                for key, value in os.environ.items():
+                    print(f"{key}: {value}")
+                # Optionally, you can raise an exception to stop further processing
+                # raise FileNotFoundError("ffmpeg not found in system PATH")
+
+        # Call the Whisper model for transcription
         result = model.transcribe(audio_path)
         return result
     except FileNotFoundError as fnf_error:
@@ -143,3 +160,9 @@ def transcribe_audio(audio_path):
     except Exception as e:
         print(f"General error during transcription: {e}")
         raise
+
+
+
+
+
+

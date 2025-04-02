@@ -320,7 +320,7 @@ function Transpage() {
           )}
             <div className="confirm-button">
               <button type="submit" onClick={handleConfirm} disabled={isSubmitting}>
-                  {isSubmitting ? 'Uploading...' : 'Confirm'}
+                  {isSubmitting ? 'Transcripting...' : 'Confirm'}
               </button>
             </div>
         </div>
