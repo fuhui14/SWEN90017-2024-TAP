@@ -139,7 +139,6 @@ def transcribe_audio(audio_path):
         # If running on Windows, check if ffmpeg is available in the system PATH
         if platform.system() == 'Windows':
             ffmpeg_path = shutil.which("ffmpeg")
-            print("DEBUG: ffmpeg found:", ffmpeg_path)
             if ffmpeg_path:
                 print("Found ffmpeg in system PATH:", ffmpeg_path)
             else:
