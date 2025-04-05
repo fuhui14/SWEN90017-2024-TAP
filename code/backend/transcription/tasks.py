@@ -5,7 +5,7 @@ from django.utils import timezone
 import datetime
 from .models import File
 
-def process_transcription_and_send_email(transcription_id):
+def process_transcription_and_send_email(transcription_id, portal_link=None):
     """
     Function: Sends transcription results via email when processing is done.
     """
@@ -18,8 +18,14 @@ def process_transcription_and_send_email(transcription_id):
         # Choose file format (TXT, DOCX, or PDF)
         file_type = FileType.TXT  # Change if needed
 
-        # Send the email
-        send_email(email, "Your Transcription Result", transcription_text, transcription_text, file_type)
+        # Compose email body with optional portal link
+        body = "Here is your transcription result.\n\n"
+        if portal_link:
+            body += f"You can view all your transcription history here:\n{portal_link}\n\n"
+        body += "Best regards,\nTranscription Aide Platform"
+
+        content = f"{transcription_text}\n\nYou can view all your transcriptions at: {portal_link}"
+        send_email(email, "Your Transcription Result", content, transcription_text, file_type)
 
         return f"Transcription result sent to {email}"
 
