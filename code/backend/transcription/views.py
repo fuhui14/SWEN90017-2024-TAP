@@ -9,9 +9,12 @@ from pathlib import Path
 import shutil
 import whisper
 
-from speaker_identify.assign_speaker_service import assign_speakers_to_transcription
+from speaker_identify.identify_service import transcribe_with_speaker
 from .forms import UploadFileForm
 from .models import File, Transcription
+from .tasks import process_transcription_and_send_email
+from emails.send_email import send_email, FileType
+from emails.utils import send_error_report_email
 
 # load whisper model when the server starts
 model = whisper.load_model("base")
@@ -85,20 +88,20 @@ def transcribe(request):
                 if not os.path.exists(file_path):
                     raise FileNotFoundError(f"The file at {file_path} does not exist")
                 # transcribe the audio file
-                transcription = transcribe_audio(file_path) 
+                transcription_with_speaker = transcribe_with_speaker(file_path)
 
-                # speaker identification
-                transcription_with_speaker = assign_speakers_to_transcription(transcription, file_path)
-                Transcription.objects.create(
+                transcribed_data = Transcription.objects.create(
                     file=db_file,
                     transcribed_text=transcription_with_speaker
                 )
                 print("Transcription saved in database")
-            except FileNotFoundError as fnf_error:
-                print(f"File not found during transcription: {fnf_error}")
-                return JsonResponse({'error': f'Transcription error: File not found {str(fnf_error)}'}, status=500)
+
+                # Synchronously trigger email notification
+                process_transcription_and_send_email(transcribed_data.id)
+
             except Exception as e:
                 print(f"Error during transcription or saving transcription for file {file_path}: {e}")
+                send_error_report_email(email, str(e))
                 return JsonResponse({'error': f'Transcription error: {str(e)}'}, status=500)
 
             # return the transcription result
