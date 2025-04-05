@@ -127,3 +127,6 @@ SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
 SMTP_USER = 'perrinyu2001@gmail.com'
 SMTP_PASSWORD = 'thdj houx hcsn hrrt'
+
+from cryptography.fernet import Fernet
+FERNET_KEY = Fernet.generate_key()
