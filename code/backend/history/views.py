@@ -32,7 +32,7 @@ def admin_history(request):
         try:
             f = Fernet(settings.FERNET_KEY)
             print(f"Fernet instance created using key: {settings.FERNET_KEY}")
-            decrypted_bytes = f.decrypt(encrypted.encode())
+            decrypted_bytes = f.decrypt(encrypted.encode(), ttl=2592000)
             email = decrypted_bytes.decode("utf-8")
             print(f"Decrypted email: {email}")
         except InvalidToken as e:
