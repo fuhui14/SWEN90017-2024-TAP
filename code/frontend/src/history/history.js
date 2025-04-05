@@ -18,11 +18,11 @@ const History = () => {
             return;
         }
 
-        // 发送包含加密信息的请求
+        // 发送包含加密信息的请求获取历史记录
         fetch("http://127.0.0.1:8000/history/api/admin/history/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ enc: encrypted }), // 注意这里使用 "enc" 作为键名
+            body: JSON.stringify({ enc: encrypted }),
         })
             .then((res) => res.json())
             .then((data) => {
@@ -34,6 +34,33 @@ const History = () => {
                 setLoading(false);
             });
     }, [encrypted]);
+
+    // 前端下载功能：不在界面显示ID，仅作为参数传递到后端
+    const handleDownload = async (recordId, originalFilename) => {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/history/api/download/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: recordId })
+            });
+            if (!response.ok) {
+                throw new Error("下载失败");
+            }
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            // 如果提供原始文件名，则使用该名称，否则使用默认名称
+            const filename = originalFilename ? originalFilename : "transcription";
+            link.setAttribute("download", filename + ".txt");
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+        } catch (error) {
+            console.error("Download error:", error);
+            alert("下载失败，请重试。");
+        }
+    };
 
     return (
         <>
@@ -50,20 +77,25 @@ const History = () => {
 
             <div className="container">
                 <div className="file-result">
-                    <h3>History Transcriptions</h3>
+                    <h1>History Transcriptions</h1>
                     <p>
                         This section displays your past transcription tasks, including details like task name, type, creation date,
                         and output format. You can quickly download completed files from this list. The data will be maintained for 30 days.
                     </p>
 
-                    {loading && <p>Loading...</p>}
+                    {loading && <p className="loading">Loading...</p>}
                     {error && <div className="error">{error}</div>}
+                    {/* 成功加载后的提示 */}
+                    {!loading && !error && historyData.length > 0 && (
+                        <div className="notification success">历史记录加载成功！</div>
+                    )}
 
                     {!loading && !error && historyData.length > 0 && (
                         <table>
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    {/* 隐藏 ID 列 */}
+                                    {/* <th>ID</th> */}
                                     <th>Task Name</th>
                                     <th>Task Type</th>
                                     <th>Creation Date</th>
@@ -76,7 +108,8 @@ const History = () => {
                             <tbody>
                                 {historyData.map((record) => (
                                     <tr key={record.id}>
-                                        <td>{record.id}</td>
+                                        {/* 隐藏ID数据，不在UI上展示 */}
+                                        {/* <td>{record.id}</td> */}
                                         <td>{record.taskName}</td>
                                         <td>{record.taskType}</td>
                                         <td>{new Date(record.creationDate).toLocaleDateString()}</td>
@@ -89,9 +122,14 @@ const History = () => {
                                         </td>
                                         <td>
                                             {record.status === "Completed" ? (
-                                                <a href={record.downloadUrl} download className="download-btn">⬇️</a>
+                                                <button
+                                                    className="download-btn"
+                                                    onClick={() => handleDownload(record.id, record.taskName)}
+                                                >
+                                                    Download
+                                                </button>
                                             ) : (
-                                                <span className="no-download">🚫</span>
+                                                <span className="no-download">Unavailable</span>
                                             )}
                                         </td>
                                     </tr>
@@ -101,7 +139,7 @@ const History = () => {
                     )}
 
                     {!loading && !error && historyData.length === 0 && (
-                        <p>No transcription history available.</p>
+                        <p className="no-history">No transcription history available.</p>
                     )}
                 </div>
             </div>

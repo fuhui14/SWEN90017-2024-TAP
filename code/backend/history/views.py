@@ -1,6 +1,6 @@
 import json
 from datetime import timedelta
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from transcription.models import Transcription
@@ -81,3 +81,42 @@ def admin_history(request):
     else:
         print("Unsupported HTTP method encountered.")
         return JsonResponse({"error": "仅支持 POST 方法"}, status=405)
+
+
+@csrf_exempt
+def download_history(request):
+    print(f"Download request received with method: {request.method}")
+    if request.method != "POST":
+        return JsonResponse({"error": "仅支持 POST 方法"}, status=405)
+
+    try:
+        body = json.loads(request.body)
+        record_id = body.get("id")
+        if not record_id:
+            return JsonResponse({"error": "缺少记录ID"}, status=400)
+        print(f"Download request for record ID: {record_id}")
+    except json.JSONDecodeError as e:
+        print(f"JSONDecodeError: {e}")
+        return JsonResponse({"error": "请求体必须为合法的 JSON 格式"}, status=400)
+
+    try:
+        transcription = Transcription.objects.select_related('file').get(id=record_id)
+    except Transcription.DoesNotExist:
+        print("Transcription record does not exist.")
+        return JsonResponse({"error": "记录不存在"}, status=404)
+    except Exception as e:
+        print(f"Database query error: {e}")
+        return JsonResponse({"error": "查询数据库出错"}, status=500)
+
+    # 获取转录后的文本内容
+    text_content = transcription.transcribed_text
+    if not text_content:
+        return JsonResponse({"error": "无转录内容可供下载"}, status=404)
+
+    # 返回纯文本文件下载
+    response = HttpResponse(text_content, content_type="text/plain")
+    # 如果 File 模型中提供了原始文件名，则使用之，否则使用默认文件名
+    filename = transcription.file.original_filename if transcription.file and transcription.file.original_filename else "transcription"
+    response['Content-Disposition'] = f'attachment; filename="{filename}.txt"'
+    print("Download response prepared, returning file to client.")
+    return response
