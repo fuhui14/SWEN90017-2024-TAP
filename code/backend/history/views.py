@@ -9,36 +9,49 @@ from transcription.models import Transcription
 from cryptography.fernet import Fernet, InvalidToken
 from django.conf import settings
 
+
 @csrf_exempt
 def admin_history(request):
-    """
-    管理后台查看转录历史记录接口
-    前端通过 POST 方式传入 JSON 数据 { "enc": "加密数据" }
-    这里的加密数据经过解密后得到用户邮箱，然后根据该邮箱查询对应的转录记录。
-    """
+    print(f"Received request with method: {request.method}")
+
     if request.method == "POST":
         try:
             body = json.loads(request.body)
-        except json.JSONDecodeError:
+            print(f"Request JSON parsed successfully: {body}")
+        except json.JSONDecodeError as e:
+            print(f"JSONDecodeError: {e}")
             return JsonResponse({"error": "请求体必须为合法的 JSON 格式"}, status=400)
 
         encrypted = body.get("enc")
+        print(f"Extracted encrypted value: {encrypted}")
         if not encrypted:
+            print("No encrypted data provided in the request.")
             return JsonResponse({"error": "缺少加密数据"}, status=400)
 
         # 使用 Fernet 对称加密解密前端传来的数据
         try:
             f = Fernet(settings.FERNET_KEY)
+            print(f"Fernet instance created using key: {settings.FERNET_KEY}")
             decrypted_bytes = f.decrypt(encrypted.encode())
             email = decrypted_bytes.decode("utf-8")
-        except InvalidToken:
+            print(f"Decrypted email: {email}")
+        except InvalidToken as e:
+            print(f"InvalidToken error during decryption: {e}")
             return JsonResponse({"error": "无效的加密数据"}, status=403)
+        except Exception as e:
+            print(f"Exception during decryption: {e}")
+            return JsonResponse({"error": "解密过程出错"}, status=500)
 
         # 根据解密后的邮箱查找对应的转录记录
-        # 注意这里使用 file__email 过滤 Transcription 的外键关联的 File 模型中的 email 字段
-        transcriptions = Transcription.objects.select_related('file').filter(file__email=email)
-        history_data = []
+        try:
+            transcriptions = Transcription.objects.select_related('file').filter(file__email=email)
+            count = transcriptions.count()
+            print(f"Found {count} transcription record(s) for email: {email}")
+        except Exception as e:
+            print(f"Database query error: {e}")
+            return JsonResponse({"error": "查询数据库出错"}, status=500)
 
+        history_data = []
         for transcription in transcriptions:
             # 使用 File 模型中的 upload_timestamp 作为创建日期
             creation_date = (
@@ -46,7 +59,6 @@ def admin_history(request):
                 if transcription.file.upload_timestamp
                 else timezone.now()
             )
-            # 记录保存 30 天，计算剩余天数
             expiry_date = creation_date + timedelta(days=30)
             days_left = (expiry_date - timezone.now()).days
             if days_left < 0:
@@ -62,7 +74,10 @@ def admin_history(request):
                 "status": "Completed" if transcription.transcribed_text else "Failed",
             }
             history_data.append(record)
+            print(f"Processed transcription record: {record}")
 
+        print("Returning history data to client.")
         return JsonResponse(history_data, safe=False)
     else:
+        print("Unsupported HTTP method encountered.")
         return JsonResponse({"error": "仅支持 POST 方法"}, status=405)

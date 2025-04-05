@@ -146,5 +146,4 @@ CELERY_BEAT_SCHEDULE = {
     },
 }
 
-from cryptography.fernet import Fernet
-FERNET_KEY = Fernet.generate_key()
+FERNET_KEY = '3VF2UM-4v5Ae4Bq8VNzKKuCNchDuFxPtdbkKvqJT6S4='

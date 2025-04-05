@@ -27,7 +27,7 @@ function HistoryLogin() {
     const API_BASE_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/send-history-link/`, {
+      const response = await fetch(`${API_BASE_URL}/historylogin/api/send-history-link/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

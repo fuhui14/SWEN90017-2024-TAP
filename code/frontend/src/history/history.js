@@ -19,10 +19,10 @@ const History = () => {
         }
 
         // 发送包含加密信息的请求
-        fetch("http://127.0.0.1:8000/api/admin/history/", {
+        fetch("http://127.0.0.1:8000/history/api/admin/history/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ encrypted }), // 后端会解密后得到用户邮箱
+            body: JSON.stringify({ enc: encrypted }), // 注意这里使用 "enc" 作为键名
         })
             .then((res) => res.json())
             .then((data) => {
