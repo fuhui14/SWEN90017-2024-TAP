@@ -85,7 +85,7 @@ function HistoryLogin() {
         </div>
           <div className="confirm-button">
             <button type="submit" onClick={handleConfirm} disabled={isSubmitting}>
-              {isSubmitting ? 'Uploading...' : 'View History'}
+              {isSubmitting ? 'Sending...' : 'Send a Email'}
             </button>
           </div>
             {message && <p className="message">{message}</p>} {/* 显示成功/错误信息 */}
