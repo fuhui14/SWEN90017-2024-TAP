@@ -53,6 +53,7 @@
   flex-direction: column;
   height: 600px;
   position: relative;
+  justify-content: space-between;
 }
 
 h3 {
@@ -97,13 +98,14 @@ select:focus {
 /* The blue upload box when no files */
 .upload-box {
   background-color: #002244;
-  text-align:center;
+  text-align: center;
   border-radius: 10px;
   transition: background-color 0.3s ease;
   cursor: pointer;
-  width: 80%;
+  width: 90%;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 100px;
 }
 
 .upload-box:hover {
@@ -125,7 +127,7 @@ select:focus {
 
 /* The uploaded files container takes up remaining space, scrolls if needed */
 .uploaded-files {
-  max-height: 200px;
+  flex-grow: 1;
   overflow-y: auto;
   margin-top: 20px;
 }
@@ -134,9 +136,9 @@ select:focus {
 .confirm-button {
   text-align: center;
   font-size: 1em;
-  position: absolute;
+  margin-top: 20px;
+  position: relative;
   width: 100%;
-  bottom: 20%;
 }
 
 .confirm-button button {
