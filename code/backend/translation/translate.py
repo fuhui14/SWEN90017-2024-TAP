@@ -34,51 +34,10 @@ def detect_language(text):
     return "zh" if lang.startswith("zh") else lang
 
 
-def translate_sentence_list_target(sentences, tokenizer, model, max_workers=8):
+def translate_sentence_list(sentences, tokenizer, model, max_workers=8):
     def translate_single(sentence):
         if sentence.strip() == "":
             return ""
-        inputs = tokenizer(sentence, return_tensors="pt", padding=True, truncation=True)
-        translated = model.generate(**inputs)
-        return tokenizer.batch_decode(translated, skip_special_tokens=True)[0]
-
-    results = [None] * len(sentences)
-
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        future_to_index = {
-            executor.submit(translate_single, sentence): idx
-            for idx, sentence in enumerate(sentences)
-        }
-
-        for future in as_completed(future_to_index):
-            idx = future_to_index[future]
-            try:
-                results[idx] = future.result()
-            except Exception as e:
-                results[idx] = f"[Error translating sentence: {e}]"
-
-    return " ".join(results)
-
-
-def translate_sentence_list_english(sentences, tokenizer_zh, tokenizer_es, tokenizer_fr,
-                                    model_zh, model_es, model_fr, max_workers=8):
-    def translate_single(sentence):
-        if sentence.strip() == "":
-            return ""
-        language = detect_language(sentence)
-
-        if language == "en":
-            return sentence
-
-        if language == "zh":
-            tokenizer = tokenizer_zh
-            model = model_zh
-        elif language == "es":
-            tokenizer = tokenizer_es
-            model = model_es
-        else:
-            tokenizer = tokenizer_fr
-            model = model_fr
         inputs = tokenizer(sentence, return_tensors="pt", padding=True, truncation=True)
         translated = model.generate(**inputs)
         return tokenizer.batch_decode(translated, skip_special_tokens=True)[0]
@@ -118,20 +77,10 @@ def translate(content, target_lang="zh"):
 
     blocks = split_dialogue_blocks(content)
 
-    to_english_model = "opus-mt-zh-en"
+    to_english_model = "opus-mt-mul-en"
     to_english_path = ensure_model_exists(to_english_model)
-    to_en_tokenizer_zh = MarianTokenizer.from_pretrained(to_english_path)
-    to_en_model_zh = MarianMTModel.from_pretrained(to_english_path)
-
-    to_english_model = "opus-mt-es-en"
-    to_english_path = ensure_model_exists(to_english_model)
-    to_en_tokenizer_es = MarianTokenizer.from_pretrained(to_english_path)
-    to_en_model_es = MarianMTModel.from_pretrained(to_english_path)
-
-    to_english_model = "opus-mt-fr-en"
-    to_english_path = ensure_model_exists(to_english_model)
-    to_en_tokenizer_fr = MarianTokenizer.from_pretrained(to_english_path)
-    to_en_model_fr = MarianMTModel.from_pretrained(to_english_path)
+    to_en_tokenizer = MarianTokenizer.from_pretrained(to_english_path)
+    to_en_model = MarianMTModel.from_pretrained(to_english_path)
 
     if target_lang != "en":
         to_target_model = f"opus-mt-en-{target_lang}"
@@ -146,15 +95,13 @@ def translate(content, target_lang="zh"):
 
         sentences = sent_tokenize(speech)
 
-        english_text = translate_sentence_list_english(sentences, to_en_tokenizer_zh, to_en_tokenizer_es,
-                                                           to_en_tokenizer_fr, to_en_model_zh, to_en_model_es,
-                                                           to_en_model_fr)
+        english_text = translate_sentence_list(sentences, to_en_tokenizer, to_en_model)
 
         if target_lang == "en":
             final_text = english_text
         else:
             sentences_en = sent_tokenize(english_text)
-            final_text = translate_sentence_list_target(sentences_en, to_target_tokenizer, to_target_model)
+            final_text = translate_sentence_list(sentences_en, to_target_tokenizer, to_target_model)
 
         translated_blocks.append(f"{speaker_translated}: {final_text.strip()}")
 
