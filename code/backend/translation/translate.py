@@ -7,7 +7,6 @@ from nltk.tokenize import sent_tokenize
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_DIR = os.path.join(BASE_DIR, "..", "models")
 
-# 支持的语言映射
 LANG_SPEAKER_MAP = {
     "en": "Speaker",
     "zh": "发言者",
@@ -16,6 +15,7 @@ LANG_SPEAKER_MAP = {
 }
 
 ALLOWED_TARGET_LANGS = {"zh", "en", "fr", "es"}
+
 
 def ensure_model_exists(model_name):
     model_path = os.path.join(MODEL_DIR, model_name)
@@ -27,9 +27,11 @@ def ensure_model_exists(model_name):
         model.save_pretrained(model_path)
     return model_path
 
+
 def detect_language(text):
     lang = detect(text)
     return "zh" if lang.startswith("zh") else lang
+
 
 def translate_sentence_list(sentences, tokenizer, model):
     outputs = []
@@ -43,16 +45,18 @@ def translate_sentence_list(sentences, tokenizer, model):
         outputs.append(output)
     return " ".join(outputs)
 
+
 def split_dialogue_blocks(content):
     pattern = r"((Speaker|发言者|Intervenant|Orador)\s+\d+:)"
     parts = re.split(pattern, content)
     blocks = []
     for i in range(1, len(parts), 3):
         speaker = parts[i].strip()  # Speaker X:
-        utterance = parts[i+2].strip()
+        utterance = parts[i + 2].strip()
         blocks.append((speaker, utterance))
     print(blocks)
     return blocks
+
 
 def translate(content, target_lang="zh"):
     if target_lang not in ALLOWED_TARGET_LANGS:
@@ -77,15 +81,12 @@ def translate(content, target_lang="zh"):
 
     translated_blocks = []
     for speaker, speech in blocks:
-        # 翻译 "Speaker X" 名称
         speaker_number = re.findall(r"\d+", speaker)
         speaker_translated = f"{LANG_SPEAKER_MAP.get(target_lang, 'Speaker')} {speaker_number[0]}" if speaker_number else speaker
 
-        # 分句处理（只支持英文句子分割）
         sentences = sent_tokenize(speech)
         print(sentences)
 
-        # 先翻成英文（如果原始语言不是英文）
         if detected_lang != "en":
             english_text = translate_sentence_list(sentences, to_en_tokenizer, to_en_model)
         else:
@@ -93,7 +94,6 @@ def translate(content, target_lang="zh"):
 
         print(english_text)
 
-        # 再翻译成目标语言（如中文）
         if target_lang == "en":
             final_text = english_text
         else:
@@ -104,8 +104,8 @@ def translate(content, target_lang="zh"):
 
     return "\n".join(translated_blocks)
 
+
 def test_translate():
-    # 测试用例 1：从法语翻译到中文
     french_dialogue = """
     Intervenant 1: Bonjour tout le monde, commençons la réunion.
     Intervenant 2: Oui, nous avons finalisé la conception hier et l’avons partagée avec l’équipe backend. Nous avons également mis à jour le prototype dans Figma en fonction des derniers retours. Le processus a été bien accueilli par l'équipe, et nous avons reçu des commentaires positifs sur l'interface utilisateur. Maintenant, nous devons nous concentrer sur l'intégration avec la base de données et finaliser la connexion à l'API.
@@ -114,7 +114,6 @@ def test_translate():
     result = translate(french_dialogue, target_lang="zh")
     print(result)
 
-    # 测试用例 2：从西班牙语翻译到英文
     spanish_dialogue = """
     Orador 1: Hola, bienvenidos a la reunión. Hoy vamos a revisar los avances y los próximos pasos en el proyecto.
     Orador 2: Hemos actualizado la propuesta y la hemos enviado al equipo de desarrollo. Estamos esperando su retroalimentación y preparándonos para la próxima fase del proyecto, que incluirá pruebas de integración y la implementación de nuevas características.
@@ -123,7 +122,6 @@ def test_translate():
     result = translate(spanish_dialogue, target_lang="en")
     print(result)
 
-    # 测试用例 3：中文到英文的翻译
     chinese_dialogue = """
     发言者 1: 大家好，欢迎参加今天的会议。今天我们将讨论项目的进展情况以及下一步的计划。首先，我们需要回顾一下上次会议的讨论内容并检查是否有任何待解决的问题。
     发言者 2: 我们已经完成了最新的报告，并已提交给团队。报告中包含了所有必要的分析和数据支持，接下来我们需要准备演示文稿并与客户进行讨论。
@@ -132,7 +130,6 @@ def test_translate():
     result = translate(chinese_dialogue, target_lang="en")
     print(result)
 
-    # 测试用例 4：英文到法语的翻译
     english_dialogue = """
     Speaker 1: Hello everyone, welcome to the meeting. Today, we will be discussing the progress of the project and the next steps. First, we need to review the discussion from the last meeting and check if there are any pending issues to resolve.
     Speaker 2: We have finalized the proposal and shared it with the development team. It includes all the necessary analysis and data support. Next, we need to prepare the presentation and discuss it with the client.
@@ -141,7 +138,6 @@ def test_translate():
     result = translate(english_dialogue, target_lang="fr")
     print(result)
 
-    # 测试用例 5：单个发言者发言内容超过200字（英文）
     long_english_dialogue = """
     Speaker 1: Good morning, everyone. Today we have a lot to cover. First, we need to review the progress of the current project. The development team has completed the initial phase of the design, and now we need to move on to the next steps. In the coming weeks, we are expecting the first round of user testing to start. Once the tests are complete, we will gather feedback and work on making improvements. This will involve multiple iterations as we fine-tune the product to meet user expectations. Additionally, we will be focusing on integration with the backend systems, which is a crucial part of this project. The next phase will also include finalizing the user interface, which has been a point of discussion among the team. There have been some concerns about performance, but we are confident that with the changes we plan to make, we will be able to address these issues effectively. In the meantime, we need to ensure that all team members are aligned on the next steps, and that everyone has the necessary resources to move forward with the next phase. It will be important to stay on schedule and to address any blockers that may arise during development. Once the user testing is complete, we will gather the results and move on to the next stage of the process, which will include integrating all the components and doing final testing before release.
     """
@@ -149,7 +145,6 @@ def test_translate():
     result = translate(long_english_dialogue, target_lang="fr")
     print(result)
 
-    # 测试用例 6：单个发言者发言内容超过200字（英文）
     long_english_dialogue = """
     发言者 1: 大家早上好，今天我们有很多内容需要讨论。首先，我们需要回顾当前项目的进展。开发团队已经完成了设计的初步阶段，现在我们需要进入下一步。在接下来的几周里，我们预计第一轮用户测试将开始。测试完成后，我们将收集反馈并进行改进。这将涉及多个迭代过程，我们将不断调整产品，以满足用户的期望。此外，我们还将重点关注与后台系统的集成，这是这个项目的关键部分。下一阶段还将包括最终确定用户界面，这也是团队讨论的一个重点。关于性能方面有一些顾虑，但我们相信通过计划的更改，我们将能够有效地解决这些问题。在此期间，我们需要确保所有团队成员在下一步工作中保持一致，并且每个人都拥有必要的资源来推进下一阶段的工作。按计划推进并解决开发过程中可能出现的任何阻碍非常重要。一旦用户测试完成，我们将收集结果并进入下一阶段，包括集成所有组件并进行发布前的最终测试。
     """
@@ -157,7 +152,6 @@ def test_translate():
     result = translate(long_english_dialogue, target_lang="fr")
     print(result)
 
-    # 测试用例 7：对话中含有不同语言（英文 + 西班牙语）
     mixed_language_dialogue = """
     Speaker 1: Hello everyone, welcome to the meeting. We have a lot of things to discuss today.
     Orador 1: Hola, bienvenidos a todos. Hoy vamos a revisar los avances y los próximos pasos en el proyecto.
@@ -167,7 +161,6 @@ def test_translate():
     result = translate(mixed_language_dialogue, target_lang="zh")
     print(result)
 
-    # 测试用例 8：对话中含有不同语言（英文 + 法语）
     mixed_language_dialogue_fr = """
     Speaker 1: Hello everyone, welcome to the meeting. Today we will be discussing the project.
     Intervenant 1: Bonjour à tous, bienvenue à la réunion. Aujourd'hui, nous allons discuter du projet et des prochaines étapes.
@@ -177,7 +170,6 @@ def test_translate():
     result = translate(mixed_language_dialogue_fr, target_lang="es")
     print(result)
 
-    # 测试用例 9：对话中含有不同语言（英文 + 中文）
     mixed_language_dialogue_zh = """
     Speaker 1: Hello everyone, welcome to the meeting. Today we will discuss our next steps.
     发言者 1: 大家好，欢迎参加会议。今天我们将讨论下一步的计划。
@@ -186,6 +178,7 @@ def test_translate():
     print("\nTesting mixed languages (English + Chinese)...")
     result = translate(mixed_language_dialogue_zh, target_lang="fr")
     print(result)
+
 
 if __name__ == "__main__":
     test_translate()
