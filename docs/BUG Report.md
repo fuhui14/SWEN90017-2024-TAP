@@ -35,7 +35,7 @@ All team members are encouraged to log bugs as soon as they are discovered and t
 
 **Assignee**: @Eclipsezty 
 
-**Status**: Done 
+**Status**: Closed 
 
 **Fix / PR Link**: [Commit 5a9baa7](https://github.com/fuhui14/SWEN90017-2024-TAP/commit/5a9baa7faa462f89be1942dae213b3d3ab4ad9bf) 
 
