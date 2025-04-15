@@ -64,6 +64,15 @@
   });
   ```
 ### Test Result
+All **4 test cases** for the `App` component have passed successfully, as shown in the test result screenshot below. These tests cover the application's routing behavior and the visibility of core UI elements like links and labels on different routes (`/`, `/transcription`, `/process`).
+
+On the right side of the report, the code coverage metrics indicate:
+
+- ✅ **100% statement, branch, function, and line coverage** for `App.js`, meaning all executable paths in this file are tested.
+- ⚠️ **Partial or missing coverage in `index.js`**, with uncovered lines between lines 8 and 20. This is expected, as `index.js` often contains boilerplate code like React root rendering, which typically requires integration testing rather than unit testing.
+
+Overall, this confirms that the routing logic and rendering of components within `App.js` are **robust and well-tested**.
+
 ![image](https://github.com/user-attachments/assets/acbd2cd7-d3c7-419e-8834-2c913ae91f9b)
 
 ---
@@ -164,5 +173,14 @@
   });
   ```
 ### Test Result
+All **5 test cases** for the `Transpage` component passed successfully. These cases thoroughly cover essential user interactions such as email input validation, file upload handling, file removal, error alerts, and navigation on successful submission.
+
+On the right side of the test coverage report, we see that:
+
+- `transpage.js` achieves **71.29% statement coverage**, **53.57% branch coverage**, and **71.84% line coverage**.
+
+This reflects that while the major functional paths are covered, there are still areas—especially conditional branches and deeper UI states—that require more specific test cases (e.g., error responses from fetch, multiple file uploads, or invalid file types).
+
+Despite the uncovered lines, the current tests give us **high confidence** in the component's core logic and user experience under standard usage conditions.
 ![image](https://github.com/user-attachments/assets/80c7864f-d508-49c0-ac4b-408f6f9a9f7a)
 
