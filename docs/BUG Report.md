@@ -21,7 +21,7 @@ All team members are encouraged to log bugs as soon as they are discovered and t
 **Description**: A typo found during the unit test
 
 **Reproduction Steps**:
-1. Navigate to `/about.js`
+1. Navigate to `/code/frontend/src/about/about.js`
 2. There is a typo: "Transcription Aid Plaltform"
 
 ```javascript
@@ -40,3 +40,38 @@ All team members are encouraged to log bugs as soon as they are discovered and t
 **Fix / PR Link**: [Commit 5a9baa7](https://github.com/fuhui14/SWEN90017-2024-TAP/commit/5a9baa7faa462f89be1942dae213b3d3ab4ad9bf) 
 
 **Final Notes**: Adjust typo on About.js and finish unit test
+
+## Bug ID: BUG-20250402-01
+
+**Description**: Backend error - Can not find the file under given path when using winddows system to transcribe the audio file
+
+**Reproduction Steps**:
+1. Run the backend server, with following command, under code/backend path
+```
+python manage.py run server
+``` 
+2. Run the React frontend with following command:
+```
+cd code/frontend
+npm run start
+```
+3. Go to Transcription page
+4. Input correct Email address
+5. Select desired format for the output file
+    - txt for example
+6. Select transcription language
+    - English for example
+7. Upload an auido file
+8. Click Upload Button
+9. Transcription error happens
+
+
+**Reporter**: @Baye0110
+
+**Assignee**: @Baye0110
+
+**Status**: Closed 
+
+**Fix / PR Link**: [Commit 9ebbde8](https://github.com/fuhui14/SWEN90017-2024-TAP/commit/9ebbde852291db6c91831ea3ba378828e9729e61) 
+
+**Final Notes**: fix the windows bug
