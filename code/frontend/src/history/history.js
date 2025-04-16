@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import log from "../resources/icon/logo.svg";
+import downloadLogo from '../resources/icon/download.svg';
 import './history.css';
 
 const History = () => {
@@ -155,7 +156,7 @@ const History = () => {
                                                         className="download-btn"
                                                         onClick={() => handleDownload(record.id, record.taskName)}
                                                     >
-                                                        Download
+                                                        <img src={downloadLogo} alt="Download" className="download-icon" />
                                                     </button>
                                                 ) : (
                                                     <span className="no-download">Unavailable</span>

@@ -77,11 +77,25 @@ tbody tr:nth-child(even) {
 
 /* 下载按钮 */
 .download-btn {
+    background-color: #ddd;
     color: black;
     font-size: 20px;
     text-decoration: none;
     cursor: pointer;
     transition: color 0.3s ease;
+}
+.pagination button{
+    margin-top: 2%;
+    margin-left: 1%;
+    color: black;
+    background-color: #ddd;
+}
+
+.pagination button.active {
+    background-color: #0b3a6f;
+    color: white;
+    font-weight: bold;
+    border: 2px solid #0b3a6f;
 }
 
 .download-btn:hover {
