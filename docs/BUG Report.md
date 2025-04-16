@@ -94,6 +94,7 @@ npm run start
     celery -A config beat -I info
     celery -A config worker -I info
     ```
+    
 10. Restart the file upload process to confirm the issue is resolved.
 
 **Reporter**: @Jiangyu Chen && @Fuhui Yang
@@ -145,7 +146,29 @@ npm run start
 
 **Status**: Closed
 
-**Fix / PR Link**: 
+**Fix / PR Link**: N/A
 
 **Final Notes**: The encryption key has been changed to a fixed value and stored on the server, ensuring that backend restarts do not affect the decryption process of the encrypted links.
+
+## Bug ID: BUG-20250406-01
+
+**Description**: On the history records page, clicking the download button fails to download the corresponding history record. The backend logs indicate that the query could not find the expected data. Investigation revealed that the backend was incorrectly accessing the uploaded files database instead of the translation records database, resulting in an inability to retrieve the record based on its ID. The issue was resolved by modifying the query to access the correct database table.
+
+**Reproduction Steps**:
+1. Navigate to the history records page.
+2. Click the download button for a specific history record.
+3. Observe that the download fails and the backend logs indicate no matching record was found.
+4. Confirm that the backend is querying the wrong database table (uploaded files instead of translation records).
+5. Apply the fix by updating the backend to query the correct database table.
+6. Verify that the download function now retrieves the correct history record.
+
+**Reporter**: @Jiangyu Chen && @Yingrong Chen
+
+**Assignee**: @Jiangyu Chen
+
+**Status**: Closed
+
+**Fix / PR Link**: N/A
+
+**Final Notes**: The backend was updated to query the translation records database instead of the uploaded files database, resolving the issue and ensuring that the correct history record is downloaded.
 
