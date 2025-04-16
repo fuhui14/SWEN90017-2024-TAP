@@ -16,6 +16,9 @@ Using a consistent reporting template helps the team collaborate more efficientl
 
 All team members are encouraged to log bugs as soon as they are discovered and to keep the status updated, ensuring transparency throughout the bug's lifecycle.
 
+## In-Progress Fixing Bug
+BUG-20250402-02
+
 ## Bug ID: BUG-20250324-01
 
 **Description**: A typo found during the unit test
