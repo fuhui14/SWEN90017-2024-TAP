@@ -17,7 +17,9 @@ Using a consistent reporting template helps the team collaborate more efficientl
 All team members are encouraged to log bugs as soon as they are discovered and to keep the status updated, ensuring transparency throughout the bug's lifecycle.
 
 ## In-Progress Fixing Bug
-BUG-20250402-02
+- BUG-20250402-02
+- BUG-20250409-01
+- BUG-20250409-02
 
 ## Bug ID: BUG-20250324-01
 
@@ -34,9 +36,9 @@ BUG-20250402-02
 </section >
 ```
 
-**Reporter**: @Eclipsezty
+**Reporter**: Tianyi Zhong
 
-**Assignee**: @Eclipsezty 
+**Assignee**: Tianyi Zhong
 
 **Status**: Closed 
 
@@ -62,9 +64,9 @@ npm run start
 4. Adjusting page by customizing the window size
 5. Overlapping happends
 
-**Reporter**: @Yongjie Ba
+**Reporter**: Yongjie Ba
 
-**Assignee**: @Yongjie Ba
+**Assignee**: Yongjie Ba
 
 **Status**: Closed 
 
@@ -97,15 +99,51 @@ npm run start
 9. Transcription error happens
 
 
-**Reporter**: @Yongjie Ba
+**Reporter**: Yongjie Ba
 
-**Assignee**: @Yongjie Ba
+**Assignee**: Yongjie Ba
 
 **Status**: Closed 
 
 **Fix / PR Link**: [Commit 9ebbde8](https://github.com/fuhui14/SWEN90017-2024-TAP/commit/9ebbde852291db6c91831ea3ba378828e9729e61) 
 
 **Final Notes**: fix the windows bug
+
+## Bug ID: BUG-20250326-01
+
+**Description**: The user can still clicks the button while uploading the files
+
+**Reproduction Steps**:
+1. Run the backend server, with following command, under code/backend path
+```
+python manage.py run server
+``` 
+2. Run the React frontend with following command:
+```
+cd code/frontend
+npm run start
+```
+3. Go to Transcription page
+4. Input correct Email address
+5. Select desired format for the output file
+    - txt for example
+6. Select transcription language
+    - English for example
+7. Upload an auido file
+8. Click Upload Button
+9. Keep clicking upload button
+9. Error happens
+
+
+**Reporter**: Claire Shou
+
+**Assignee**: Lecheng Chen
+
+**Status**: Closed 
+
+**Fix / PR Link**: [Commit c25caeb](https://github.com/fuhui14/SWEN90017-2024-TAP/commit/c25caebdb403a61084a4971a6bbae3a1acfaf0ab) 
+
+**Final Notes**: Update transcriptionresult.css
 
 ## Bug ID: BUG-20250319-01
 
@@ -128,9 +166,9 @@ npm run start
     
 10. Restart the file upload process to confirm the issue is resolved.
 
-**Reporter**: @Jiangyu Chen && @Fuhui Yang
+**Reporter**: Jiangyu Chen && Fuhui Yang
 
-**Assignee**: @Jiangyu Chen && @Fuhui Yang
+**Assignee**: Jiangyu Chen && Fuhui Yang
 
 **Status**: Closed
 
@@ -175,9 +213,9 @@ npm run start
 4. Observe that the speaker identification incorrectly reports five speakers.
 5. Note that further optimization of the speaker identifier is required to accurately detect the correct number of speakers.
 
-**Reporter**: @Zixuan Zhang && @Claire
+**Reporter**: Zixuan Zhang && Claire
 
-**Assignee**: @Zixuan Zhang && @Claire
+**Assignee**: Zixuan Zhang && Claire
 
 **Status**: In Process
 
@@ -197,9 +235,9 @@ npm run start
 5. Click the encrypted link received in the email.
 6. The link fails to open correctly due to a decryption error caused by a mismatch in the encryption key.
 
-**Reporter**: @Jiangyu Chen
+**Reporter**: Jiangyu Chen
 
-**Assignee**: @Jiangyu Chen
+**Assignee**: Jiangyu Chen
 
 **Status**: Closed
 
@@ -219,9 +257,9 @@ npm run start
 5. Apply the fix by updating the backend to query the correct database table.
 6. Verify that the download function now retrieves the correct history record.
 
-**Reporter**: @Jiangyu Chen && @Yingrong Chen
+**Reporter**: Jiangyu Chen && Yingrong Chen
 
-**Assignee**: @Jiangyu Chen
+**Assignee**: Jiangyu Chen
 
 **Status**: Closed
 
@@ -241,9 +279,9 @@ npm run start
 4. Verify that the expected behavior is to send the transcription content as an attached file.
 5. Update the email formatting logic to include the transcription file as an attachment.
 
-**Reporter**: @Fuhui Yang
+**Reporter**: Fuhui Yang
 
-**Assignee**: @Fuhui Yang
+**Assignee**: Fuhui Yang
 
 **Status**: In process
 
@@ -262,9 +300,9 @@ npm run start
 4. Update the transcription logic to ensure that speaker numbering starts at 1.
 5. Verify that the speaker labels in the output file now correctly start from "speaker1".
 
-**Reporter**: @Zixuan Zhang
+**Reporter**: Zixuan Zhang
 
-**Assignee**: @Zixuan Zhang
+**Assignee**: Zixuan Zhang
 
 **Status**: In process
 
