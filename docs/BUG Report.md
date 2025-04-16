@@ -127,3 +127,25 @@ npm run start
 
 **Final Notes**: Optimization of the speaker identifier is underway, and the team is actively seeking a specific solution to resolve the issue.
 
+## Bug ID: BUG-20250403-01
+
+**Description**: On the history records page, when a user enters their email, the backend encrypts it and sends an encrypted link to the user's email. However, upon clicking the link, an error is displayed. The issue arises because the backend was restarted during the process, resulting in a newly generated encryption key that differs from the one used to encrypt the email. Consequently, the decryption fails. The resolution involved switching to a fixed encryption key stored on the server to prevent decryption failures due to backend restarts.
+
+**Reproduction Steps**:
+1. Navigate to the history records page.
+2. Enter an email address.
+3. The backend encrypts the email and sends an encrypted link to the provided email address.
+4. Restart the backend before clicking the link (or observe that a restart occurred automatically).
+5. Click the encrypted link received in the email.
+6. The link fails to open correctly due to a decryption error caused by a mismatch in the encryption key.
+
+**Reporter**: @Jiangyu Chen
+
+**Assignee**: @Jiangyu Chen
+
+**Status**: Closed
+
+**Fix / PR Link**: 
+
+**Final Notes**: The encryption key has been changed to a fixed value and stored on the server, ensuring that backend restarts do not affect the decryption process of the encrypted links.
+
