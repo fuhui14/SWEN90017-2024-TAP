@@ -20,6 +20,7 @@ All team members are encouraged to log bugs as soon as they are discovered and t
 - BUG-20250402-02
 - BUG-20250409-02
 - BUG-20250409-03
+- BUG-20250413-01
 
 ## Bug ID: BUG-20250319-01
 
@@ -242,6 +243,30 @@ npm run start
 
 **Final Notes**: The backend was updated to query the translation records database instead of the uploaded files database, resolving the issue and ensuring that the correct history record is downloaded.
 
+## Bug ID: BUG-20260408-01
+**Description**: On the deployed Droplet, submitting a transcription request with a moderately large audio file fails with the error 413 Request Entity Too Large. This indicates that the uploaded file exceeds the maximum request body size allowed by Nginx. As a result, the request is rejected before it reaches the Django backend.
+
+**Reproduction Steps**:
+1. Deploy the backend and Nginx server on a Droplet.
+2. Open the transcription page on the frontend.
+3. Upload an audio file larger than 1MB (e.g., a WAV file).
+4. Click the Submit button.
+5. Observe the error in the browser console or network logs:
+    - POST http://www.transaid.software/api/transcription/ net::ERR_FAILED 413 (Request Entity Too Large)
+
+
+**Reporter**: Zixuan Zhang
+
+**Assignee**: Claire Shou
+
+**Status**: Closed
+
+**Fix / PR Link**: N/A
+
+**Final Notes**: Edited the Nginx to allowed upload size to 20MB (adjust as needed), larger files can be successfully uploaded and processed by the backend.
+
+
+
 
 ## Bug ID: BUG-20250409-01
 
@@ -314,3 +339,53 @@ npm run start
 
 **Final Notes**: The speaker labeling has been updated so that numbering starts at 1, aligning with the expected output format.
 
+## Bug ID: BUG-20250411-01
+**Description**: The backend deployment on the Droplet fails to connect to Redis during transcription processing, resulting in a [Errno 111] Connection refused error. Despite Redis appearing to be active and listening on both IPv4 and IPv6, the backend is unable to establish a connection. This issue causes transcription jobs to fail and prevents email notifications from being sent.
+
+**Reproduction Steps**:
+1. Deploy the application (backend, Redis, Celery) on the Droplet server.
+2. Start the Redis server (confirm it's running and listening on both IPv4 and IPv6, e.g., via lsof -i :6379).
+3. Start the backend Django service and Celery worker.
+4. Navigate to the transcription page on the frontend.
+5. Upload a valid audio file and click the Submit button.
+6. Monitor backend logs.
+7. Observe the error:
+    - [Errno 111] Connection refused when trying to connect to Redis.
+    - Internal Server Error: /transcription/ as a result.
+
+**Reporter**: Zixuan Zhang
+
+**Assignee**: Claire Shou
+
+**Status**: Closed
+
+**Fix / PR Link**: N/A
+
+**Final Notes**: Changed Redis URL on settings.py.
+
+
+## Bug ID: BUG-20250413-01
+
+**Description**: The backend deployment on the Droplet is not working. When attempting to start a transcription, the following error occurs:
+
+![alt text](image.png)
+
+**Reproduction Steps**:
+1. Deploy the backend and frontend on the Droplet server.
+2. Navigate to the transcription page via the frontend.
+3. Upload a valid audio file and click the Submit button.
+4. Observe the server logs on the backend.
+5. Notice the following errors in the backend logs:
+    - [Errno 111] Connection refused during transcription or saving.
+    - [Errno 101] Network is unreachable when attempting to send an email.
+    - Internal Server Error: /transcription/ returned as a response.
+
+**Reporter**: Claire Shou
+
+**Assignee**: Zixuan Zhang
+
+**Status**: In process
+
+**Fix / PR Link**: 
+
+**Final Notes**: 
