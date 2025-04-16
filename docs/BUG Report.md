@@ -135,6 +135,32 @@ npm run start
 
 **Final Notes**: Ensure that the Celery commands are run in the backend environment to properly initialize the task queue and avoid connection errors during the transcription process.
 
+
+## Bug ID: BUG-20250320-01
+
+**Description**: Frontend error - The "Submit" button on the transcription page can be clicked multiple times in quick succession, causing the backend to process the same request repeatedly.
+
+**Reproduction Steps**:
+1. Navigate to the transcription page of the application.
+
+2. Upload a valid audio file.
+
+3. Click the Submit button multiple times quickly.
+
+4. Observe that each click triggers a new request to the backend, causing the transcription process to run multiple times for the same file.
+
+
+**Reporter**: Claire Shou
+
+**Assignee**: Lecheng Chen
+
+**Status**: Closed 
+
+**Fix / PR Link**: 
+
+**Final Notes**: The users are not allowed to click multiple times in quick succession.
+
+
 ## Bug ID: BUG-20250402-02
 
 **Description**: When uploading an audio file, the system is expected to recognize three speakers but incorrectly identifies five speakers. The current approach involves optimizing the speaker identifier; however, a specific solution is still under investigation.
