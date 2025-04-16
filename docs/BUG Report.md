@@ -75,3 +75,33 @@ npm run start
 **Fix / PR Link**: [Commit 9ebbde8](https://github.com/fuhui14/SWEN90017-2024-TAP/commit/9ebbde852291db6c91831ea3ba378828e9729e61) 
 
 **Final Notes**: fix the windows bug
+
+## Bug ID: BUG-20250319-01
+
+**Description**: On project startup, when uploading a file for transcription, a "connection refused" error is displayed. The issue occurs because Celery is not running.
+
+**Reproduction Steps**:
+1. Start the backend server.
+2. Start the React frontend.
+3. Navigate to the Transcription page.
+4. Enter a valid email address and select the desired output format and transcription language.
+5. Upload an audio file.
+6. Click the Upload Button.
+7. The system displays a "connection refused" error.
+8. Investigation reveals that Celery is not running.
+9. To resolve the issue, execute the following commands in the backend environment:
+    ```
+    celery -A config beat -I info
+    celery -A config worker -I info
+    ```
+10. Restart the file upload process to confirm the issue is resolved.
+
+**Reporter**: @Joey-Chen-259
+
+**Assignee**: @Joey-Chen-259
+
+**Status**: Closed
+
+**Fix / PR Link**: N/A
+
+**Final Notes**: Ensure that the Celery commands are run in the backend environment to properly initialize the task queue and avoid connection errors during the transcription process.
