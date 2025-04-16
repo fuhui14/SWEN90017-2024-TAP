@@ -18,8 +18,65 @@ All team members are encouraged to log bugs as soon as they are discovered and t
 
 ## In-Progress Fixing Bug
 - BUG-20250402-02
-- BUG-20250409-01
 - BUG-20250409-02
+- BUG-20250409-03
+
+## Bug ID: BUG-20250319-01
+
+**Description**: On project startup, when uploading a file for transcription, a "connection refused" error is displayed. The issue occurs because Celery is not running.
+
+**Reproduction Steps**:
+1. Start the backend server.
+2. Start the React frontend.
+3. Navigate to the Transcription page.
+4. Enter a valid email address and select the desired output format and transcription language.
+5. Upload an audio file.
+6. Click the Upload Button.
+7. The system displays a "connection refused" error.
+8. Investigation reveals that Celery is not running.
+9. To resolve the issue, execute the following commands in the backend environment:
+    ```
+    celery -A config beat -I info
+    celery -A config worker -I info
+    ```
+    
+10. Restart the file upload process to confirm the issue is resolved.
+
+**Reporter**: Jiangyu Chen && Fuhui Yang
+
+**Assignee**: Jiangyu Chen && Fuhui Yang
+
+**Status**: Closed
+
+**Fix / PR Link**: N/A
+
+**Final Notes**: Ensure that the Celery commands are run in the backend environment to properly initialize the task queue and avoid connection errors during the transcription process.
+
+## Bug ID: BUG-20250320-01
+
+**Description**: Frontend error - The "Submit" button on the transcription page can be clicked multiple times in quick succession, causing the backend to process the same request repeatedly.
+
+**Reproduction Steps**:
+1. Navigate to the transcription page of the application.
+
+2. Upload a valid audio file.
+
+3. Click the Submit button multiple times quickly.
+
+4. Observe that each click triggers a new request to the backend, causing the transcription process to run multiple times for the same file.
+
+
+**Reporter**: Claire Shou
+
+**Assignee**: Lecheng Chen
+
+**Status**: Closed 
+
+**Fix / PR Link**: 
+
+**Final Notes**: The users are not allowed to click multiple times in quick succession.
+
+
 
 ## Bug ID: BUG-20250324-01
 
@@ -46,68 +103,6 @@ All team members are encouraged to log bugs as soon as they are discovered and t
 
 **Final Notes**: Adjust typo on About.js and finish unit test
 
-## Bug ID: BUG-20250409-01
-
-**Description**: The drop-file area overlapping with upload button when adjusting page
-
-**Reproduction Steps**:
-1. Run the backend server, with following command, under code/backend path
-```
-python manage.py run server
-``` 
-2. Run the React frontend with following command:
-```
-cd code/frontend
-npm run start
-```
-3. Go to Transcription page
-4. Adjusting page by customizing the window size
-5. Overlapping happends
-
-**Reporter**: Yongjie Ba
-
-**Assignee**: Yongjie Ba
-
-**Status**: Closed 
-
-**Fix / PR Link**: [Commit bf7c7aa](https://github.com/fuhui14/SWEN90017-2024-TAP/commit/bf7c7aa98363b94136ccd7906cac22897eb94691) 
-
-**Final Notes**: Update transpage.css to fix overlap for the drag and drop box and button
-
-## Bug ID: BUG-20250402-01
-
-**Description**: Backend error - Can not find the file under given path when using winddows system to transcribe the audio file
-
-**Reproduction Steps**:
-1. Run the backend server, with following command, under code/backend path
-```
-python manage.py run server
-``` 
-2. Run the React frontend with following command:
-```
-cd code/frontend
-npm run start
-```
-3. Go to Transcription page
-4. Input correct Email address
-5. Select desired format for the output file
-    - txt for example
-6. Select transcription language
-    - English for example
-7. Upload an auido file
-8. Click Upload Button
-9. Transcription error happens
-
-
-**Reporter**: Yongjie Ba
-
-**Assignee**: Yongjie Ba
-
-**Status**: Closed 
-
-**Fix / PR Link**: [Commit 9ebbde8](https://github.com/fuhui14/SWEN90017-2024-TAP/commit/9ebbde852291db6c91831ea3ba378828e9729e61) 
-
-**Final Notes**: fix the windows bug
 
 ## Bug ID: BUG-20250326-01
 
@@ -145,61 +140,40 @@ npm run start
 
 **Final Notes**: Update transcriptionresult.css
 
-## Bug ID: BUG-20250319-01
+## Bug ID: BUG-20250402-01
 
-**Description**: On project startup, when uploading a file for transcription, a "connection refused" error is displayed. The issue occurs because Celery is not running.
-
-**Reproduction Steps**:
-1. Start the backend server.
-2. Start the React frontend.
-3. Navigate to the Transcription page.
-4. Enter a valid email address and select the desired output format and transcription language.
-5. Upload an audio file.
-6. Click the Upload Button.
-7. The system displays a "connection refused" error.
-8. Investigation reveals that Celery is not running.
-9. To resolve the issue, execute the following commands in the backend environment:
-    ```
-    celery -A config beat -I info
-    celery -A config worker -I info
-    ```
-    
-10. Restart the file upload process to confirm the issue is resolved.
-
-**Reporter**: Jiangyu Chen && Fuhui Yang
-
-**Assignee**: Jiangyu Chen && Fuhui Yang
-
-**Status**: Closed
-
-**Fix / PR Link**: N/A
-
-**Final Notes**: Ensure that the Celery commands are run in the backend environment to properly initialize the task queue and avoid connection errors during the transcription process.
-
-
-## Bug ID: BUG-20250320-01
-
-**Description**: Frontend error - The "Submit" button on the transcription page can be clicked multiple times in quick succession, causing the backend to process the same request repeatedly.
+**Description**: Backend error - Can not find the file under given path when using winddows system to transcribe the audio file
 
 **Reproduction Steps**:
-1. Navigate to the transcription page of the application.
+1. Run the backend server, with following command, under code/backend path
+```
+python manage.py run server
+``` 
+2. Run the React frontend with following command:
+```
+cd code/frontend
+npm run start
+```
+3. Go to Transcription page
+4. Input correct Email address
+5. Select desired format for the output file
+    - txt for example
+6. Select transcription language
+    - English for example
+7. Upload an auido file
+8. Click Upload Button
+9. Transcription error happens
 
-2. Upload a valid audio file.
 
-3. Click the Submit button multiple times quickly.
+**Reporter**: Yongjie Ba
 
-4. Observe that each click triggers a new request to the backend, causing the transcription process to run multiple times for the same file.
-
-
-**Reporter**: Claire Shou
-
-**Assignee**: Lecheng Chen
+**Assignee**: Yongjie Ba
 
 **Status**: Closed 
 
-**Fix / PR Link**: 
+**Fix / PR Link**: [Commit 9ebbde8](https://github.com/fuhui14/SWEN90017-2024-TAP/commit/9ebbde852291db6c91831ea3ba378828e9729e61) 
 
-**Final Notes**: The users are not allowed to click multiple times in quick succession.
+**Final Notes**: fix the windows bug
 
 
 ## Bug ID: BUG-20250402-02
@@ -222,6 +196,7 @@ npm run start
 **Fix / PR Link**: N/A
 
 **Final Notes**: Optimization of the speaker identifier is underway, and the team is actively seeking a specific solution to resolve the issue.
+
 
 ## Bug ID: BUG-20250403-01
 
@@ -270,6 +245,35 @@ npm run start
 
 ## Bug ID: BUG-20250409-01
 
+**Description**: The drop-file area overlapping with upload button when adjusting page
+
+**Reproduction Steps**:
+1. Run the backend server, with following command, under code/backend path
+```
+python manage.py run server
+``` 
+2. Run the React frontend with following command:
+```
+cd code/frontend
+npm run start
+```
+3. Go to Transcription page
+4. Adjusting page by customizing the window size
+5. Overlapping happends
+
+**Reporter**: Yongjie Ba
+
+**Assignee**: Yongjie Ba
+
+**Status**: Closed 
+
+**Fix / PR Link**: [Commit bf7c7aa](https://github.com/fuhui14/SWEN90017-2024-TAP/commit/bf7c7aa98363b94136ccd7906cac22897eb94691) 
+
+**Final Notes**: Update transpage.css to fix overlap for the drag and drop box and button
+
+
+## Bug ID: BUG-20250409-02
+
 **Description**: The email content is formatted incorrectly. The transcription content should not appear directly in the email body but should be attached as a file.
 
 **Reproduction Steps**:
@@ -289,7 +293,7 @@ npm run start
 
 **Final Notes**: The email formatting has been corrected so that the transcription content is now delivered as an attachment, ensuring the email body remains clear and follows the intended format.
 
-## Bug ID: BUG-20250409-02
+## Bug ID: BUG-20250409-03
 
 **Description**: In the transcription file received by the user, the speaker labels are incorrectly numbered starting from 0. The speaker labels should start from 1 (i.e., speaker1) instead of 0.
 
