@@ -41,6 +41,34 @@ All team members are encouraged to log bugs as soon as they are discovered and t
 
 **Final Notes**: Adjust typo on About.js and finish unit test
 
+## Bug ID: BUG-20250409-01
+
+**Description**: The drop-file area overlapping with upload button when adjusting page
+
+**Reproduction Steps**:
+1. Run the backend server, with following command, under code/backend path
+```
+python manage.py run server
+``` 
+2. Run the React frontend with following command:
+```
+cd code/frontend
+npm run start
+```
+3. Go to Transcription page
+4. Adjusting page by customizing the window size
+5. Overlapping happends
+
+**Reporter**: @Yongjie Ba
+
+**Assignee**: @Yongjie Ba
+
+**Status**: Closed 
+
+**Fix / PR Link**: [Commit bf7c7aa](https://github.com/fuhui14/SWEN90017-2024-TAP/commit/bf7c7aa98363b94136ccd7906cac22897eb94691) 
+
+**Final Notes**: Update transpage.css to fix overlap for the drag and drop box and button
+
 ## Bug ID: BUG-20250402-01
 
 **Description**: Backend error - Can not find the file under given path when using winddows system to transcribe the audio file
