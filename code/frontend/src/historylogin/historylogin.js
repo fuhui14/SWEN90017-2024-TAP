@@ -27,7 +27,7 @@ function HistoryLogin() {
     const API_BASE_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/send-history-link/`, {
+      const response = await fetch(`${API_BASE_URL}/historylogin/api/send-history-link/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ function HistoryLogin() {
         </div>
           <div className="confirm-button">
             <button type="submit" onClick={handleConfirm} disabled={isSubmitting}>
-              {isSubmitting ? 'Sending...' : 'Sent the Email'}
+              {isSubmitting ? 'Sending...' : 'Send a Email'}
             </button>
           </div>
             {message && <p className="message">{message}</p>} {/* 显示成功/错误信息 */}
