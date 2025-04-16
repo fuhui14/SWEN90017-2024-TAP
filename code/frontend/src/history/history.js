@@ -8,8 +8,12 @@ const History = () => {
     const [historyData, setHistoryData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    // 读取 URL 中加密后的用户信息
+    // Retrieve encrypted user info from the URL
     const encrypted = searchParams.get("enc");
+
+    // Pagination states
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 10;
 
     useEffect(() => {
         if (!encrypted) {
@@ -18,7 +22,7 @@ const History = () => {
             return;
         }
 
-        // 发送包含加密信息的请求获取历史记录
+        // Send a request with the encrypted info to get history records
         fetch("http://127.0.0.1:8000/history/api/admin/history/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -35,7 +39,12 @@ const History = () => {
             });
     }, [encrypted]);
 
-    // 前端下载功能：不在界面显示ID，仅作为参数传递到后端
+    // Reset current page when history data changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [historyData]);
+
+    // Front-end download functionality: the record ID is used for backend parameter
     const handleDownload = async (recordId, originalFilename) => {
         try {
             const response = await fetch("http://127.0.0.1:8000/history/api/download/", {
@@ -44,13 +53,13 @@ const History = () => {
                 body: JSON.stringify({ id: recordId })
             });
             if (!response.ok) {
-                throw new Error("下载失败");
+                throw new Error("Download failed");
             }
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = url;
-            // 如果提供原始文件名，则使用该名称，否则使用默认名称
+            // Use the original filename if provided; otherwise, a default name is used
             const filename = originalFilename ? originalFilename : "transcription";
             link.setAttribute("download", filename + ".txt");
             document.body.appendChild(link);
@@ -58,8 +67,27 @@ const History = () => {
             link.parentNode.removeChild(link);
         } catch (error) {
             console.error("Download error:", error);
-            alert("下载失败，请重试。");
+            alert("Download failed, please try again.");
         }
+    };
+
+    // Calculate pagination values
+    const totalPages = Math.ceil(historyData.length / recordsPerPage);
+    const indexOfLastRecord = currentPage * recordsPerPage;
+    const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+    const currentRecords = historyData.slice(indexOfFirstRecord, indexOfLastRecord);
+
+    // Pagination handlers
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
     };
 
     return (
@@ -85,57 +113,79 @@ const History = () => {
 
                     {loading && <p className="loading">Loading...</p>}
                     {error && <div className="error">{error}</div>}
-                    {/* 成功加载后的提示 */}
+                    {/* Success message upon loading */}
                     {!loading && !error && historyData.length > 0 && (
-                        <div className="notification success">历史记录加载成功！</div>
+                        <div className="notification success">History loaded successfully!</div>
                     )}
 
                     {!loading && !error && historyData.length > 0 && (
-                        <table>
-                            <thead>
-                                <tr>
-                                    {/* 隐藏 ID 列 */}
-                                    {/* <th>ID</th> */}
-                                    <th>Task Name</th>
-                                    <th>Task Type</th>
-                                    <th>Creation Date</th>
-                                    <th>Days Until Expiry</th>
-                                    <th>Output Type</th>
-                                    <th>Status</th>
-                                    <th>Download</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {historyData.map((record) => (
-                                    <tr key={record.id}>
-                                        {/* 隐藏ID数据，不在UI上展示 */}
-                                        {/* <td>{record.id}</td> */}
-                                        <td>{record.taskName}</td>
-                                        <td>{record.taskType}</td>
-                                        <td>{new Date(record.creationDate).toLocaleDateString()}</td>
-                                        <td>{record.daysLeft}</td>
-                                        <td>{record.outputType}</td>
-                                        <td>
-                                            <span className={`status ${record.status.toLowerCase()}`}>
-                                                {record.status === "Completed" ? "Completed" : "Failed"}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            {record.status === "Completed" ? (
-                                                <button
-                                                    className="download-btn"
-                                                    onClick={() => handleDownload(record.id, record.taskName)}
-                                                >
-                                                    Download
-                                                </button>
-                                            ) : (
-                                                <span className="no-download">Unavailable</span>
-                                            )}
-                                        </td>
+                        <>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        {/* ID column is hidden */}
+                                        {/* <th>ID</th> */}
+                                        <th>Task Name</th>
+                                        <th>Task Type</th>
+                                        <th>Creation Date</th>
+                                        <th>Days Until Expiry</th>
+                                        <th>Output Type</th>
+                                        <th>Status</th>
+                                        <th>Download</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {currentRecords.map((record) => (
+                                        <tr key={record.id}>
+                                            {/* ID data is hidden and not displayed */}
+                                            {/* <td>{record.id}</td> */}
+                                            <td>{record.taskName}</td>
+                                            <td>{record.taskType}</td>
+                                            <td>{new Date(record.creationDate).toLocaleDateString()}</td>
+                                            <td>{record.daysLeft}</td>
+                                            <td>{record.outputType}</td>
+                                            <td>
+                                                <span className={`status ${record.status.toLowerCase()}`}>
+                                                    {record.status === "Completed" ? "Completed" : "Failed"}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {record.status === "Completed" ? (
+                                                    <button
+                                                        className="download-btn"
+                                                        onClick={() => handleDownload(record.id, record.taskName)}
+                                                    >
+                                                        Download
+                                                    </button>
+                                                ) : (
+                                                    <span className="no-download">Unavailable</span>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                            {/* Pagination controls */}
+                            {totalPages > 1 && (
+                                <div className="pagination">
+                                    <button onClick={handlePrevPage} disabled={currentPage === 1}>
+                                        Prev
+                                    </button>
+                                    {Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => (
+                                        <button
+                                            key={number}
+                                            onClick={() => handlePageChange(number)}
+                                            className={currentPage === number ? "active" : ""}
+                                        >
+                                            {number}
+                                        </button>
+                                    ))}
+                                    <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+                                        Next
+                                    </button>
+                                </div>
+                            )}
+                        </>
                     )}
 
                     {!loading && !error && historyData.length === 0 && (
