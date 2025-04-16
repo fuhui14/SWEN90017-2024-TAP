@@ -229,3 +229,46 @@ npm run start
 
 **Final Notes**: The backend was updated to query the translation records database instead of the uploaded files database, resolving the issue and ensuring that the correct history record is downloaded.
 
+
+## Bug ID: BUG-20250409-01
+
+**Description**: The email content is formatted incorrectly. The transcription content should not appear directly in the email body but should be attached as a file.
+
+**Reproduction Steps**:
+1. Initiate a transcription process.
+2. Upon completion, check the email received by the user.
+3. Notice that the transcription content is embedded in the email body instead of being provided as an attachment.
+4. Verify that the expected behavior is to send the transcription content as an attached file.
+5. Update the email formatting logic to include the transcription file as an attachment.
+
+**Reporter**: @Fuhui Yang
+
+**Assignee**: @Fuhui Yang
+
+**Status**: In process
+
+**Fix / PR Link**: 
+
+**Final Notes**: The email formatting has been corrected so that the transcription content is now delivered as an attachment, ensuring the email body remains clear and follows the intended format.
+
+## Bug ID: BUG-20250409-02
+
+**Description**: In the transcription file received by the user, the speaker labels are incorrectly numbered starting from 0. The speaker labels should start from 1 (i.e., speaker1) instead of 0.
+
+**Reproduction Steps**:
+1. Complete a transcription process.
+2. Open the transcription file received as an attachment.
+3. Observe that the speaker labels begin with "speaker0" instead of "speaker1".
+4. Update the transcription logic to ensure that speaker numbering starts at 1.
+5. Verify that the speaker labels in the output file now correctly start from "speaker1".
+
+**Reporter**: @Zixuan Zhang
+
+**Assignee**: @Zixuan Zhang
+
+**Status**: In process
+
+**Fix / PR Link**: 
+
+**Final Notes**: The speaker labeling has been updated so that numbering starts at 1, aligning with the expected output format.
+
