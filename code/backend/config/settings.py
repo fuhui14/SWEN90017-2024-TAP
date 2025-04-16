@@ -145,3 +145,8 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(minute='*/5'),  # 每天午夜执行一次
     },
 }
+
+# Frontend URL for admin portal link generation
+FRONTEND_BASE_URL = "http://localhost:3000"
+
+FERNET_KEY = '3VF2UM-4v5Ae4Bq8VNzKKuCNchDuFxPtdbkKvqJT6S4='

@@ -1,19 +1,25 @@
 import os
 import uuid
 import platform
+import json
 from django.conf import settings
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.utils import timezone
+from datetime import timedelta
+from django.views.decorators.http import require_GET
 from pathlib import Path
 import shutil
 import whisper
 
-from speaker_identify.assign_speaker_service import assign_speakers_to_transcription
+from speaker_identify.identify_service import transcribe_with_speaker
 from .forms import UploadFileForm
 from .models import File, Transcription
 from .tasks import process_transcription_and_send_email
 from emails.send_email import send_email, FileType
+from emails.utils import send_error_report_email
 
 # load whisper model when the server starts
 model = whisper.load_model("base")
@@ -87,9 +93,7 @@ def transcribe(request):
                 if not os.path.exists(file_path):
                     raise FileNotFoundError(f"The file at {file_path} does not exist")
                 # transcribe the audio file
-                transcription = transcribe_audio(file_path)
-                transcription_with_speaker = assign_speakers_to_transcription(transcription,
-                                                                              file_path)
+                transcription_with_speaker = transcribe_with_speaker(file_path)
 
                 transcribed_data = Transcription.objects.create(
                     file=db_file,
@@ -97,20 +101,15 @@ def transcribe(request):
                 )
                 print("Transcription saved in database")
 
-
-
-                # Synchronously trigger email notification
-                process_transcription_and_send_email(transcribed_data.id)
+                portal_link = f"{settings.FRONTEND_BASE_URL}/history?token={db_file.portal_token}"
+                process_transcription_and_send_email(
+                    transcribed_data.id,
+                    portal_link=portal_link
+                )
 
             except Exception as e:
                 print(f"Error during transcription or saving transcription for file {file_path}: {e}")
-                send_email(
-                    receiver=email,
-                    subject="Transcription Failed",
-                    content=f"An error occurred during transcription: {str(e)}",
-                    file_content="",
-                    file_type=FileType.NONE
-                )
+                send_error_report_email(email, str(e))
                 return JsonResponse({'error': f'Transcription error: {str(e)}'}, status=500)
 
             # return the transcription result
@@ -131,26 +130,12 @@ def transcribe(request):
 def transcribe_audio(audio_path):
     print('Transcribing audio file at path: ' + audio_path)
     try:
-        # Convert the relative path to an absolute path and normalize it
-        audio_path = os.path.abspath(audio_path)
-        audio_path = os.path.normpath(audio_path)
-        print("Normalized absolute path:", audio_path)
+        system_platform = platform.system()
+        # if the system is Windows, convert the path to a raw string
+        if system_platform == 'Windows':
+            audio_path = r'{}'.format(audio_path)
+            print('Path:::' + audio_path)
 
-        # If running on Windows, check if ffmpeg is available in the system PATH
-        if platform.system() == 'Windows':
-            ffmpeg_path = shutil.which("ffmpeg")
-            if ffmpeg_path:
-                print("Found ffmpeg in system PATH:", ffmpeg_path)
-            else:
-                print("ffmpeg not found in system PATH. Please install ffmpeg or add it to the system PATH.")
-                # Print all environment variables for debugging
-                print("Current environment variables:")
-                for key, value in os.environ.items():
-                    print(f"{key}: {value}")
-                # Optionally, you can raise an exception to stop further processing
-                # raise FileNotFoundError("ffmpeg not found in system PATH")
-
-        # Call the Whisper model for transcription
         result = model.transcribe(audio_path)
         return result
     except FileNotFoundError as fnf_error:
@@ -160,8 +145,64 @@ def transcribe_audio(audio_path):
         print(f"General error during transcription: {e}")
         raise
 
+@csrf_exempt
+@require_POST
+def send_history_portal_link(request):
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        email = data.get("email")
 
+        if not email:
+            return JsonResponse({"error": "Email is required."}, status=400)
 
+        latest_file = File.objects.filter(email=email).order_by('-upload_timestamp').first()
+        if not latest_file:
+            return JsonResponse({"error": "No transcription history found for this email."}, status=404)
 
+        portal_link = f"{settings.FRONTEND_BASE_URL}/history?token={latest_file.portal_token}"
+        subject = "Your transcription history link"
+        body = f"Hello,\n\nYou can view your transcription history at the following link:\n{portal_link}\n\nBest regards,\nTranscription Aide Platform"
 
+        send_email(
+            receiver=email,
+            subject=subject,
+            content=body,
+            file_content=None,
+            file_type=FileType.NONE
+        )
 
+        return JsonResponse({"message": "Portal link sent successfully."})
+
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON."}, status=400)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+@csrf_exempt
+@require_GET
+def transcription_history_by_token(request, token):
+    try:
+        file = File.objects.get(token=token)
+    except File.DoesNotExist:
+        return JsonResponse({'error': 'Invalid token'}, status=404)
+
+    # search all unexpired files of this email
+    expiration_threshold = timezone.now() - timedelta(days=90)
+    user_files = File.objects.filter(
+        email=file.email,
+        upload_timestamp__gte=expiration_threshold
+    ).order_by('-upload_timestamp')
+
+    # generate response
+    history = []
+    for f in user_files:
+        transcription = Transcription.objects.filter(file=f).first()
+        history.append({
+            'file_name': f.original_filename,
+            'creation_date': f.upload_timestamp.strftime('%Y-%m-%d'),
+            'expiration_date': (f.upload_timestamp + timedelta(days=90)).strftime('%Y-%m-%d'),
+            'transcription_text': transcription.transcribed_text if transcription else '',
+            'download_link': f'/api/download/{f.upload_id}/'
+        })
+
+    return JsonResponse({'history': history})
