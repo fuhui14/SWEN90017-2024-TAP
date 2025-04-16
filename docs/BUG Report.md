@@ -66,9 +66,9 @@ npm run start
 9. Transcription error happens
 
 
-**Reporter**: @Baye0110
+**Reporter**: @Yongjie Ba
 
-**Assignee**: @Baye0110
+**Assignee**: @Yongjie Ba
 
 **Status**: Closed 
 
@@ -96,9 +96,9 @@ npm run start
     ```
 10. Restart the file upload process to confirm the issue is resolved.
 
-**Reporter**: @Joey-Chen-259
+**Reporter**: @Jiangyu Chen && @Fuhui Yang
 
-**Assignee**: @Joey-Chen-259
+**Assignee**: @Jiangyu Chen && @Fuhui Yang
 
 **Status**: Closed
 
