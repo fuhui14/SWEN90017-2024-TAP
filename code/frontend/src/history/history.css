@@ -1,4 +1,3 @@
-
 /* 让标题和说明文字对齐 */
 .container h1 {
     font-size: 2rem;
@@ -78,19 +77,32 @@ tbody tr:nth-child(even) {
 
 /* 下载按钮 */
 .download-btn {
+    background-color: #ddd;
     color: black;
     font-size: 20px;
     text-decoration: none;
     cursor: pointer;
     transition: color 0.3s ease;
 }
+.pagination button{
+    margin-top: 2%;
+    margin-left: 1%;
+    color: black;
+    background-color: #ddd;
+}
+
+.pagination button.active {
+    background-color: #0b3a6f;
+    color: white;
+    font-weight: bold;
+    border: 2px solid #0b3a6f;
+}
 
 .download-btn:hover {
     color: #0b3a6f;
 }
 
-
-
+/* 按钮悬停效果 */
 button:hover {
     background-color: #002244;
 }
@@ -132,7 +144,7 @@ button:hover {
     align-items: center;
     background-color: #094183;
     padding: 10px 50px;
-    font-size: .7em;
+    font-size: 0.7em;
 }
 
 .footer p {
