@@ -105,3 +105,25 @@ npm run start
 **Fix / PR Link**: N/A
 
 **Final Notes**: Ensure that the Celery commands are run in the backend environment to properly initialize the task queue and avoid connection errors during the transcription process.
+
+## Bug ID: BUG-20250402-02
+
+**Description**: When uploading an audio file, the system is expected to recognize three speakers but incorrectly identifies five speakers. The current approach involves optimizing the speaker identifier; however, a specific solution is still under investigation.
+
+**Reproduction Steps**:
+1. Start the backend server and frontend application.
+2. Navigate to the Transcription page.
+3. Upload an audio file known to contain three speakers.
+4. Observe that the speaker identification incorrectly reports five speakers.
+5. Note that further optimization of the speaker identifier is required to accurately detect the correct number of speakers.
+
+**Reporter**: @Zixuan Zhang && @Claire
+
+**Assignee**: @Zixuan Zhang && @Claire
+
+**Status**: In Process
+
+**Fix / PR Link**: N/A
+
+**Final Notes**: Optimization of the speaker identifier is underway, and the team is actively seeking a specific solution to resolve the issue.
+
