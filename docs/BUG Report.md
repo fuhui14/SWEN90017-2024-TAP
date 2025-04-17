@@ -21,6 +21,7 @@ All team members are encouraged to log bugs as soon as they are discovered and t
 - BUG-20250409-02
 - BUG-20250409-03
 - BUG-20250413-01
+- BUG-20250417-01
 
 ## Bug ID: BUG-20250319-01
 
@@ -389,3 +390,25 @@ npm run start
 **Fix / PR Link**: 
 
 **Final Notes**: 
+
+## Bug ID: BUG-20250417-01
+
+**Description**: Uncaught ReferenceError: Buffer is not defined when running the  frontend by using MacOS
+
+**Reproduction Steps**:
+1. Run the React frontend with the following command:
+```
+cd code/frontend
+npm run start
+```
+2. The page is showing white and the error is: Uncaught ReferenceError: Buffer is not defined
+
+**Reporter**: Yongjie Ba
+
+**Assignee**: Yongjie Ba
+
+**Status**: In process
+
+**Fix / PR Link**: N/A
+
+**Final Notes**: working on it
