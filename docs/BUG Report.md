@@ -21,7 +21,6 @@ All team members are encouraged to log bugs as soon as they are discovered and t
 - BUG-20250409-02
 - BUG-20250409-03
 - BUG-20250413-01
-- BUG-20250417-01
 
 ## Bug ID: BUG-20250319-01
 
@@ -401,14 +400,17 @@ npm run start
 cd code/frontend
 npm run start
 ```
-2. The page is showing white and the error is: Uncaught ReferenceError: Buffer is not defined
+2. The page is showing white, and the error is: Uncaught ReferenceError: Buffer is not defined
 
 **Reporter**: Yongjie Ba
 
 **Assignee**: Yongjie Ba
 
-**Status**: In process
+**Status**: closed
 
-**Fix / PR Link**: N/A
+**Fix / PR Link**: [Commit 972d004](https://github.com/fuhui14/SWEN90017-2024-TAP/commit/972d0042c8bd5d173085bb58e7cf90c9519ab6a1)
 
-**Final Notes**: working on it
+**Final Notes**: 
+- Reason: Node core module polyfill is no longer automatically provided
+That is, even if you import { Buffer } from 'buffer', it will not be automatically packaged into the browser unless you handle it manually.
+- Solution: We use a tool called react-app-rewired to modify webpack config and add polyfills without ejecting, create config-overrides.js in the project root directory
