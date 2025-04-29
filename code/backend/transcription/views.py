@@ -101,10 +101,20 @@ def transcribe(request):
                 )
                 print("Transcription saved in database")
 
+                # handle outputFormat from frontend
+                output_format_str = form.cleaned_data.get("outputFormat", "txt").lower()
+                if output_format_str == "pdf":
+                    file_type = FileType.PDF
+                elif output_format_str == "docx":
+                    file_type = FileType.DOCX
+                else:
+                    file_type = FileType.TXT
+
                 portal_link = f"{settings.FRONTEND_BASE_URL}/history?token={db_file.portal_token}"
                 process_transcription_and_send_email(
                     transcribed_data.id,
-                    portal_link=portal_link
+                    portal_link=portal_link,
+                    file_type=file_type
                 )
 
             except Exception as e:
