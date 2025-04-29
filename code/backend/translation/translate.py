@@ -34,10 +34,13 @@ def detect_language(text):
     return "zh" if lang.startswith("zh") else lang
 
 
-def translate_sentence_list(sentences, tokenizer, model, max_workers=8):
+def translate_sentence_list(sentences, tokenizer, model, target_lan="en", max_workers=8):
     def translate_single(sentence):
         if sentence.strip() == "":
             return ""
+        detect_lang = detect_language(sentence)
+        if detect_lang == target_lan:
+            return sentence
         inputs = tokenizer(sentence, return_tensors="pt", padding=True, truncation=True)
         translated = model.generate(**inputs)
         return tokenizer.batch_decode(translated, skip_special_tokens=True)[0]
@@ -95,15 +98,15 @@ def translate(content, target_lang="zh"):
 
         sentences = sent_tokenize(speech)
 
-        english_text = translate_sentence_list(sentences, to_en_tokenizer, to_en_model)
+        english_text = translate_sentence_list(sentences, to_en_tokenizer, to_en_model, "en")
 
         if target_lang == "en":
             final_text = english_text
         else:
             sentences_en = sent_tokenize(english_text)
-            final_text = translate_sentence_list(sentences_en, to_target_tokenizer, to_target_model)
+            final_text = translate_sentence_list(sentences_en, to_target_tokenizer, to_target_model, target_lang)
 
-        translated_blocks.append(f"{speaker_translated}: {final_text.strip()}")
+        translated_blocks.append(f"{speaker_translated}: {final_text.strip()}\n")
 
     return "\n".join(translated_blocks)
 
@@ -182,6 +185,56 @@ def test_translate():
     result = translate(mixed_language_dialogue_zh, target_lang="fr")
     print(result)
 
+    real_data_test_1 = """
+    Speaker 0: Hi Diego, what do you think about the latest politics in Chile?
+    
+    Speaker 1: Oh well to be honest we are coming presidential elections soon so it's been fun to see like from
+    
+    Speaker 0: from a distance and will the left of centre candidates.
+    
+    Speaker 1: Get in again? I'm not sure because there are like three of them now. They're still not sure which of them is going to go.
+    
+    Speaker 0: So they can like it up. What's it called? Okay.
+    """
+    print("\nTesting Swinburne University of Technology - Hawthorn Campus 1")
+    result = translate(real_data_test_1, target_lang="zh")
+    print(result)
+
+    real_data_test_2 = """
+    Speaker 0: So I can't like so
+    
+    Speaker 1: Now you've got a thumb on your web app.
+    
+    Speaker 0: buttons made from you. How is it? You can watch up, from the right.
+    
+    Speaker 1: for this weekend I'm traveling to
+    
+    Speaker 0: I might go to Perth Prolete to what is it?
+    
+    Speaker 1: called a Rothwell, Rothpress, Rothness Rothwell style.
+    
+    Speaker 0: Ruf knowonder
+    
+    Speaker 1: via Quokas.
+    """
+    print("\nTesting Swinburne University of Technology - Hawthorn Campus 2")
+    result = translate(real_data_test_2, target_lang="zh")
+    print(result)
+
+    real_data_test_3 = """
+    Speaker 1: Hi, so how was the meeting you just at?
+
+    Speaker 0: Fantastic! I met a former student I taught him yesterday.
+
+    Speaker 1: ago was lovely. Oh that's great.
+
+    Speaker 0: So what are they doing now? They are freelancing, they're working as designers and but they will dig out
+
+    Speaker 1: they are there for more projects.
+    """
+    print("\nTesting Swinburne University of Technology - Hawthorn Campus 3")
+    result = translate(real_data_test_3, target_lang="zh")
+    print(result)
 
 if __name__ == "__main__":
     test_translate()
