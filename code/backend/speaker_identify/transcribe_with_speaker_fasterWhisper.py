@@ -28,13 +28,14 @@ def transcribe_with_speaker_fasterWhisper(audioPath):
     print("1. load audio and reduce noise...")
     y_denoised, sr = reduce_noise(wav_fpath)
     
-    # 2. 将降噪后音频写入内存缓冲（WAV 格式）
+    # 2. write to buffer
+    print("2. write to buffer...")
     buf = io.BytesIO()
     sf.write(buf, y_denoised, sr, format="WAV")
     buf.seek(0)
 
-    # 3. 说话人分离
-    print("2. 执行说话人分离…")
+    # 3. speaker diarization
+    print("3. perform speaker diarization...")
     if torch.cuda.is_available():
         diarizer_device = "cuda"
     elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
@@ -42,31 +43,33 @@ def transcribe_with_speaker_fasterWhisper(audioPath):
     else:
         diarizer_device = "cpu"
     print(f"Pyannote device used: {diarizer_device}")
-
+    # load the pre-trained model
     diarizer = Pipeline.from_pretrained(
         "pyannote/speaker-diarization-3.1",
         #use_auth_token=HF_TOKEN
     ).to(torch.device("cpu"))
-    # 直接使用内存流进行分离
+    # we use wav file path instead of buffer because the original file is more accurate
     diarization = diarizer({"uri": "meeting", "audio": wav_fpath})
-    # 提取每个分段 (start, end, speaker)
+    # extract segments with speaker labels
     segments = [(turn.start, turn.end, spk)
                 for turn, _, spk in diarization.itertracks(yield_label=True)]
     if not segments:
-        print("Warning: 没有检测到任何说话人片段。")
+        print("Warning: No segments found. Please check the audio file.")
+        return []
 
-    # 4. 依次转录每段并显示进度
-    print("3. 转录并显示进度…")
+    # 4. for each segment, transcribe and show progress
+    print("4. transcribe and show progress...")
+    # no mps support for faster_Whisper yet
     whisper_device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Whisper device used: {whisper_device}")
     model = WhisperModel("medium", device=whisper_device, compute_type="int8")
     transcripts = []
-    total_duration = segments[-1][1]  # 以最后一段的 end 作为总时长估计
+    total_duration = segments[-1][1]  # use the end time of the last segment
 
-    with tqdm(total=total_duration, unit="s", desc="转录进度") as pbar:
+    with tqdm(total=total_duration, unit="s", desc="transcription progress") as pbar:
         elapsed = 0.0
         for start, end, speaker in segments:
-            # 从缓冲中读取对应片段
+            # for each segment, we need to read the audio data from the buffer
             buf.seek(0)
             data, _ = sf.read(buf,
                                 dtype="float32",
@@ -76,13 +79,14 @@ def transcribe_with_speaker_fasterWhisper(audioPath):
             sf.write(buf2, data, sr, format="WAV")
             buf2.seek(0)
 
-            # 转录
+            # transcribe the segment
+            # here the parameters are set to default values
             segments_out, info = model.transcribe(
                 buf2,
                 beam_size=5,
-                initial_prompt="meeting record",  # 可根据领域调整
+                initial_prompt="meeting record",  # can change to other prompts
                 word_timestamps=False,
-                log_progress=False               # 这是针对于每一个segment的个人进度，整体已由外层 tqdm 打印
+                log_progress=False  # this is for the segment progress, the overall progress is printed by the outer tqdm
             )
             text = " ".join(seg.text for seg in segments_out)
 
