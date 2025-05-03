@@ -25,17 +25,17 @@ def transcribe_with_speaker_fasterWhisper(audioPath):
     wav_fpath = Path(audio_file_path)
 
     # 1. load audio and reduce noise
-    print("1. load audio and reduce noise...")
+    print(f"Loading audio file: {wav_fpath}...")
     y_denoised, sr = reduce_noise(wav_fpath)
     
     # 2. write to buffer
-    print("2. write to buffer...")
     buf = io.BytesIO()
     sf.write(buf, y_denoised, sr, format="WAV")
     buf.seek(0)
+    print("Audio loaded and noise reduced.")
 
     # 3. speaker diarization
-    print("3. perform speaker diarization...")
+    print("Processing speaker diarization...")
     if torch.cuda.is_available():
         diarizer_device = "cuda"
     elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
@@ -56,9 +56,10 @@ def transcribe_with_speaker_fasterWhisper(audioPath):
     if not segments:
         print("Warning: No segments found. Please check the audio file.")
         return []
+    print("Speaker diarization completed.")
 
     # 4. for each segment, transcribe and show progress
-    print("4. transcribe and show progress...")
+    print("Transcribing segments...")
     # no mps support for faster_Whisper yet
     whisper_device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Whisper device used: {whisper_device}")
@@ -90,33 +91,26 @@ def transcribe_with_speaker_fasterWhisper(audioPath):
             )
             text = " ".join(seg.text for seg in segments_out)
 
-            # 更新进度条
+            # update the progress bar
             pbar.update(end - elapsed)
             elapsed = end
             pbar.set_postfix_str(f"Speaker {speaker}")
 
-            # 处理转录结果
-            if not re.search(r'\w', text):
-                print(f"Warning: 转录结果为空，可能是音频片段过短或无语音。")
-                continue
-            # 合并相同说话人的文本
-            if (transcripts != [] and speaker == transcripts[-1][2]):
-                # 如果当前说话人与上一个相同，则合并文本
-                transcripts[-1] = (
-                    transcripts[-1][0],
-                    end,
-                    speaker,
-                    transcripts[-1][3] + " " + text
-                )
-            else:
-                # 否则添加新记录
-                transcripts.append((start, end, speaker, text))
-
+            # add the transcript to the list
+            transcripts.append((start, end, speaker, text))
     print(transcripts)
+    
+    # clean up the transcripts
+    cleaned_transcripts = cleanup_transcripts(transcripts)
 
-    # 5. 打印最终结果
-    print("\n=== 转录与分离结果 ===")
-    for start, end, spk, txt in sorted(transcripts, key=lambda x: x[0]):
+    # format the transcripts
+    # formatted_transcripts = format_transcripts(cleaned_transcripts)
+
+    # print(formatted_transcripts)
+
+    # 5. print the results
+    print("\n=== Transcription Results: ===")
+    for start, end, spk, txt in sorted(cleaned_transcripts, key=lambda x: x[0]):
         print(f"[{start:.2f}-{end:.2f}] Speaker {spk}: {txt}")
 
     return transcripts
@@ -136,6 +130,7 @@ def convert_to_wav(file_path):
         print(e)
         return None
     
+
 def reduce_noise(wav_fpath):
     """
     Use noisereduce to reduce noise in the audio file.
@@ -155,3 +150,45 @@ def reduce_noise(wav_fpath):
     y, sr = librosa.load(wav_fpath, sr=None)      # keep original sample rate
     y_denoised = nr.reduce_noise(y=y, sr=sr, **nr_kwargs)     # apply noise reduction
     return y_denoised, sr
+
+
+def cleanup_transcripts(transcripts):
+    """
+    Clean up the transcripts by removing empty segments and combining consecutive segments with the same speaker.
+    """
+    cleaned_transcripts = []
+    for start, end, speaker, text in transcripts:
+        # remove segments with no text
+        if not re.search(r'\w', text):
+            print(f"Warning: Speaker {speaker} at [{start:.2f}-{end:.2f}] has no text. Skipping.")
+            continue
+        # combine consecutive segments with the same speaker
+        if (cleaned_transcripts != [] and speaker == cleaned_transcripts[-1][2]):
+            # if the last segment is the same speaker, combine them
+            cleaned_transcripts[-1] = (
+                cleaned_transcripts[-1][0],
+                end,
+                speaker,
+                cleaned_transcripts[-1][3] + " " + text
+            )
+        else:
+            # else, add a new segment
+            cleaned_transcripts.append((start, end, speaker, text))
+    return cleaned_transcripts
+
+
+# def format_transcripts(transcripts):
+#     """
+#     Format the transcripts to a more readable format.
+#     """
+#     formatted_transcripts = []
+#     for start, end, speaker, text in transcripts:
+#         # format the start and end times to 2 decimal places
+#         start = f"{start:.2f}"
+#         end = f"{end:.2f}"
+#         # speaker count starts from 1
+#         speaker = int(speaker) + 1
+#         # format the text to remove extra spaces
+#         text = re.sub(r'\s+', ' ', text).strip()
+#         formatted_transcripts.append((start, end, speaker, text))
+#     return formatted_transcripts
