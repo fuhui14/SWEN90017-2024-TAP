@@ -118,7 +118,6 @@ def transcribe_with_speaker_fasterWhisper(audioPath):
     # clear the temporary files
     clear_file(wav_fpath)
     clear_file(audioPath)
-    os.rmdir(wav_fpath.parent)
 
     return transcripts
 
