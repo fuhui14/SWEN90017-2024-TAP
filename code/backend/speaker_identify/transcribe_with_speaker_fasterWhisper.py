@@ -108,8 +108,17 @@ def transcribe_with_speaker_fasterWhisper(audioPath):
 
     # print the results
     print("\n=== Transcription Results: ===")
-    for start, end, spk, txt in sorted(transcripts, key=lambda x: x[0]):
-        print(f"[{start:.2f}-{end:.2f}] Speaker {spk}: {txt}")
+    for item in sorted(transcripts, key=lambda x: x["start"]):
+        start = item["start"]
+        end   = item["end"]
+        spk   = item["speaker"]
+        txt   = item["text"]
+        print(f"[{start}-{end}] Speaker {spk}: {txt}")
+
+    # clear the temporary files
+    clear_file(wav_fpath)
+    clear_file(audioPath)
+    os.rmdir(wav_fpath.parent)
 
     return transcripts
 
@@ -203,3 +212,14 @@ def format_transcripts(transcripts):
             "text": text
         })
     return formatted_transcripts
+
+
+def clear_file(file_path):
+    """
+    Clear the temporary files created during the process.
+    """
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        print(f"Deleted temporary file: {file_path}")
+    else:
+        print(f"File {file_path} does not exist. Skipping deletion.")
