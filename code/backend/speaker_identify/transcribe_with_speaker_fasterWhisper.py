@@ -58,6 +58,7 @@ def transcribe_with_speaker_fasterWhisper(audioPath):
         return []
     print("Speaker diarization completed.")
 
+
     # 4. for each segment, transcribe and show progress
     print("Transcribing segments...")
     # no mps support for faster_Whisper yet
@@ -98,22 +99,19 @@ def transcribe_with_speaker_fasterWhisper(audioPath):
 
             # add the transcript to the list
             transcripts.append((start, end, speaker, text))
-    print(transcripts)
     
     # clean up the transcripts
-    cleaned_transcripts = cleanup_transcripts(transcripts)
+    transcripts = cleanup_transcripts(transcripts)
 
     # format the transcripts
-    formatted_transcripts = format_transcripts(cleaned_transcripts)
+    transcripts = format_transcripts(transcripts)
 
-    print(formatted_transcripts)
-
-    # 5. print the results
+    # print the results
     print("\n=== Transcription Results: ===")
-    for start, end, spk, txt in sorted(cleaned_transcripts, key=lambda x: x[0]):
+    for start, end, spk, txt in sorted(transcripts, key=lambda x: x[0]):
         print(f"[{start:.2f}-{end:.2f}] Speaker {spk}: {txt}")
 
-    return formatted_transcripts
+    return transcripts
 
 
 def convert_to_wav(file_path):
