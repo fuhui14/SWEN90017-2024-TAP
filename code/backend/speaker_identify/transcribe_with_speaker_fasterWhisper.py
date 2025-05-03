@@ -24,37 +24,10 @@ def transcribe_with_speaker_fasterWhisper(audioPath):
     audio_file_path = convert_to_wav(audioPath)
     wav_fpath = Path(audio_file_path)
 
-
     # 1. load audio and reduce noise
     print("1. load audio and reduce noise...")
-    # y_denoised = reduce_noise(wav_fpath)
-
-
-    nr_kwargs = {
-        # FFT 大小（2 的幂次方可加速底层 FFT 实现）
-        "n_fft": 2048,                                    # :contentReference[oaicite:1]{index=1}
-        # 窗口长度，默认为 n_fft，保持频域分辨率
-        "win_length": 2048,                               # :contentReference[oaicite:2]{index=2}
-        # 帧移长度，通常取 n_fft 的 1/4 至 1/2
-        "hop_length": 512,                                # :contentReference[oaicite:3]{index=3}
-        # 噪声减少比例（0.0–1.0），0.8 适中兼顾去噪与保真
-        "prop_decrease": 0.8,                             # :contentReference[oaicite:4]{index=4}
-        # 关闭静态模式，启用非平稳噪声算法，自动随时间更新门限
-        "stationary": False,                              # :contentReference[oaicite:5]{index=5}
-        # 非平稳算法的时间常数（秒），控制门限平滑幅度
-        "time_constant_s": 2.0,                           # :contentReference[oaicite:6]{index=6}
-        # 频域掩码在 Hz 维度的平滑范围
-        "freq_mask_smooth_hz": 500,                       # :contentReference[oaicite:7]{index=7}
-        # 时域掩码在 ms 维度的平滑范围
-        "time_mask_smooth_ms": 50,                        # :contentReference[oaicite:8]{index=8}
-        # 静态模式阈值倍数，仅在 stationary=True 时生效
-        "n_std_thresh_stationary": 1.5,                   # :contentReference[oaicite:9]{index=9}
-    }
-
-
-    y, sr = librosa.load(wav_fpath, sr=None)      # 保持原采样率
-    y_denoised = nr.reduce_noise(y=y, sr=sr, **nr_kwargs)     # 频谱门控降噪
-
+    y_denoised, sr = reduce_noise(wav_fpath)
+    
     # 2. 将降噪后音频写入内存缓冲（WAV 格式）
     buf = io.BytesIO()
     sf.write(buf, y_denoised, sr, format="WAV")
@@ -146,6 +119,9 @@ def transcribe_with_speaker_fasterWhisper(audioPath):
 
 
 def convert_to_wav(file_path):
+    """
+    Convert audio file to WAV format using pydub.
+    """
     try:
         file_name = os.path.splitext(file_path)[0]
         output_file = f"{file_name}.wav"
@@ -155,3 +131,23 @@ def convert_to_wav(file_path):
     except Exception as e:
         print(e)
         return None
+    
+def reduce_noise(wav_fpath):
+    """
+    Use noisereduce to reduce noise in the audio file.
+    """
+    nr_kwargs = {
+        "n_fft": 2048,                                    # :contentReference[oaicite:1]{index=1}
+        "win_length": 2048,                               # :contentReference[oaicite:2]{index=2}
+        "hop_length": 512,                                # :contentReference[oaicite:3]{index=3}
+        "prop_decrease": 0.8,                             # :contentReference[oaicite:4]{index=4}
+        "stationary": False,                              # :contentReference[oaicite:5]{index=5}
+        "time_constant_s": 2.0,                           # :contentReference[oaicite:6]{index=6}
+        "freq_mask_smooth_hz": 500,                       # :contentReference[oaicite:7]{index=7}
+        "time_mask_smooth_ms": 50,                        # :contentReference[oaicite:8]{index=8}
+        "n_std_thresh_stationary": 1.5,                   # :contentReference[oaicite:9]{index=9}
+    }
+
+    y, sr = librosa.load(wav_fpath, sr=None)      # keep original sample rate
+    y_denoised = nr.reduce_noise(y=y, sr=sr, **nr_kwargs)     # apply noise reduction
+    return y_denoised, sr
