@@ -169,14 +169,17 @@ def cleanup_transcripts(transcripts):
             print(f"Warning: Speaker {speaker} at [{start:.2f}-{end:.2f}] has no text. Skipping.")
             continue
         # combine consecutive segments with the same speaker
-        if (cleaned_transcripts != [] and speaker == cleaned_transcripts[-1][2]):
+        if (cleaned_transcripts and speaker == cleaned_transcripts[-1][2]):
             # if the last segment is the same speaker, combine them
-            cleaned_transcripts[-1] = (
-                cleaned_transcripts[-1][0],
-                end,
-                speaker,
-                cleaned_transcripts[-1][3] + " " + text
-            )
+            prev_start, _, prev_speaker, prev_text = cleaned_transcripts[-1]
+
+            # if the last segment does not end with a punctuation mark(e.g . ? !), add a period
+            if not re.search(r'[。\.!\?]$', prev_text.strip()):
+                prev_text = prev_text.rstrip() + "."
+
+            # merge the text and update the end time
+            merged_text = prev_text + " " + text.lstrip()
+            cleaned_transcripts[-1] = (prev_start, end, speaker, merged_text)
         else:
             # else, add a new segment
             cleaned_transcripts.append((start, end, speaker, text))
