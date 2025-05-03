@@ -104,16 +104,16 @@ def transcribe_with_speaker_fasterWhisper(audioPath):
     cleaned_transcripts = cleanup_transcripts(transcripts)
 
     # format the transcripts
-    # formatted_transcripts = format_transcripts(cleaned_transcripts)
+    formatted_transcripts = format_transcripts(cleaned_transcripts)
 
-    # print(formatted_transcripts)
+    print(formatted_transcripts)
 
     # 5. print the results
     print("\n=== Transcription Results: ===")
     for start, end, spk, txt in sorted(cleaned_transcripts, key=lambda x: x[0]):
         print(f"[{start:.2f}-{end:.2f}] Speaker {spk}: {txt}")
 
-    return transcripts
+    return formatted_transcripts
 
 
 def convert_to_wav(file_path):
@@ -177,18 +177,31 @@ def cleanup_transcripts(transcripts):
     return cleaned_transcripts
 
 
-# def format_transcripts(transcripts):
-#     """
-#     Format the transcripts to a more readable format.
-#     """
-#     formatted_transcripts = []
-#     for start, end, speaker, text in transcripts:
-#         # format the start and end times to 2 decimal places
-#         start = f"{start:.2f}"
-#         end = f"{end:.2f}"
-#         # speaker count starts from 1
-#         speaker = int(speaker) + 1
-#         # format the text to remove extra spaces
-#         text = re.sub(r'\s+', ' ', text).strip()
-#         formatted_transcripts.append((start, end, speaker, text))
-#     return formatted_transcripts
+def format_transcripts(transcripts):
+    """
+    format the transcripts to unify the format
+    format: {
+        "start": start_time,
+        "end": end_time,
+        "speaker": speaker_id,
+        "text": text
+    }
+    where start_time and end_time are in seconds with 2 decimal places
+    and speaker_id is an integer starting from 1.
+    """
+    formatted_transcripts = []
+    for start, end, speaker, text in transcripts:
+        # format the start and end times to 2 decimal places
+        start = f"{start:.2f}"
+        end = f"{end:.2f}"
+        # speaker count starts from 1
+        speaker = int(speaker.split("_")[-1]) + 1
+        # format the text to remove extra spaces
+        text = re.sub(r'\s+', ' ', text).strip()
+        formatted_transcripts.append({
+            "start": start, 
+            "end": end, 
+            "speaker": speaker, 
+            "text": text
+        })
+    return formatted_transcripts
