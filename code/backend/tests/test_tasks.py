@@ -5,6 +5,9 @@ from transcription.tasks import process_transcription_and_send_email, cleanup_ex
 from django.utils import timezone
 import datetime
 from freezegun import freeze_time
+from unittest.mock import patch
+from emails.send_email import FileType
+import uuid
 
 
 @pytest.mark.django_db
@@ -69,3 +72,66 @@ def test_cleanup_expired_files():
     assert File.objects.filter(email="expired@example.com").count() == 0
     assert File.objects.filter(email="recent@example.com").count() == 1
     assert "1" in result or "deleted" in result
+
+
+@pytest.mark.django_db
+@patch("transcription.tasks.send_email")
+def test_transcription_email_body_content(mock_send_email):
+    file = File.objects.create(
+        email="user@example.com",
+        upload_id=uuid.uuid4(),
+        original_filename="test.wav",
+        storage_path="dummy/path/test.wav",
+        file_size=1234,
+        status="uploaded"
+    )
+
+    transcription = Transcription.objects.create(
+        file=file,
+        transcribed_text="This is the actual transcription content."
+    )
+
+    # Call the function
+    process_transcription_and_send_email(
+        transcription.id,
+        portal_link="http://dummy.portal/link",
+        file_type=FileType.PDF
+    )
+
+    assert mock_send_email.called
+
+    args, kwargs = mock_send_email.call_args
+
+    receiver = kwargs["receiver"]
+    subject = kwargs["subject"]
+    content = kwargs["content"]
+    file_content = kwargs["file_content"]
+    file_type = kwargs["file_type"]
+
+    print("\n=== EMAIL RECEIVER ===")
+    print(receiver)
+    print("\n=== EMAIL SUBJECT ===")
+    print(subject)
+    print("\n=== EMAIL BODY ===")
+    print(content)
+    print("\n=== FILE TYPE ===")
+    print(file_type)
+
+    if file_type == FileType.PDF:
+        expected_ext = ".pdf"
+    elif file_type == FileType.DOCX:
+        expected_ext = ".docx"
+    elif file_type == FileType.TXT:
+        expected_ext = ".txt"
+    else:
+        expected_ext = None
+
+    assert receiver == "user@example.com"
+    assert "Transcription Result" in subject
+    assert content.startswith("Here is your transcription result.")
+    assert "http://dummy.portal/link" in content
+    assert "actual transcription content" in file_content
+
+    if expected_ext:
+        assert file_type.name.lower() in expected_ext, f"Attachment extension mismatch: {expected_ext}"
+
