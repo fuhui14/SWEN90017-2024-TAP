@@ -1,13 +1,20 @@
+/* ---------------- main centred wrapper ---------------- */
+.container {
+    max-width: 900px;
+    margin: 2rem auto;        /* centre on page */
+    text-align: center;
+}
+
 /* 让标题和说明文字对齐 */
 .container h1 {
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 10px;
     display: block;
-    color: #0b3a6f; /* 深蓝色，匹配网站整体风格 */
+    color: #0b3a6f;           /* 深蓝色 */
 }
 
-/* 错误信息样式 */
+/* ---------------- error box ---------------- */
 .error {
     color: red;
     font-size: 16px;
@@ -21,7 +28,7 @@
     max-width: 50%;
 }
 
-/* 表格样式 */
+/* ---------------- table ---------------- */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -33,7 +40,6 @@ table {
     overflow: hidden;
 }
 
-/* 表头样式 */
 thead {
     background-color: #0b3a6f;
     color: white;
@@ -45,20 +51,12 @@ th, td {
     border-bottom: 1px solid #ddd;
 }
 
-/* 让奇数行和偶数行颜色不同 */
-tbody tr:nth-child(odd) {
-    background-color: #f9f9f9;
-}
-
-tbody tr:nth-child(even) {
-    background-color: #ffffff;
-}
+/* 行配色 */
+tbody tr:nth-child(odd)  { background: #f9f9f9; }
+tbody tr:nth-child(even) { background: #ffffff; }
 
 /* 过期日期高亮 */
-.expiring-soon {
-    color: red;
-    font-weight: bold;
-}
+.expiring-soon { color: red; font-weight: bold; }
 
 /* 状态标签 */
 .status {
@@ -68,29 +66,39 @@ tbody tr:nth-child(even) {
     font-size: 14px;
     font-weight: bold;
 }
-
-/* 任务已完成 */
 .status.completed {
     background-color: #d4edda;
     color: #155724;
 }
 
-/* 下载按钮 */
+/* ---------------- lighter DOWNLOAD button ---------------- */
 .download-btn {
-    background-color: #ddd;
-    color: black;
-    font-size: 20px;
-    text-decoration: none;
+    background: transparent;        /* ✅ 默认透明 */
+    border: none;
+    border-radius: 8px;
+    padding: 6px;
     cursor: pointer;
-    transition: color 0.3s ease;
+    transition: background-color 0.25s ease;
 }
-.pagination button{
+
+.download-btn:hover {
+    background-color: #0e1622;      /* ✅ 悬浮时浅蓝 */
+}
+
+
+.download-btn img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* ---------------- pagination ---------------- */
+.pagination button {
     margin-top: 2%;
     margin-left: 1%;
     color: black;
     background-color: #ddd;
 }
-
 .pagination button.active {
     background-color: #0b3a6f;
     color: white;
@@ -98,21 +106,14 @@ tbody tr:nth-child(even) {
     border: 2px solid #0b3a6f;
 }
 
-.download-btn:hover {
-    color: #0b3a6f;
-}
+/* 下载图标以外的通用按钮悬停 */
+button:hover { background-color: #002244; }
 
-/* 按钮悬停效果 */
-button:hover {
-    background-color: #002244;
-}
-
-/* 调整header样式，与about.css匹配 */
+/* ---------------- header (一致于 about.css) ---------------- */
 .header {
     background-color: #0b3a6f;
     padding: 1rem 0;
 }
-
 .nav-container {
     width: 90%;
     margin: 0 auto;
@@ -120,10 +121,7 @@ button:hover {
     align-items: center;
     justify-content: space-between;
 }
-
-.logo img {
-    height: 40px;
-}
+.logo img  { height: 40px; }
 
 .nav-links a {
     color: #fff;
@@ -131,12 +129,9 @@ button:hover {
     text-decoration: none;
     font-weight: 500;
 }
+.nav-links a:hover { text-decoration: underline; }
 
-.nav-links a:hover {
-    text-decoration: underline;
-}
-
-/* 页脚（footer）样式，匹配about.css */
+/* ---------------- footer ---------------- */
 .footer {
     height: 40px;
     display: flex;
@@ -146,7 +141,6 @@ button:hover {
     padding: 10px 50px;
     font-size: 0.7em;
 }
-
 .footer p {
     color: white;
     font-size: small;
