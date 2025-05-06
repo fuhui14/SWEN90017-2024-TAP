@@ -331,11 +331,35 @@ select:focus {
 
 /* ---------- 调整纵向与横向间距 ---------- */
 
-/* 整体内容块：离导航条再远些，列间距稍收窄 */
+/* ---- 统一间距最终定稿 ---- */
 .container {
-  margin-top: 4rem;   /* ↑ 这里控制与导航条的距离，可再调大/小 */
-  gap: 0rem;          /* 原先 5.5rem → 4rem，让左右板块靠近一些 */
+  margin-top: 4rem !important;   /* 导航条到主体的垂直距离 */
+  gap: 4rem !important;          /* 左列与右列的水平间距 */
 }
 
-/* 如之前有 .container { gap:5.5rem; … } 这一条，
-   请确保这段代码位于它之后，或直接替换旧值。*/
+/* ========= 最终固定版式（居中、列距 4rem，顶部留白） ========= */
+.container {
+  max-width: 100% !important;    /* 整体更宽 */
+  margin-top: 3rem !important;  /* 导航条与主体间距 */
+  padding-left: 4%;
+  padding-right: 4%;
+  gap: 0rem !important;         /* 左列 / 右列横向距离 */
+}
+
+/* 上传区 drag‑box 稍大（85%） */
+.upload-box { width: 80% !important; }
+
+/* 右侧输入框、下拉占满列宽但给上限 */
+.input-section input[type="email"],
+.input-section select {
+  width: 100% !important;
+  max-width: 460px;
+}
+
+/* 让上传框无论宽度多少都水平居中 */
+.upload-box {
+  width: 90%;            /* 你想要的宽度 */
+  margin: 0 auto;        /* 关键：左右自动外边距，居中 */
+  /* 若已使用 flex，可改为 align-self:center; 效果一致 */
+}
+
