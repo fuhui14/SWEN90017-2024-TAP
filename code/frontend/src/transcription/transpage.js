@@ -215,7 +215,7 @@ function Transpage() {
 
           {/* block‑2 */}
           <div className="form-block">
-            <h3>Select output format</h3>
+            <h3>Select output file format</h3>
             <p>Choose your desired transcription file type.</p>
             <select name="outputFormat">
               <option value="docx">docx</option>
