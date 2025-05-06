@@ -201,3 +201,57 @@ button:hover {
     margin: 0; /* Adjust as needed */
     align-items: center;
 }
+
+/* --------- 下载按钮透明 + hover 浅蓝 --------- */
+.download-btn {
+    background: transparent;      /* 透明背景 */
+    border: none;
+    border-radius: 8px;
+    padding: 6px;
+    cursor: pointer;
+    transition: background-color .25s ease;
+}
+
+.download-btn:hover:not(:disabled) {
+    background: #d4edda;          /* 浅绿色（可根据需要调整） */
+}
+
+.download-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* 让标题水平居中 */
+.file-result h3 { text-align: center; }
+
+/* 1. 让按钮区与表格空一大段 */
+.buttons-with-gap { margin-top: 9rem; }
+
+/* 2. 自定义 tooltip */
+.tooltip-wrapper { position:relative; display:inline-block; }
+
+.history-tooltip{
+  position:absolute; bottom:120%; left:50%; transform:translateX(-50%);
+  width:260px; background:#002244; color:#fff;
+  padding:10px 14px; border-radius:8px; font-size:0.9rem; line-height:1.4;
+  text-align:center; box-shadow:0 2px 8px rgba(0,0,0,.2);
+  opacity:0; visibility:hidden; transition:opacity .25s ease; z-index:50;
+}
+.history-tooltip::after{
+  content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%);
+  border:8px solid transparent; border-top-color:#002244;
+}
+.tooltip-wrapper:hover .history-tooltip{
+  opacity:1; visibility:visible;
+}
+
+/* 让 tooltip-wrapper 拥有固定宽度，与其它按钮保持一致 */
+.tooltip-wrapper {
+    width: 30%;                  /* 与 .buttons > button 的 30% 一致 */
+    display: flex;
+    justify-content: center;     /* 让内部按钮水平居中 */
+  }
+  
+  /* wrapper 内的按钮占满自身宽度 */
+  .tooltip-wrapper button { width: 100%; }
+  
