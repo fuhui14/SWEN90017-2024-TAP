@@ -227,6 +227,7 @@ function Transpage() {
             <option value="english">English</option>
             <option value="spanish">Spanish</option>
             <option value="french">French</option>
+            <option value="mandarin">Mandarin</option>
           </select>
         </div>
 
