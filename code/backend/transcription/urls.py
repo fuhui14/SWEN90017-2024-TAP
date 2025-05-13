@@ -6,4 +6,5 @@ urlpatterns = [
     path('', views.transcribe, name='transcribe'),
     path('historylogin/', views.send_history_portal_link, name='history-login'),
     path('history/<str:token>/', transcription_history_by_token, name='transcription-history-by-token'),
+    path("api/status/<uuid:task_id>/", views.task_status_view),
 ]

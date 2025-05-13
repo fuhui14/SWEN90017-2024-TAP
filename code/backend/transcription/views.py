@@ -13,6 +13,7 @@ from django.views.decorators.http import require_GET
 from pathlib import Path
 import shutil
 import whisper
+import threading
 
 from speaker_identify.identify_service import transcribe_with_speaker
 from .forms import UploadFileForm
@@ -20,6 +21,8 @@ from .models import File, Transcription
 from .tasks import process_transcription_and_send_email
 from emails.send_email import send_email, FileType
 from emails.utils import send_error_report_email
+from transcription.thread_worker import transcribe_audio_task
+from transcription.task_registry import task_status, task_result, task_lock
 
 # load whisper model when the server starts
 model = whisper.load_model("base")
@@ -88,43 +91,25 @@ def transcribe(request):
                 return JsonResponse({'error': f'Database error: Unable to save file metadata: {str(e)}'}, status=500)
 
             # transcribe the audio file
-            try:
-                print(f"Starting transcription for file: {file_path}")
-                if not os.path.exists(file_path):
-                    raise FileNotFoundError(f"The file at {file_path} does not exist")
-                # transcribe the audio file
-                transcription_with_speaker = transcribe_with_speaker(file_path)
+            # using threading to avoid blocking the request
+            # generate a unique task ID
+            task_id = str(uuid.uuid4())
 
-                transcribed_data = Transcription.objects.create(
-                    file=db_file,
-                    transcribed_text=transcription_with_speaker
-                )
-                print("Transcription saved in database")
+            # handle output format from the frontend
+            output_format_str = form.cleaned_data.get("outputFormat", "txt").lower()
+            portal_link = f"{settings.FRONTEND_BASE_URL}/history?token={db_file.portal_token}"
 
-                # handle outputFormat from frontend
-                output_format_str = form.cleaned_data.get("outputFormat", "txt").lower()
-                if output_format_str == "pdf":
-                    file_type = FileType.PDF
-                elif output_format_str == "docx":
-                    file_type = FileType.DOCX
-                else:
-                    file_type = FileType.TXT
+            with task_lock:
+                task_status[task_id] = "queued"
 
-                portal_link = f"{settings.FRONTEND_BASE_URL}/history?token={db_file.portal_token}"
-                process_transcription_and_send_email(
-                    transcribed_data.id,
-                    portal_link=portal_link,
-                    file_type=file_type
-                )
+            t = threading.Thread(
+                target=transcribe_audio_task,
+                args=(task_id, db_file, file_path, email, output_format_str, portal_link),
+                daemon=True
+            )
+            t.start()
 
-            except Exception as e:
-                print(f"Error during transcription or saving transcription for file {file_path}: {e}")
-                send_error_report_email(email, str(e))
-                return JsonResponse({'error': f'Transcription error: {str(e)}'}, status=500)
-
-            # return the transcription result
-            print("Returning transcription result")
-            return JsonResponse({"transcription": transcription_with_speaker}, safe=False)
+            return JsonResponse({"task_id": task_id})
 
         else:
             print("Form is not valid")
@@ -136,24 +121,6 @@ def transcribe(request):
         print("GET request received; rendering form")
         form = UploadFileForm()
     return render(request, 'index.html', {'form': form})
-
-def transcribe_audio(audio_path):
-    print('Transcribing audio file at path: ' + audio_path)
-    try:
-        system_platform = platform.system()
-        # if the system is Windows, convert the path to a raw string
-        if system_platform == 'Windows':
-            audio_path = r'{}'.format(audio_path)
-            print('Path:::' + audio_path)
-
-        result = model.transcribe(audio_path)
-        return result
-    except FileNotFoundError as fnf_error:
-        print(f"File not found error during transcription: {fnf_error}")
-        raise
-    except Exception as e:
-        print(f"General error during transcription: {e}")
-        raise
 
 @csrf_exempt
 @require_POST
@@ -216,3 +183,20 @@ def transcription_history_by_token(request, token):
         })
 
     return JsonResponse({'history': history})
+
+# view the task status with task_id
+@require_GET
+def task_status_view(request, task_id):
+    from transcription.task_registry import task_status, task_result
+
+    status = task_status.get(task_id)
+    if not status:
+        return JsonResponse({"status": "not_found"}, status=404)
+
+    response = {"status": status}
+    if status == "completed":
+        response["transcription"] = task_result.get(task_id)
+    elif status == "error":
+        response["error"] = task_result.get(task_id)
+
+    return JsonResponse(response)
