@@ -291,7 +291,7 @@ select:focus {
 .transcribe-footer {
   margin-top: 5rem;                  /* 主内容到底部多留 4rem */
   box-shadow: 0 -4px 12px rgba(0,0,0,.06);
-  padding: 2.75rem 0 2.5rem;           /* 上下 padding 加大 */
+  padding: 4.75rem 0 3.5rem;           /* 上下 padding 加大 */
 }
 
 /* --------- 让底部 CTA 居中排列 --------- */
@@ -321,7 +321,7 @@ select:focus {
   display:flex;
   flex-direction:column;
   align-items:center;
-  row-gap:0.8rem;          /* 按钮与提示文字间距 */
+  row-gap:2rem;          /* 按钮与提示文字间距 */
 }
 
 .transcribe-note {
@@ -340,14 +340,14 @@ select:focus {
 /* ========= 最终固定版式（居中、列距 4rem，顶部留白） ========= */
 .container {
   max-width: 100% !important;    /* 整体更宽 */
-  margin-top: 3rem !important;  /* 导航条与主体间距 */
+  margin-top: 6rem !important;  /* 导航条与主体间距 */
   padding-left: 4%;
   padding-right: 4%;
   gap: 0rem !important;         /* 左列 / 右列横向距离 */
 }
 
 /* 上传区 drag‑box 稍大（85%） */
-.upload-box { width: 80% !important; }
+.upload-box { width: 90% !important; }
 
 /* 右侧输入框、下拉占满列宽但给上限 */
 .input-section input[type="email"],
