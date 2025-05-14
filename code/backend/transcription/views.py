@@ -95,6 +95,7 @@ def transcribe(request):
             # using threading to avoid blocking the request
             # generate a unique task ID
             task_id = str(uuid.uuid4())
+            print(f"Task ID: {task_id}")
 
             # handle output format from the frontend
             output_format_str = form.cleaned_data.get("outputFormat", "txt").lower()
@@ -188,17 +189,31 @@ def transcription_history_by_token(request, token):
 def task_status_view(request, task_id):
     from transcription.task_registry import task_status, task_result
 
-    status = task_status.get(task_id)
+    #print the status of the task
+    print(f"Task status: {task_status}")
+    print(f"Task result: {task_result}")
+
+    # Convert UUID object to string for dictionary lookup
+    task_id_str = str(task_id)
+
+    status = task_status.get(task_id_str)
+    print(f"Task ID (original UUID object): {task_id}")
+    print(f"Task ID (string for lookup): {task_id_str}")
+    print(f"Task status: {status}")
     if not status:
         return JsonResponse({"status": "not_found"}, status=404)
 
     response = {"status": status}
-    if status == "completed":
-        result = task_result.pop(task_id, None)
+    if status == "processing":
+        return JsonResponse({"status": "processing"})
+    elif status == "completed":
+        # Ensure to use string representation of task_id for popping from task_result as well
+        result = task_result.pop(task_id_str, None)
         if result is None:
             return JsonResponse({"status": "expired", "message": "Result already retrieved."})
         response["transcription"] = result
     elif status == "error":
-        response["error"] = task_result.get(task_id)
+        # Ensure to use string representation of task_id for getting from task_result
+        response["error"] = task_result.get(task_id_str)
 
     return JsonResponse(response)

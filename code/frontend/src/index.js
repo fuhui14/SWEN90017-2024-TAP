@@ -5,10 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom'; // Import BrowserRouter
 
+import { Buffer } from 'buffer';
+import process from 'process';
+
+window.Buffer = Buffer;
+window.process = process;
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter> {/* Wrap App with BrowserRouter */}
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}> {/* Wrap App with BrowserRouter */}
       <App />
     </BrowserRouter>
   </React.StrictMode>

@@ -7,16 +7,19 @@ from speaker_identify.identify_service import transcribe_with_speaker
 
 # thread worker for transcribing audio
 def transcribe_audio_task(task_id, db_file, file_path, email, output_format_str, frontend_link):
+    print("Start transcribing audio, task_id: ", task_id)
     with task_lock:
         task_status[task_id] = "processing"
 
     try:
         transcription_with_speaker = transcribe_with_speaker(file_path)
-
+        print("Transcription with speaker completed, task_id: ", task_id)
         transcribed_data = Transcription.objects.create(
             file=db_file,
             transcribed_text=transcription_with_speaker
         )
+
+        print("Transcription created, task_id: ", task_id)
 
         from emails.send_email import FileType
         if output_format_str == "pdf":
@@ -32,7 +35,10 @@ def transcribe_audio_task(task_id, db_file, file_path, email, output_format_str,
             task_status[task_id] = "completed"
             task_result[task_id] = transcription_with_speaker
 
+        print("Transcription completed, task_id: ", task_id)
+
     except Exception as e:
+        print("Error transcribing audio, task_id: ", task_id)
         with task_lock:
             task_status[task_id] = "error"
             task_result[task_id] = str(e)
