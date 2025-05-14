@@ -15,6 +15,13 @@ LANG_SPEAKER_MAP = {
     "es": "Orador"
 }
 
+LANG_MAP = {
+    "english": "en",
+    "mandarin": "zh",
+    "french": "fr",
+    "spanish": "es"
+}
+
 ALLOWED_TARGET_LANGS = {"zh", "en", "fr", "es"}
 
 
@@ -75,6 +82,8 @@ def split_dialogue_blocks(content):
 
 
 def translate(content, target_lang="zh"):
+    if target_lang.lower() in LANG_MAP.keys():
+        target_lang = LANG_MAP.get(target_lang.lower())
     if target_lang not in ALLOWED_TARGET_LANGS:
         return f"Error: Unsupported target language '{target_lang}'"
 

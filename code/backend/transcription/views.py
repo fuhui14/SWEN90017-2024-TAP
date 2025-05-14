@@ -110,11 +110,13 @@ def transcribe(request):
                 else:
                     file_type = FileType.TXT
 
+                language = form.cleaned_data.get("language")
                 portal_link = f"{settings.FRONTEND_BASE_URL}/history?token={db_file.portal_token}"
                 process_transcription_and_send_email(
                     transcribed_data.id,
                     portal_link=portal_link,
-                    file_type=file_type
+                    file_type=file_type,
+                    language=language
                 )
 
             except Exception as e:
