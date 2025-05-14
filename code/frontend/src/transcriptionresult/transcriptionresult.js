@@ -8,8 +8,8 @@ import log from '../resources/icon/logo.svg';
 import downloadLogo from '../resources/icon/download.svg';
 
 function TranscriptionResult() {
-  const navigate   = useNavigate();
-  const location   = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { demoData = {} } = location.state || {};
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -48,11 +48,14 @@ function TranscriptionResult() {
     try {
       setIsDownloading(true);
       const blob = await getBlob(demoData.result, demoData.outputFormat);
-      const url  = URL.createObjectURL(blob);
-      const a    = document.createElement('a');
-      a.href     = url;
-      a.download =
-        `${demoData.file ? demoData.file.name.replace(/\.[^/.]+$/, '') : 'download'}.${demoData.outputFormat}`;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${
+        demoData.file
+          ? demoData.file.name.replace(/\.[^/.]+$/, '')
+          : 'download'
+      }.${demoData.outputFormat}`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -68,7 +71,9 @@ function TranscriptionResult() {
     <>
       {/* ---------- 顶部导航 ---------- */}
       <div className="header">
-        <div className="logo"><img src={log} alt="logo" /></div>
+        <div className="logo">
+          <img src={log} alt="logo" />
+        </div>
         <nav className="nav-links">
           <Link to="/about">About</Link>
           <Link to="/transcription">Transcription</Link>
@@ -94,12 +99,15 @@ function TranscriptionResult() {
                 <th>Expiry Date</th>
                 <th>Output Type</th>
                 <th>Status</th>
-                <th>Download</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>{demoData.file ? demoData.file.name.replace(/\.[^/.]+$/, '') : 'Unknown file'}</td>
+                <td>
+                  {demoData.file
+                    ? demoData.file.name.replace(/\.[^/.]+$/, '')
+                    : 'Unknown file'}
+                </td>
                 <td>
                   {demoData.file?.type.startsWith('audio/')
                     ? 'Audio'
@@ -109,7 +117,9 @@ function TranscriptionResult() {
                 </td>
                 <td>
                   {demoData.file &&
-                    new Date(demoData.file.lastModifiedDate).toLocaleDateString('en-GB', {
+                    new Date(
+                      demoData.file.lastModifiedDate,
+                    ).toLocaleDateString('en-GB', {
                       day: '2-digit',
                       month: 'short',
                       year: 'numeric',
@@ -118,8 +128,12 @@ function TranscriptionResult() {
                 <td>
                   {demoData.file &&
                     new Date(
-                      new Date(demoData.file.lastModifiedDate).setMonth(
-                        new Date(demoData.file.lastModifiedDate).getMonth() + 1,
+                      new Date(
+                        demoData.file.lastModifiedDate,
+                      ).setMonth(
+                        new Date(
+                          demoData.file.lastModifiedDate,
+                        ).getMonth() + 1,
                       ),
                     ).toLocaleDateString('en-GB', {
                       day: '2-digit',
@@ -128,20 +142,24 @@ function TranscriptionResult() {
                     })}
                 </td>
                 <td>{demoData.outputFormat}</td>
-                <td><span className="status-completed">Completed</span></td>
                 <td>
-                  <button
-                    className="download-btn"
-                    onClick={handleDownload}
-                    disabled={isDownloading}
-                    title="Download this transcript"
-                  >
-                    <img src={downloadLogo} alt="Download" className="download-icon" />
-                  </button>
+                  <span className="status-completed">Completed</span>
                 </td>
               </tr>
             </tbody>
           </table>
+
+          {/* ---- 表格下方醒目的下载按钮 ---- */}
+          <div className="download-area">
+            <button
+              className="download-big-btn"
+              onClick={handleDownload}
+              disabled={isDownloading}
+            >
+              <img src={downloadLogo} alt="" className="download-icon" />
+              &nbsp;{isDownloading ? 'Downloading…' : 'Download'}
+            </button>
+          </div>
         </div>
 
         {/* 底部两个操作按钮 */}
@@ -151,7 +169,8 @@ function TranscriptionResult() {
               Transcription History
             </button>
             <span className="history-tooltip">
-            Click to browse your transcription history.<br />(Records are kept for the last&nbsp;30&nbsp;days)
+              Click to browse your transcription history.<br />
+              (Records are kept for the last&nbsp;30&nbsp;days)
             </span>
           </div>
 
