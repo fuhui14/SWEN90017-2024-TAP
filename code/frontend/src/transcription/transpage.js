@@ -198,7 +198,6 @@ function Transpage() {
           {/* block‑1 */}
           <div className="form-block">
             <h3>Email address to receive results</h3>
-            <p>Please input your email address.</p>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <input
                 type="email"
@@ -216,7 +215,6 @@ function Transpage() {
           {/* block‑2 */}
           <div className="form-block">
             <h3>Select output file format</h3>
-            <p>Choose your desired transcription file type.</p>
             <select name="outputFormat">
               <option value="docx">docx</option>
               <option value="pdf">pdf</option>
@@ -227,7 +225,6 @@ function Transpage() {
           {/* block‑3 */}
           <div className="form-block">
             <h3>Select transcription language</h3>
-            <p>Choose the language for your transcript.</p>
             <select name="language">
               <option value="english">English</option>
               <option value="spanish">Spanish</option>
