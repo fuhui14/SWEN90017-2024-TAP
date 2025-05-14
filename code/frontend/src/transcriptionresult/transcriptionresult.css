@@ -255,3 +255,33 @@ button:hover {
   /* wrapper 内的按钮占满自身宽度 */
   .tooltip-wrapper button { width: 100%; }
   
+/* ====== 表格下方独立下载按钮 ====== */
+.download-area {
+    margin: 2.5rem 0 0;      /* 与表格间距 */
+    text-align: center;
+  }
+  
+  .download-big-btn {
+    background: #002244;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .25s ease;
+  }
+  
+  .download-big-btn:hover:not(:disabled) { background:#094183; }
+  .download-big-btn:disabled            { opacity:.6; cursor:not-allowed; }
+  
+  .download-big-btn .download-icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    filter: invert(1);       /* 让图标在深色背景下呈白色 */
+  }
+  
+  /* 保留原来的 .download-icon 用于表格中的小图标（如果仍需要） */
+  
