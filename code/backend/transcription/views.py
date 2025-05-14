@@ -95,7 +95,7 @@ def transcribe(request):
             # using threading to avoid blocking the request
             # generate a unique task ID
             task_id = str(uuid.uuid4())
-            print(f"Task ID: {task_id}")
+            print(f"New Task ID: {task_id}")
 
             # handle output format from the frontend
             output_format_str = form.cleaned_data.get("outputFormat", "txt").lower()
@@ -189,17 +189,10 @@ def transcription_history_by_token(request, token):
 def task_status_view(request, task_id):
     from transcription.task_registry import task_status, task_result
 
-    #print the status of the task
-    print(f"Task status: {task_status}")
-    print(f"Task result: {task_result}")
-
     # Convert UUID object to string for dictionary lookup
     task_id_str = str(task_id)
 
     status = task_status.get(task_id_str)
-    print(f"Task ID (original UUID object): {task_id}")
-    print(f"Task ID (string for lookup): {task_id_str}")
-    print(f"Task status: {status}")
     if not status:
         return JsonResponse({"status": "not_found"}, status=404)
 

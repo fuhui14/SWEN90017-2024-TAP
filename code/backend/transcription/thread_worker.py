@@ -13,13 +13,10 @@ def transcribe_audio_task(task_id, db_file, file_path, email, output_format_str,
 
     try:
         transcription_with_speaker = transcribe_with_speaker(file_path)
-        print("Transcription with speaker completed, task_id: ", task_id)
         transcribed_data = Transcription.objects.create(
             file=db_file,
             transcribed_text=transcription_with_speaker
         )
-
-        print("Transcription created, task_id: ", task_id)
 
         from emails.send_email import FileType
         if output_format_str == "pdf":
