@@ -134,49 +134,111 @@ function Transpage() {
     // Retrieve CSRF token
     const csrftoken = getCookie('csrftoken');
 
+    const handleSubmit = async () => {
+      const API_BASE_URL =
+        process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
+    
+
     // Send data to the backend
-    try {
-      const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
-      const response = await fetch(`${API_BASE_URL}/transcription/`, {
-        method: 'POST',
-        headers: {
-          'X-CSRFToken': csrftoken,
-        },
-        body: formData,
-        credentials: 'include',
-      });
+      try {
 
-      if (response.ok) {
-        const Data = await response.json();
-        console.log(Data);
-        const formattedTranscription = Data.transcription
-          .map((item) => `Speaker ${item.speaker}: ${item.text}`)
-          .join('\n\n');
-
-        console.log(formattedTranscription);
-        alert('Files uploaded successfully!');
-        demoData.append('result', formattedTranscription);
-
-        // Convert formData to a plain object for demonstration purposes
-        const formDataObject = {};
-        demoData.forEach((value, key) => {
-          formDataObject[key] = value;
+        const uploadResp = await fetch(`${API_BASE_URL}/transcription/`, {
+          method: "POST",
+          headers: { "X-CSRFToken": csrftoken },
+          body: formData,
+          credentials: "include",
         });
-        console.log(demoData);
-        console.log(formDataObject);
-        console.log('navigating....');
 
-        setIsSubmitting(false);
-        navigate('/transcription/transcriptionresult', { state: { demoData: formDataObject } });
-      } else {
-        const errorData = await response.json();
-        const errorMessage = errorData.error;
-        alert(`Error: ${errorMessage}`);
+        if (!uploadResp.ok) {
+          const err = await uploadResp.json();
+          window.alert(`上传失败：${err.error || uploadResp.statusText}`);
+          return;
+        }
+
+        const { task_id } = await uploadResp.json();
+        console.log("Task ID:", task_id);
+        window.alert("Start processing…");
+
+        const pollInterval = 3000; 
+        let pollTimer = null;
+
+        const pollStatus = async () => {
+          try {
+            const statusResp = await fetch(
+              `${API_BASE_URL}/api/status/${task_id}/`,
+              { credentials: "include" }
+            );
+
+            if (!statusResp.ok) {
+              console.error("Error", statusResp.status);
+              return;
+            }
+
+            const data = await statusResp.json();
+            console.log("Current Status:", data);
+
+            if (data.status === "queued") {
+              console.log(`In Queue…`);
+            } else if (data.status === "processing") {
+              console.log("Processing…");
+            } else if (data.status === "completed") {
+              clearInterval(pollTimer);
+              const formatted = data.transcription
+                .map((seg) => `Speaker ${seg.speaker}: ${seg.text}`)
+                .join("\n\n");
+              window.alert("Task complete：\n\n" + formatted);
+            } else if (data.status === "error" || data.status === "expired") {
+              clearInterval(pollTimer);
+              window.alert(`Task fail：${data.error || "unknown"}`);
+            }
+          } catch (e) {
+            console.error("Error：", e);
+          }
+        };
+
+        pollTimer = setInterval(pollStatus, pollInterval);
+        // const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
+        // const response = await fetch(`${API_BASE_URL}/transcription/`, {
+        //   method: 'POST',
+        //   headers: {
+        //     'X-CSRFToken': csrftoken,
+        //   },
+        //   body: formData,
+        //   credentials: 'include',
+        // });
+        // 
+        // if (response.ok) {
+        //   const Data = await response.json();
+        //   console.log(Data);
+        //   const formattedTranscription = Data.transcription
+        //     .map((item) => `Speaker ${item.speaker}: ${item.text}`)
+        //     .join('\n\n');
+
+        //   console.log(formattedTranscription);
+        //   alert('Files uploaded successfully!');
+        //   demoData.append('result', formattedTranscription);
+
+        //   // Convert formData to a plain object for demonstration purposes
+        //   const formDataObject = {};
+        //   demoData.forEach((value, key) => {
+        //     formDataObject[key] = value;
+        //   });
+        //   console.log(demoData);
+        //   console.log(formDataObject);
+        //   console.log('navigating....');
+
+        //   setIsSubmitting(false);
+        //   navigate('/transcription/transcriptionresult', { state: { demoData: formDataObject } });
+        // } else {
+        //   const errorData = await response.json();
+        //   const errorMessage = errorData.error;
+        //   alert(`Error: ${errorMessage}`);
+        //   setIsSubmitting(false);
+        // }
+      } catch (error) {
+        alert('An error occurred while uploading files.');
         setIsSubmitting(false);
       }
-    } catch (error) {
-      alert('An error occurred while uploading files.');
-      setIsSubmitting(false);
     }
   };
 

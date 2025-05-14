@@ -5,6 +5,7 @@ from .tasks import process_transcription_and_send_email
 from .task_registry import task_status, task_result, task_lock
 from speaker_identify.identify_service import transcribe_with_speaker
 
+# thread worker for transcribing audio
 def transcribe_audio_task(task_id, db_file, file_path, email, output_format_str, frontend_link):
     with task_lock:
         task_status[task_id] = "processing"

@@ -194,7 +194,10 @@ def task_status_view(request, task_id):
 
     response = {"status": status}
     if status == "completed":
-        response["transcription"] = task_result.get(task_id)
+        result = task_result.pop(task_id, None)
+        if result is None:
+            return JsonResponse({"status": "expired", "message": "Result already retrieved."})
+        response["transcription"] = result
     elif status == "error":
         response["error"] = task_result.get(task_id)
 
