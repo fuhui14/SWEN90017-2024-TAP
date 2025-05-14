@@ -23,6 +23,7 @@ from emails.send_email import send_email, FileType
 from emails.utils import send_error_report_email
 from transcription.thread_worker import transcribe_audio_task
 from transcription.task_registry import task_status, task_result, task_lock
+from transcription.thread_executor import executor
 
 # load whisper model when the server starts
 model = whisper.load_model("base")
@@ -102,12 +103,10 @@ def transcribe(request):
             with task_lock:
                 task_status[task_id] = "queued"
 
-            t = threading.Thread(
-                target=transcribe_audio_task,
-                args=(task_id, db_file, file_path, email, output_format_str, portal_link),
-                daemon=True
+            executor.submit(
+                transcribe_audio_task,
+                task_id, db_file, file_path, email, output_format_str, portal_link
             )
-            t.start()
 
             return JsonResponse({"task_id": task_id})
 
