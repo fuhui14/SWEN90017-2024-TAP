@@ -12,8 +12,10 @@ from faster_whisper import WhisperModel       # faster Whisper deduction :conten
 from tqdm import tqdm
 import re
 
+from transcription.task_registry import task_status, task_result, task_lock
 
-def transcribe_with_speaker_fasterWhisper(audioPath):
+
+def transcribe_with_speaker_fasterWhisper(task_id, audioPath):
     """
     Transcribe audio with speaker identification using faster-whisper and pyannote.
     :param audio_path: Path to the input audio file.
@@ -58,6 +60,13 @@ def transcribe_with_speaker_fasterWhisper(audioPath):
         return []
     print("Speaker diarization completed.")
 
+    # progress value for frontend
+    # 20% for speaker diarization
+    base_progress = 0.2;
+    with task_lock:
+        task_result[task_id] = round(base_progress, 4)
+    print(f"==== Current Progress ==== : {task_result[task_id]}")
+
 
     # 4. for each segment, transcribe and show progress
     print("Transcribing segments...")
@@ -66,7 +75,7 @@ def transcribe_with_speaker_fasterWhisper(audioPath):
     print(f"Whisper device used: {whisper_device}")
     model = WhisperModel("medium", device=whisper_device, compute_type="int8")
     transcripts = []
-    total_duration = segments[-1][1]  # use the end time of the last segment
+    total_duration = max(seg[1] for seg in segments)  # use the longest end time of the segments
 
     with tqdm(total=total_duration, unit="s", desc="transcription progress") as pbar:
         elapsed = 0.0
@@ -93,9 +102,16 @@ def transcribe_with_speaker_fasterWhisper(audioPath):
             text = " ".join(seg.text for seg in segments_out)
 
             # update the progress bar
-            pbar.update(end - elapsed)
-            elapsed = end
+            max_end = max(end, elapsed)  # make sure the progress bar does not go backwards
+            pbar.update(max_end - elapsed)
+            elapsed = max_end
             pbar.set_postfix_str(f"Speaker {speaker}")
+
+            # progress value for frontend
+            # 70% for transcription
+            with task_lock:
+                task_result[task_id] = round((end / total_duration) * (0.9 - base_progress) + base_progress, 4)
+            print(f"==== Current Progress ==== : {task_result[task_id]}")
 
             # add the transcript to the list
             transcripts.append((start, end, speaker, text))
@@ -114,6 +130,12 @@ def transcribe_with_speaker_fasterWhisper(audioPath):
         spk   = item["speaker"]
         txt   = item["text"]
         print(f"[{start}-{end}] Speaker {spk}: {txt}")
+
+    # progress value for frontend
+    # 10% for finalization
+    with task_lock:
+        task_result[task_id] = 1.0
+    print(f"==== Current Progress ==== : {task_result[task_id]}")
 
     # clear the temporary files
     clear_file(wav_fpath)
