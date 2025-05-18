@@ -12,7 +12,7 @@ def transcribe_audio_task(task_id, db_file, file_path, email, output_format_str,
         task_status[task_id] = "processing"
 
     try:
-        transcription_with_speaker = transcribe_with_speaker(file_path)
+        transcription_with_speaker = transcribe_with_speaker(task_id, file_path)
         transcribed_data = Transcription.objects.create(
             file=db_file,
             transcribed_text=transcription_with_speaker
