@@ -10,7 +10,7 @@ import "./about.css"
 
 function About(){
     const location = useLocation(); // Get location object
-    const { demoData = {} } = location.state || {}; // 防止 location.state 为 undefined
+    const { demoData = {} } = location.state || {}; // Prevent location.state from being undefined
     console.log(demoData); // You can use formData as needed
     return(
         <>

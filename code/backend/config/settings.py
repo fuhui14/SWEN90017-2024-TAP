@@ -150,3 +150,43 @@ CELERY_BEAT_SCHEDULE = {
 FRONTEND_BASE_URL = "http://localhost:3000"
 
 FERNET_KEY = '3VF2UM-4v5Ae4Bq8VNzKKuCNchDuFxPtdbkKvqJT6S4='
+
+
+
+
+
+
+
+
+
+# --- logging: Suppress GET request logs from the polling API ---
+import re
+from logging import Filter
+
+class _PollingFilter(Filter):
+    _regex = re.compile(r'^"GET /transcription/api/status/')
+    def filter(self, record):
+        # record.getMessage() is the line of text output by runserver
+        return not self._regex.search(record.getMessage())
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'no_polling': { '()': _PollingFilter },
+    },
+    'handlers': {
+        'console': {
+            'class':   'logging.StreamHandler',
+            'filters': ['no_polling'],   # Only filters out polling requests
+            
+        },
+    },
+    'loggers': {
+        'django.server': {              # HTTP access logs from runserver
+            'handlers':  ['console'],
+            'level':     'INFO',
+            'propagate': False,
+        },
+    },
+}

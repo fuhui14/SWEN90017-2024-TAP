@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* ===== 全站统一 Logo 高度 ===== */
+.header .logo img {
+  height: 80px !important;   /* 强制覆盖后面 40px/50px */
+  width: auto !important;    /* 保证等比 */
+}
