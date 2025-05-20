@@ -122,7 +122,7 @@ body {
     background-color: #cc0000;
 }
 
-.file-result h3{
+.file-result h3 {
     text-align: left;
 }
 
@@ -165,6 +165,7 @@ th, td {
 th {
     background-color: #f9f9f9; /* Light background for header */
     font-weight: bold; /* Makes header text bold */
+    color: #333;
 }
 
 tbody tr:hover {
@@ -193,11 +194,150 @@ button:hover {
     background-color: #002244; /* Darker shade on hover */
 }
 
-/* Add this new style for the download icon */
+/* Download icon style */
 .download-icon {
     width: 20px; /* Set the desired width */
     height: 20px; /* Set the desired height */
-    /* Optionally, you can add margin for spacing */
     margin: 0; /* Adjust as needed */
     align-items: center;
+}
+
+/* --------- 下载按钮透明 + hover 浅蓝 --------- */
+.download-btn {
+    background: transparent;      /* 透明背景 */
+    border: none;
+    border-radius: 8px;
+    padding: 6px;
+    cursor: pointer;
+    transition: background-color .25s ease;
+}
+
+.download-btn:hover:not(:disabled) {
+    background: #d4edda;          /* 浅绿色（可根据需要调整） */
+}
+
+.download-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* 让标题水平居中 */
+.file-result h3 { text-align: center; }
+
+/* 1. 让按钮区与表格空一大段 */
+.buttons-with-gap { margin-top: 9rem; }
+
+/* 2. 自定义 tooltip */
+.tooltip-wrapper { position:relative; display:inline-block; }
+
+.history-tooltip{
+  position:absolute; bottom:120%; left:50%; transform:translateX(-50%);
+  width:260px; background:#002244; color:#fff;
+  padding:10px 14px; border-radius:8px; font-size:0.9rem; line-height:1.4;
+  text-align:center; box-shadow:0 2px 8px rgba(0,0,0,.2);
+  opacity:0; visibility:hidden; transition:opacity .25s ease; z-index:50;
+}
+.history-tooltip::after{
+  content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%);
+  border:8px solid transparent; border-top-color:#002244;
+}
+.tooltip-wrapper:hover .history-tooltip{
+  opacity:1; visibility:visible;
+}
+
+/* 让 tooltip-wrapper 拥有固定宽度，与其它按钮保持一致 */
+.tooltip-wrapper {
+    width: 30%;                  /* 与 .buttons > button 的 30% 一致 */
+    display: flex;
+    justify-content: center;     /* 让内部按钮水平居中 */
+  }
+  
+  /* wrapper 内的按钮占满自身宽度 */
+  .tooltip-wrapper button { width: 100%; }
+  
+/* ====== 表格下方独立下载按钮 ====== */
+.download-area {
+    margin: 2.5rem 0 0;      /* 与表格间距 */
+    text-align: center;
+  }
+  
+  .download-big-btn {
+    background: #002244;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .25s ease;
+  }
+  
+  .download-big-btn:hover:not(:disabled) { background:#094183; }
+  .download-big-btn:disabled            { opacity:.6; cursor:not-allowed; }
+  
+  .download-big-btn .download-icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    filter: invert(1);       /* 让图标在深色背景下呈白色 */
+  }
+  
+  /* 保留原来的 .download-icon 用于表格中的小图标（如果仍需要） */
+  
+.download-small-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.download-small-btn img {
+  width: 20px;
+  height: 20px;
+  /* 保持蓝色基调，可按需调色 */
+  filter: invert(35%) sepia(98%) saturate(2093%) hue-rotate(198deg) brightness(96%) contrast(106%);
+}
+.download-small-btn {
+  background-color: #f7f7f7;
+  border: none;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.download-small-btn:hover {
+  background-color: #e2e2e2;
+}
+.download-small-btn:active {
+  transform: scale(0.95);
+}
+.download-small-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.download-small-btn .download-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* 平时透明背景，去掉默认灰色 */
+.download-small-btn {
+  background-color: transparent;
+  border: none;
+  padding: 4px;         /* 根据需要微调内边距 */
+  cursor: pointer;
+}
+
+/* hover 时加个浅灰底，或者你喜欢的任何高亮色 */
+.download-small-btn:hover {
+  background-color: rgba(0, 0, 0, 0.106);
+}
+
+/* 可选：focus 时也有视觉反馈 */
+.download-small-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
 }

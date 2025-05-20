@@ -127,3 +127,66 @@ SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
 SMTP_USER = 'perrinyu2001@gmail.com'
 SMTP_PASSWORD = 'thdj houx hcsn hrrt'
+
+# ---- Auto Delete ----
+# Celery Broker 和 Result Backend 配置
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+# Celery 时区配置（可与 Django TIME_ZONE 保持一致）
+CELERY_TIMEZONE = 'UTC'
+
+# Celery Beat 定时任务配置示例
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+    'cleanup-expired-files-daily': {
+        'task': 'transcription.tasks.cleanup_expired_files',  # 指向你定义的任务
+        'schedule': crontab(minute='*/5'),  # 每天午夜执行一次
+    },
+}
+
+# Frontend URL for admin portal link generation
+FRONTEND_BASE_URL = "http://localhost:3000"
+
+FERNET_KEY = '3VF2UM-4v5Ae4Bq8VNzKKuCNchDuFxPtdbkKvqJT6S4='
+
+
+
+
+
+
+
+
+
+# --- logging: Suppress GET request logs from the polling API ---
+import re
+from logging import Filter
+
+class _PollingFilter(Filter):
+    _regex = re.compile(r'^"GET /transcription/api/status/')
+    def filter(self, record):
+        # record.getMessage() is the line of text output by runserver
+        return not self._regex.search(record.getMessage())
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'no_polling': { '()': _PollingFilter },
+    },
+    'handlers': {
+        'console': {
+            'class':   'logging.StreamHandler',
+            'filters': ['no_polling'],   # Only filters out polling requests
+            
+        },
+    },
+    'loggers': {
+        'django.server': {              # HTTP access logs from runserver
+            'handlers':  ['console'],
+            'level':     'INFO',
+            'propagate': False,
+        },
+    },
+}

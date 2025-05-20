@@ -1,319 +1,291 @@
+// src/pages/Transpage.js
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './transpage.css';
-import { Link , useNavigate } from 'react-router-dom';
-import log from '../resources/icon/logo.svg';
-import addLog from '../resources/icon/add.svg';
+
+import log        from '../resources/icon/logo.svg';
+import closeIcon  from '../resources/icon/close.png';
 import correctLog from '../resources/icon/correct.svg';
-import React, { useState } from 'react';
 
 function Transpage() {
-  const [email, setEmail] = useState(''); // State for email
-  const [isEmailValid, setIsEmailValid] = useState(false); // State for email validation
-  const [files, setFiles] = useState([]); // State for file uploads
-  const [uploadProgress, setUploadProgress] = useState([]); // Track upload progress
-  const [uploaded, setUploaded] = useState([]); // Track upload completion
-  const navigate = useNavigate(); // Initialize useHistory
-  const fileInputRef = React.useRef(null); // Create a ref for the file input
+  const [email, setEmail]         = useState('');
+  const [isEmailValid, setValid]  = useState(false);
+  const [files, setFiles]         = useState([]);
+  const [uploadProg, setUpProg]   = useState([]);
+  const [uploaded, setUploaded]   = useState([]);
+  const [tasks, setTasks]         = useState([]);   // {file, taskId, progress, status, result}
+  const [isSubmitting, setSubmit] = useState(false);
 
-  // Handle changes to the email input field
-  const handleEmailChange = (e) => {
-    const value = e.target.value;
-    setEmail(value);
-    // Simple regex for email validation
-    setIsEmailValid(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
+  const navigate     = useNavigate();
+  const fileInputRef = useRef(null);
+
+  /* ---------- helpers ---------- */
+  const getCookie = (name)=>
+    document.cookie.split(';').map(c=>c.trim().split('='))                    // csrftoken helper
+           .find(([k])=>k===name)?.[1] || null;
+
+  const handleEmailChange = e=>{
+    const v=e.target.value;
+    setEmail(v);
+    setValid(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
   };
 
-   // Handle changes to the email input field
-   const handleFileChange = (e) => {
-    const newFiles = [...e.target.files]; // Get new files
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]); // Update files state to keep previous files
-    
-    // Simulate file upload progress for each file
-    const progressArray = new Array(newFiles.length + files.length).fill(0); // Adjust progress array size
-    setUploadProgress(progressArray);
-    
-    // Simulate file upload for each file
-    [...files, ...newFiles].forEach((file, index) => {
-      // Check if the file has already been uploaded
-      if (uploaded[index]) {
-        // If already uploaded, set progress to 100%
-        setUploadProgress((prevProgress) => {
-          const updatedProgress = [...prevProgress];
-          updatedProgress[index] = 100; // Set progress to 100% for uploaded files
-          return updatedProgress;
-        });
-      } else {
-        simulateUpload(file, index); // Simulate upload for new files
-      }
-    });
+  /* ---------- 本地上传进度（与原 Demo 保持一致） ---------- */
+  const handleFileChange = e=>{
+    const newFiles = Array.from(e.target.files);
+    const base     = files.length;
+    setFiles(f=>[...f,...newFiles]);
+    setUpProg(p=>[...p,...newFiles.map(()=>0)]);
+    setUploaded(u=>[...u,...newFiles.map(()=>false)]);
+    newFiles.forEach((_,i)=>simulateUpload(base+i));
+  };
+  const simulateUpload = idx=>{
+    const t=setInterval(()=>{
+      setUpProg(p=>{
+        const c=[...p];
+        if(c[idx] < 100) c[idx] = Math.min(c[idx]+50,100);
+        else{
+          clearInterval(t);
+          setUploaded(u=>{const copy=[...u];copy[idx]=true;return copy;});
+        }
+        return c;
+      });
+    },200);
   };
 
-  // Simulate the upload process for a file
-  const simulateUpload = (file, index) => {
-    // Simulate upload progress using intervals
-    const interval = setInterval(() => {
-      setUploadProgress((prevProgress) => {
-        const updatedProgress = [...prevProgress];
-        if (updatedProgress[index] < 100) {
-          updatedProgress[index] += 49; // Increase progress
+  const handleDrop   = e=>{e.preventDefault();handleFileChange({target:{files:e.dataTransfer.files}});};
+  const handleDelete = i=>{
+    setFiles   (f=>f.filter((_,idx)=>idx!==i));
+    setUpProg  (p=>p.filter((_,idx)=>idx!==i));
+    setUploaded(u=>u.filter((_,idx)=>idx!==i));
+  };
 
-        } else {
-          clearInterval(interval); // Clear interval when upload completes
-          setUploaded((prevUploaded) => {
-            const updatedUploaded = [...prevUploaded];
-            updatedUploaded[index] = true; // Mark as uploaded
-            return updatedUploaded;
+  /* ───────────────────────────────────────────
+       1. 并发上传；拿到各自 task_id
+     ─────────────────────────────────────────── */
+  const handleConfirm = async()=>{
+    if(!isEmailValid || files.length===0){
+      alert('Please fill out all required fields.'); return;
+    }
+    setSubmit(true);
+
+    const API   = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
+    const fmt   = document.querySelector('select[name="outputFormat"]').value;
+    const lang  = document.querySelector('select[name="language"]').value;
+
+    try{
+      const newTasks = await Promise.all(
+        files.map(async file=>{
+          const fd = new FormData();
+          fd.append('email', email);
+          fd.append('file' , file);
+          fd.append('outputFormat', fmt);
+          fd.append('language'    , lang);
+
+          const res = await fetch(`${API}/transcription/`,{
+            method:'POST',
+            headers:{ 'X-CSRFToken': getCookie('csrftoken') },
+            credentials:'include',
+            body:fd
           });
+          if(!res.ok) throw new Error('Upload failed');
+          const data = await res.json();
+
+          /* ★ 后端两种返回格式兼容 */
+          let taskId = data.task_id;
+          if(!taskId && Array.isArray(data.tasks) && data.tasks.length){
+            taskId = data.tasks[0].task_id;
+          }
+          if(!taskId) throw new Error('No task_id in response');
+
+          return { file, taskId, progress:0, status:'processing', result:null };
+        })
+      );
+
+      setTasks(newTasks);
+      newTasks.forEach(t=>startPolling(t.taskId, fmt));
+    }catch(err){
+      console.error(err);
+      alert('An error occurred: '+ err.message);
+      setSubmit(false);
+    }
+  };
+
+  /* ───────────────────────────────────────────
+       2. 轮询单个 task_id
+     ─────────────────────────────────────────── */
+  const startPolling = (taskId, fmt)=>{
+    const API = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
+    const timer = setInterval(async()=>{
+      try{
+        const res = await fetch(`${API}/transcription/api/status/${taskId}/`);
+        if(!res.ok){                         // 后端可能返回 404 已失效；忽略
+          console.warn(`status ${res.status} for ${taskId}`); return;
         }
-        return updatedProgress;
-      });
-    }, 200); // Simulate progress every 0.2 seconds
+        const data = await res.json();
+
+        setTasks(prev=>prev.map(t=>{
+          if(t.taskId!==taskId) return t;
+
+          if(data.status==='processing'){
+            return {...t, progress: Math.round((data.progress||0)*100)};
+          }
+          if(data.status==='completed'){
+            clearInterval(timer);
+            return {...t, progress:100, status:'done',
+                    result:data.transcription || data.transcripts};
+          }
+          if(data.status==='error'){
+            clearInterval(timer);
+            return {...t, status:'error'};
+          }
+          return t;
+        }));
+      }catch(e){
+        console.error('poll error:',e);
+      }
+    }, 1000);
   };
 
-  // Handle file drop events
-  const handleDrop = (e) => {
-    e.preventDefault(); // Prevent default behavior
-    const droppedFiles = e.dataTransfer.files; // Get files from dataTransfer
-    handleFileChange({ target: { files: droppedFiles } }); // Call handleFileChange with dropped files
-  };
-
-  // Handle the deletion of a file from the upload list
-  const handleDeleteFile = (index) => {
-    const updatedFiles = files.filter((_, i) => i !== index); // Remove file at the specified index
-    setFiles(updatedFiles); // Update files state
-
-    // Update progress and uploaded arrays when deleting files
-    const updatedProgress = uploadProgress.filter((_, i) => i !== index);
-    setUploadProgress(updatedProgress);
-
-    const updatedUploaded = uploaded.filter((_, i) => i !== index);
-    setUploaded(updatedUploaded);
-  };
-
-  // Function to obtain a CSRF token from cookies
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        // Determine whether this cookie string starts with the name we want
-        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
+  /* ───────────────────────────────────────────
+       3. 全部任务完成 => 跳转结果页
+     ─────────────────────────────────────────── */
+  useEffect(()=>{
+    if(isSubmitting && tasks.length && tasks.every(t=>t.status==='done')){
+      navigate('/transcription/transcriptionresult',{
+        state:{
+          demoData:{
+            email,
+            files,
+            results: tasks.map(t=>t.result),
+            outputFormat: document.querySelector('select[name="outputFormat"]').value
+          }
         }
-      }
-    }
-    return cookieValue;
-  }
-
-  // Handle the confirmation of the upload process
-  const handleConfirm = async () => {
-    if (!isEmailValid || files.length === 0) {
-      alert("Please fill out all required fields."); // Alert for missing fields
-      return;
-    }
-
-    //for demo usage only
-    const demoData = new FormData();
-
-    // Prepare the form data
-    const formData = new FormData();
-    formData.append('email', email);
-    demoData.append('email', email);
-    files.forEach((file) => {
-      formData.append('file', file); // Append each file
-    });
-
-    files.forEach((file) => {
-      demoData.append('file', file); // Append each file
-    });
-    const outputFormat = document.querySelector('select[name="outputFormat"]').value; // Get selected output format
-    const language = document.querySelector('select[name="language"]').value; // Get selected language
-    formData.append('outputFormat', outputFormat);
-    formData.append('language', language);
-
-    demoData.append('outputFormat', outputFormat);
-    demoData.append('language', language);
-
-    console.log("files: ");
-    console.log(files);
-
-    // 获取 CSRF 令牌
-    const csrftoken = getCookie('csrftoken');
-
-    // Send data to the backend
-    try {
-      const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000'; 
-      const response = await fetch(`${API_BASE_URL}/transcription/`, {
-        method: 'POST',
-        headers: {
-          'X-CSRFToken': csrftoken, // Add CSRF token to request header
-        },
-        body: formData,
-        credentials: 'include', // Contains credentials (cookies, etc.)
       });
-
-      if (response.ok) {
-        const Data = await response.json();
-        console.log(Data);
-
-        // Format the transcription into a conversation style
-        const formattedTranscription = Data.transcription.map(item => 
-          `Speaker ${item.speaker}: ${item.text}`).join('\n\n');
-        console.log(formattedTranscription);
-        alert("Files uploaded successfully!"); // Confirmation message
-        demoData.append('result', formattedTranscription);
-        //----------------------------------------------------
-        //---------This part is only for the demo use---------
-        // Convert formData to a plain object
-        const formDataObject = {};
-        demoData.forEach((value, key) => {
-          formDataObject[key] = value;
-        });
-        console.log(demoData);
-        console.log(formDataObject);
-        console.log("navigating....");
-        navigate('/transcription/transcriptionresult', { state: { demoData: formDataObject } }); // Pass formData as state
-        //----------------------------------------------------
-      } else {
-        const errorData = await response.json();
-        const errorMessage = errorData.error
-        alert(`Error: ${errorMessage}`); // Handle error response
-      }
-    } catch (error) {
-      alert("An error occurred while uploading files."); // Handle network errors
     }
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[tasks]);
 
+  /* ---------- 平均进度 ---------- */
+  const avgProg = tasks.length
+    ? Math.round(tasks.reduce((s,t)=>s+(t.progress||0),0)/tasks.length)
+    : 0;
+
+  /* ---------- UI ---------- */
   return (
     <>
+      {/* — 顶栏 — */}
       <div className="header">
-        <div className="logo">
-          <img src={log} alt="logo" />
-        </div>
+        <div className="logo"><img src={log} alt="logo"/></div>
         <nav className="nav-links">
           <Link to="/about">About</Link>
           <Link to="/transcription">Transcription</Link>
-          <Link to="/history">History</Link>
+          <Link to="/historylogin">History</Link>
         </nav>
       </div>
 
+      {/* — 主体 — */}
       <div className="container">
-        <div className="input-section">
-          <h3>Input your Email Address</h3>
-          <p>Please enter your email address to receive your transcription results.</p>
-          <input 
-            type="email" 
-            placeholder="Enter your email"
-            value={email} 
-            onChange={handleEmailChange}
-            required 
-          />
-          {isEmailValid && 
-          <span className="valid-email small-feedback">
-            <img className="small-feedback" src={correctLog}
-                  alt="Valid email" ></img>
-            </span>} {/* Validation feedback */}
-          <h3>Select a format for the output file</h3>
-          <p>Please choose the desired file format for your transcription output.</p>
-          <select name="outputFormat">
-            <option value="docx">docx</option>
-            <option value="pdf">pdf</option>
-            <option value="txt">txt</option>
-          </select>
+        {/* 左列：文件上传 */}
+        <div className="upload-section"
+             onDragOver={e=>e.preventDefault()}
+             onDrop={handleDrop}>
+          <h3>Transcribe file(s)</h3>
+          <p>Our platform supports: WAV, MP3, M4A, FLAC, OGG, AAC, MP4, AVI, MOV.</p>
 
-          <hr />
-
-          <h3>Select transcription language</h3>
-          <p>Please choose the language in which you would like your transcribed text to be translated.</p>
-          <select name="language">
-            <option value="english">English</option>
-            <option value="spanish">Spanish</option>
-            <option value="french">French</option>
-          </select>
-        </div>
-
-        <div 
-          className="upload-section"
-          onDragOver={(e) => e.preventDefault()} // Prevent default behavior
-          onDrop={handleDrop}
-          style={{ position: 'relative' }} // Ensure the upload section is positioned relatively
-          > 
-          
-          <h3>Upload file(s)</h3>
-          <p>
-            Our platform supports the following file formats:<strong> WAV (.wav), MP3 (.mp3), M4A (.m4a), FLAC (.flac), OGG (.ogg), and AAC (.aac)</strong>.
-          </p>
-          {/* Display uploaded files */}
-          {files.length === 0 ? (
-            <div className="upload-box">
-              <input 
-                type="file" 
-                id="file-upload"
-                accept=".wav,.mp3,.m4a,.flac,.ogg,.aac"
-                multiple  
-                onChange={handleFileChange} // Handle file change
-                style={{ display: 'none' }}
-              />
-              <label htmlFor="file-upload" className="file-upload-label">
-                <div className="upload-icon">&#8682;</div>
-                <p>Drag a file(s) here or choose a file to upload</p>
-              </label>
+          {files.length===0 ? (
+            <div className="upload-box" onClick={()=>fileInputRef.current.click()}>
+              <input type="file"
+                     multiple
+                     accept=".wav,.mp3,.m4a,.flac,.ogg,.aac,.mp4,.avi,.mov"
+                     onChange={handleFileChange}
+                     ref={fileInputRef}
+                     style={{display:'none'}}/>
+              <div className="upload-icon">⬆️</div>
+              <p>Drag files here or click to select</p>
             </div>
-          ) : (
+          ):(
             <div className="uploaded-files">
-              <span className='file-add'>
-                <h5>File Added:</h5>
-                {/* <img src={addLog} alt="add" className="add-icon" /> */}
-                <input 
-                  type="file" 
-                  id="file-upload"
-                  accept=".wav,.mp3,.m4a,.flac,.ogg,.aac"
-                  multiple  
-                  onChange={handleFileChange} // Handle file change
-                  style={{ display: 'none' }}
-                  ref={fileInputRef} // Attach the ref to the file input
-                />
-                <img 
-                  src={addLog} 
-                  alt="Add file" 
-                  className="add-icon" 
-                  onClick={() => fileInputRef.current.click()} // Trigger file input click
-                  style={{ cursor: 'pointer' }} // Change cursor to pointer for better UX
-                />
-                </span>
-              <ul className='file_area'>
-                {Array.from(files).map((file, index) => (
-                  <div key={index} className="file-item">
-                    <div className="file-info">
-                      <span className="file-icon">
-                        {file.type.startsWith('audio/') ? '🎧' : file.type.startsWith('video/') ? '🎬' : '📄'}
-                      </span>
-                      <span className="file-name">{file.name}</span>
-                      <span className="file-size">{(file.size / (1024 * 1024)).toFixed(1)}MB</span>
-                      <button className="delete-button" onClick={() => handleDeleteFile(index)}>
-                        &times; {/* Close icon */}
-                      </button>
-                    </div>
-                    <div className="file-progress">
-                      <div
-                        className={`progress-bar ${uploaded[index] ? 'uploaded' : ''}`}
-                        style={{
-                          width: `${uploadProgress[index]}%`,  // Update the width based on upload progress
-                        }}
-                      >
-                        {uploadProgress[index]}%
-                      </div>
-                    </div>
+              {files.map((file,i)=>(
+                <div key={i} className="file-item">
+                  <div className="file-info">
+                    <span className="file-icon">{file.type.startsWith('audio/')?'🎧':'🎬'}</span>
+                    <span className="file-name">{file.name}</span>
+                    <span className="file-size">{(file.size/1048576).toFixed(1)} MB</span>
+                    <img src={closeIcon} alt="x" className="delete-button" onClick={()=>handleDelete(i)}/>
                   </div>
-                ))}
-              </ul>
+                  <div className="file-progress">
+                    <div className="progress-bar" style={{width:`${uploadProg[i]}%`}}/>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
-          <div className="confirm-button">
-            <button type="submit" onClick={handleConfirm}>Confirm</button>{/* Updated button to handle confirmation */}
+        </div>
+
+        {/* 右列：表单 */}
+        <div className="input-section">
+          {/* block-1 */}
+          <div className="form-block">
+            <h3>Email address to receive results</h3>
+            <div
+              style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            >
+              <input
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={handleEmailChange}
+                required
+              />
+              {isEmailValid && (
+                <img src={correctLog} alt="valid" className="small-feedback" />
+              )}
+            </div>
+          </div>
+          <div className="form-block">
+            <h3>Select output file format</h3>
+            <select name="outputFormat">
+              <option value="docx">docx</option><option value="pdf">pdf</option><option value="txt">txt</option>
+            </select>
+          </div>
+          <div className="form-block">
+            <h3>Select transcription language</h3>
+            <select name="language">
+              <option value="english">English</option>
+              <option value="spanish">Spanish</option>
+              <option value="french" >French </option>
+            </select>
           </div>
         </div>
+      </div>
+
+      {/* 全局进度条 */}
+      {isSubmitting && tasks.length>0 && (
+        <div className="transcribing-status">
+          <span>Transcribing: {avgProg}%</span>
+          <div className="progress-bar-bg">
+            <div className="progress-bar-fill" style={{width:`${avgProg}%`}}/>
+          </div>
+        </div>
+      )}
+
+      {/* 底部按钮 */}
+      <div className="transcribe-footer">
+        <div className="tooltip-wrapper">
+          <button className="transcribe-button"
+                  onClick={handleConfirm}
+                  disabled={isSubmitting}>
+            {isSubmitting ? 'Transcribing…' : 'Transcribe'}
+          </button>
+          <span className="transcribe-tooltip">
+            Ensure all fields are filled in. After you click,
+            the system will start transcribing and the button will be disabled for a moment.
+          </span>
+        </div>
+        <p className="transcribe-note">
+          Please complete all above fields before clicking <strong>Transcribe</strong>.
+        </p>
       </div>
     </>
   );

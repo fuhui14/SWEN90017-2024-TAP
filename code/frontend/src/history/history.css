@@ -1,0 +1,148 @@
+/* ---------------- main centred wrapper ---------------- */
+.container {
+    max-width: 900px;
+    margin: 2rem auto;        /* centre on page */
+    text-align: center;
+}
+
+/* Align the title and description text */
+.container h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+    color: #0b3a6f;           /* Dark Blue */
+}
+
+/* ---------------- error box ---------------- */
+.error {
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    margin: 20px auto;
+    background-color: #ffebeb;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 50%;
+}
+
+/* ---------------- table ---------------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 16px;
+    text-align: left;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+thead {
+    background-color: #0b3a6f;
+    color: white;
+    font-weight: bold;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Row striping */
+tbody tr:nth-child(odd)  { background: #f9f9f9; }
+tbody tr:nth-child(even) { background: #ffffff; }
+
+/* Highlight for expiring dates */
+.expiring-soon { color: red; font-weight: bold; }
+
+/* Status tag */
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+.status.completed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* ---------------- lighter DOWNLOAD button ---------------- */
+.download-btn {
+    background: transparent;        /* ✅ Default: transparent background */
+    border: none;
+    border-radius: 8px;
+    padding: 6px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+}
+
+.download-btn:hover {
+    background-color: #0e1622;      /* ✅ Light blue background on hover */
+}
+
+
+.download-btn img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* ---------------- pagination ---------------- */
+.pagination button {
+    margin-top: 2%;
+    margin-left: 1%;
+    color: black;
+    background-color: #ddd;
+}
+.pagination button.active {
+    background-color: #0b3a6f;
+    color: white;
+    font-weight: bold;
+    border: 2px solid #0b3a6f;
+}
+
+/* General hover effect for buttons (except download icon) */
+button:hover { background-color: #002244; }
+
+/* ---------------- header (consistent with about.css) ---------------- */
+.header {
+    background-color: #0b3a6f;
+    padding: 1rem 0;
+}
+.nav-container {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.logo img  { height: 40px; }
+
+.nav-links a {
+    color: #fff;
+    margin-left: 1rem;
+    text-decoration: none;
+    font-weight: 500;
+}
+.nav-links a:hover { text-decoration: underline; }
+
+/* ---------------- footer ---------------- */
+.footer {
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #094183;
+    padding: 10px 50px;
+    font-size: 0.7em;
+}
+.footer p {
+    color: white;
+    font-size: small;
+    font-weight: bold;
+}
