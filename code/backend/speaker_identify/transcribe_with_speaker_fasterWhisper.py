@@ -109,8 +109,11 @@ def transcribe_with_speaker_fasterWhisper(task_id, audioPath):
 
             # progress value for frontend
             # 70% for transcription
+            progress_ratio = pbar.n / total_duration
             with task_lock:
-                task_result[task_id] = round((end / total_duration) * (0.9 - base_progress) + base_progress, 4)
+                task_result[task_id] = round(
+                     base_progress + progress_ratio * (0.9 - base_progress), 4
+                )
             print(f"==== Current Progress ==== : {task_result[task_id]}")
 
             # add the transcript to the list

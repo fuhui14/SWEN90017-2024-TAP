@@ -29,10 +29,10 @@ def process_transcription_and_send_email(transcription_id, portal_link=None, fil
         return f"Transcription {transcription_id} not found"
 
 def cleanup_expired_files():
-    # 计算三个月（90 天）之前的时间点
+    # Calculate the timestamp from 90 days (3 months) ago
     expiration_date = timezone.now() - datetime.timedelta(days=90)
-    # 查询并删除过期文件
+    # Query and delete expired files
     expired_files = File.objects.filter(upload_timestamp__lt=expiration_date)
     count = expired_files.count()
     expired_files.delete()
-    return f"成功删除了 {count} 个过期文件。"
+    return f"Successfully deleted {count} expired files."

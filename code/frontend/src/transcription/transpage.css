@@ -11,7 +11,6 @@
   align-items: center;
   padding: 10px 50px;
   font-size: 1.2em;
-  
 }
 
 .header .logo img {
@@ -32,61 +31,45 @@
   color: #ffcc00;
 }
 
-/* Container: places two sections side by side */
+/* two-column grid, stacks on narrow screens */
 .container {
-  display: flex;
-  justify-content: space-between;
-  padding: 5%;
-  max-width: 80%;
-  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 90%;
+  margin: 2rem auto;
 }
-
-/* Input section on the left */
-.input-section {
-  width: 48%;
-}
-
-/* Upload section on the right, with fixed height & flex layout */
-.upload-section {
-  width: 48%;
-  display: flex;
-  flex-direction: column;
-  height: 600px;
-  position: relative;
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
 }
 
 h3 {
   font-size: 1.5em;
   font-weight: bold;
   color: #333;
-  text-align: left;
-  margin-bottom: 10px;
+  margin-bottom: 0.5rem;
 }
 
 p {
-  margin: 1%;
+  margin-bottom: 1.5rem;
   color: #666;
   font-size: 1em;
-  line-height: 2;
-  text-align: left;
+  line-height: 1.6;
 }
 
-hr {
-  border: none;
-  height: 1px;
-  margin: 20px 0;
-}
-
+/* form controls */
 input[type="email"],
 select {
-  width: 80%;
+  width: 100%;
+  max-width: 400px;
   padding: 10px;
   margin-bottom: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1em;
 }
-
 input[type="email"]:focus,
 select:focus {
   border-color: #002244;
@@ -94,171 +77,323 @@ select:focus {
   box-shadow: 0 0 5px rgba(0, 51, 102, 0.3);
 }
 
-/* The blue upload box when no files */
+/* upload area */
 .upload-box {
   background-color: #002244;
-  text-align:center;
   border-radius: 10px;
-  transition: background-color 0.3s ease;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
+  transition: background-color 0.3s ease;
 }
-
 .upload-box:hover {
   background-color: #094183;
 }
-
 .upload-box .upload-icon {
   font-size: 60px;
   color: white;
-  margin-top: 10%;
 }
-
 .upload-box p {
   font-size: 1em;
   color: white;
-  margin-top: 20px;
-  text-align: center;
+  margin-top: 1rem;
 }
 
-/* The uploaded files container takes up remaining space, scrolls if needed */
+/* file list */
 .uploaded-files {
-  max-height: 200px;
+  flex: 1;
   overflow-y: auto;
-  margin-top: 20px;
+  margin-top: 1rem;
 }
-
-/* The confirm button is placed at the bottom */
-.confirm-button {
-  text-align: center;
-  font-size: 1em;
-  position: absolute;
-  width: 100%;
-  bottom: 20%;
-}
-
-.confirm-button button {
-  background-color: #002244;
-  color: white;
-  border-radius: 15px;
-  cursor: pointer;
-  font-size: 1em;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-  width: 30%;
-  height: 50px;
-}
-
-/* 禁用状态：点击后按钮变为黑色且不可点击 */
-.confirm-button button:disabled {
-  background-color: black;
-  cursor: not-allowed;
-}
-
-.file-add {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.file-add h5 {
-  margin: 0;
-}
-
-.add-icon {
-  width: 20px;
-  height: 20px;
-  margin: 0;
-}
-
-.file_area {
-  margin-top: 2%;
-}
-
-/* Each file item (like a row) */
 .file-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  justify-content: space-between;
+  padding: 8px;
   border-radius: 5px;
-  margin-bottom: 10px;
-  background-color: #ffffff;
-  transition: background-color 0.3s ease;
+  background: #fff;
+  margin-bottom: 8px;
   position: relative;
 }
-
 .file-item:hover {
-  background-color: #e0ebff;
+  background: #e0ebff;
 }
-
 .file-info {
   display: flex;
   align-items: center;
   flex-grow: 1;
 }
+.file-icon { margin-right: 10px; font-size: 1.5em; color: #094183; }
+.file-name { flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-size { margin-left: 10px; color: #666; }
+.delete-button { margin-left: 10px; cursor: pointer; }
 
-.file-icon {
-  font-size: 1.5em;
-  margin-right: 10px;
-  color: #094183;
+/* keep the delete icon tiny & aligned */
+.file-item .delete-button {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;   /* prevent stretching */
+  flex-shrink: 0;
+  margin-left: 8px;      /* tiny gap from file‑size text */
+  cursor: pointer;
 }
 
-.file-name {
-  margin-right: 55%;
-  flex-grow: 1;
-  font-weight: lighter;
-  color: #666;
-  font-size: 1em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 
-.file-size {
-  margin-left: 10px;
-  font-size: 1em;
-  color: #666;
-  font-weight: lighter;
-}
 
-/* Delete (X) button */
-.delete-button {
-  margin-left: 10px;
-}
-
-/* Progress bar container */
+/* progress bar */
 .file-progress {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background-color: #e0e0e0;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  overflow: hidden;
-  border-radius: 3px;
+  bottom: 0; left: 0;
+  width: 100%; height: 3px;
+  background: #e0e0e0;
 }
-
-/* Progress bar fill */
 .progress-bar {
-  height: 100%;
-  width: 0;
-  background-color: #ccc;
-  transition: width 0.4s ease, background-color 0.4s ease;
+  height: 100%; width: 0;
+  background: #1e7fff;
+  transition: width 0.4s ease;
 }
 
-.progress-bar.uploaded {
-  background-color: #1e7fff;
+/* confirmation button */
+.confirm-button {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+.confirm-button button {
+  background-color: #002244;
+  color: white;
+  border-radius: 15px;
+  font-size: 1em;
+  font-weight: bold;
+  width: 100%;
+  max-width: 240px;
+  height: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.confirm-button button:hover:not(:disabled) {
+  background-color: #094183;
+}
+.confirm-button button:disabled {
+  background-color: grey;
+  cursor: not-allowed;
 }
 
-/* Small feedback icon (green check) next to valid email */
+/* small feedback icon */
 .small-feedback {
   display: inline-block;
-  margin-left: 5px;
   width: 20px;
   height: 20px;
+  margin-left: 8px;
+}
+.transcribe-footer {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  padding: 1rem 0 1.25rem;
+  text-align: center;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.08);
+  z-index: 50;
+}
+
+.transcribe-note {
+  margin: 0 0 0.5rem;
+  color: #333;
+  font-size: 1rem;
+}
+
+.transcribe-button {
+  background: #002244;
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+  padding: 0.75rem 2.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.transcribe-button:hover:not(:disabled) {
+  background: #094183;
+}
+
+.transcribe-button:disabled {
+  background: grey;
+  cursor: not-allowed;
+}
+
+/* ---------- 自定义 tooltip ---------- */
+.tooltip-wrapper {
+  position: relative;          /* 让 tooltip 绝对定位基于此盒子 */
+  display: inline-block;       /* 不影响按钮原本排版 */
+}
+
+/* 提示气泡 */
+.transcribe-tooltip {
+  position: absolute;
+  bottom: 120%;               /* 在按钮上方 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 260px;               /* 可自行调宽 */
+  background: #002244;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+
+  opacity: 0;                 /* 默认隐藏 */
+  visibility: hidden;
+  transition: opacity .25s ease;
+  z-index: 60;
+}
+
+/* 小三角 */
+.transcribe-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px;
+  border-style: solid;
+  border-color: #002244 transparent transparent transparent;
+}
+
+/* 悬浮 wrapper 时显示 tooltip */
+.tooltip-wrapper:hover .transcribe-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ----------- 总体列间距再放大 ----------- */
+.container { gap: 4.5rem; }          /* 原 2‑3rem */
+
+/* ----------- 左列上传区域适度居中 ----------- */
+.upload-section { align-items: center; }
+
+/* ----------- 右列每个区块分隔 ---------- */
+.input-section {
+  display: flex;
+  flex-direction: column;
+  row-gap: 3rem;                     /* 三块之间 3rem */
+}
+.form-block h3   { margin-bottom: 0.8rem; }
+.form-block p    { margin-bottom: 1.3rem; }
+
+/* ----------- 底部按钮整体再下移 ---------- */
+.transcribe-footer {
+  margin-top: 5rem;                  /* 主内容到底部多留 4rem */
+  box-shadow: 0 -4px 12px rgba(0,0,0,.06);
+  padding: 4.75rem 0 3.5rem;           /* 上下 padding 加大 */
+}
+
+/* --------- 让底部 CTA 居中排列 --------- */
+.transcribe-footer {
+  display: flex;
+  flex-direction: column;      /* 先竖排：提示文字在上，按钮在下 */
+  align-items: center;         /* 水平居中 */
+  row-gap: 1rem;               /* 两行之间留白 */
+}
+
+/* 提示文字本身再居中对齐 */
+.transcribe-note { text-align: center; }
+
+/* 按钮包裹器保持内容宽度，并居中 */
+.tooltip-wrapper {
+  width: auto;                 /* 让 wrapper 根据按钮宽度自适应 */
+  display: inline-block;
+}
+
+/* 按钮设固定宽度即可，居中由上面 flex/inline-block 保证 */
+.transcribe-button {
+  width: 200px;                /* 你想要的视觉宽度，可自行调整 */
+}
+
+/* 底部区块仍是纵向居中，调整行间距 */
+.transcribe-footer {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  row-gap:2rem;          /* 按钮与提示文字间距 */
+}
+
+.transcribe-note {
+  text-align:center;
+  font-size:0.95rem;
+}
+
+/* ---------- 调整纵向与横向间距 ---------- */
+
+/* ---- 统一间距最终定稿 ---- */
+.container {
+  margin-top: 4rem !important;   /* 导航条到主体的垂直距离 */
+  gap: 4rem !important;          /* 左列与右列的水平间距 */
+}
+
+/* ========= 最终固定版式（居中、列距 4rem，顶部留白） ========= */
+.container {
+  max-width: 100% !important;    /* 整体更宽 */
+  margin-top: 6rem !important;  /* 导航条与主体间距 */
+  padding-left: 4%;
+  padding-right: 4%;
+  gap: 0rem !important;         /* 左列 / 右列横向距离 */
+}
+
+/* 上传区 drag‑box 稍大（85%） */
+.upload-box { width: 90% !important; }
+
+/* 右侧输入框、下拉占满列宽但给上限 */
+.input-section input[type="email"],
+.input-section select {
+  width: 100% !important;
+  max-width: 460px;
+}
+
+/* 让上传框无论宽度多少都水平居中 */
+.upload-box {
+  width: 90%;            /* 你想要的宽度 */
+  margin: 0 auto;        /* 关键：左右自动外边距，居中 */
+  /* 若已使用 flex，可改为 align-self:center; 效果一致 */
+}
+
+
+/* —— 实时转录进度条 —— */
+.transcribing-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.5rem 0;       /* 上下留白 */
+  width: 100%;            /* 可根据需要改成 80% 或 max-width */
+}
+
+.transcribing-status > span {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #003366;         /* 深蓝色，与按钮色保持一致 */
+}
+
+.progress-bar-bg {
+  position: relative;
+  width: 90%;             /* 进度条整体宽度 */
+  max-width: 600px;       /* 最宽限制，可根据页面宽度调整 */
+  height: 12px;           /* 进度条高度 */
+  background-color: #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;              /* 默认 0，JS 会动态改成 `${streamProgress}%` */
+  background-color: #003366;
+  border-radius: 6px;
+  transition: width 0.3s ease;
 }
