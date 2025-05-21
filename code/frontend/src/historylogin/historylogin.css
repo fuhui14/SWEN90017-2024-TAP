@@ -31,3 +31,51 @@
   background-color: black;
   cursor: not-allowed;
 }
+
+/* Only applies to the HistoryLogin page */
+.history-wrapper {
+  /* Center internal block elements */
+  display: flex;
+  flex-direction: column;
+  align-items: center;    /* Horizontally centered */
+  padding: 40px 20px;
+}
+
+/* Set max width for the file box and center it */
+.history-wrapper .file-result {
+  max-width: 580px;         /* Adjust as needed */
+  width: 100%;
+  text-align: center;      /* Center paragraphs and headings */
+}
+
+/* Email input and checkbox in one row, horizontally centered */
+.email-input-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.email-input-row input[type='email'] {
+  flex: 1;
+  min-width: 260px;
+  padding: 8px 12px;
+  font-size: 15px;
+}
+
+/* “Send Email” button style, can be customized */
+.history-confirm-btn {
+  background-color: #00325e;
+  color: #fff;
+  border: none;
+  padding: 10px 28px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.history-confirm-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
