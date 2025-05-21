@@ -48,7 +48,7 @@ def transcribe_with_speaker_fasterWhisper(task_id, audioPath):
     # load the pre-trained model
     diarizer = Pipeline.from_pretrained(
         "pyannote/speaker-diarization-3.1",
-        #use_auth_token=HF_TOKEN
+        use_auth_token=HF_TOKEN
     ).to(torch.device("cpu"))
     # we use wav file path instead of buffer because the original file is more accurate
     diarization = diarizer({"uri": "meeting", "audio": wav_fpath})

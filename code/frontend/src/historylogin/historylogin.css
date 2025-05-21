@@ -1,81 +1,33 @@
-/* ---------- 通用排版 ---------- */
-* { box-sizing:border-box; margin:0; padding:0; font-family:Arial, sans-serif; }
 
-body { background:#f9f9f9; }
-
-/* ---------- 顶部导航沿用原样式 ---------- */
-.header           { background:#0b3a6f; padding:1rem 0; }
-.header .logo img { height:40px; }
-
-.nav-links a {
-  color:#fff;
-  margin-left:1rem;
-  text-decoration:none;
-  font-weight:500;
-}
-.nav-links a:hover { text-decoration:underline; }
-
-/* ---------- 居中容器 ---------- */
-.history-wrapper {
-  max-width: 700px;      /* 中等宽度 */
-  margin: 3rem auto;     /* 居中 */
-  text-align: center;    /* 文字居中 */
-  padding: 0 1rem;       /* 适度左右留白 */
-}
-
-.history-wrapper h3 {
+.container h3{
   font-weight: bold;
-  margin-bottom: 0.75rem;
+  margin-bottom: 15px;
 }
 
-.history-wrapper p {
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-  color: #555;
+.container p{
+  margin-left: 2%;
+  margin-right: 2%;
 }
 
-/* ---------- 输入框 ---------- */
-.history-wrapper input[type="email"] {
-  width: 100%;
-  max-width: 420px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-
-.small-feedback {
-  width: 20px;
-  height: 20px;
-  margin-left: 8px;
-}
-
-/* ---------- 按钮 ---------- */
 .confirm-button {
-  margin-top: 2rem;
-  display: flex;
-  justify-content: center;
+  text-align: center;
+  font-size: 1em;
+  margin-top: 20px;
 }
 
 .confirm-button button {
-  background:#002244;
-  color:#fff;
-  border:none;
-  border-radius:15px;
-  font-size:1rem;
-  font-weight:bold;
-  padding: 0.9rem 3rem;
-  cursor:pointer;
-  transition:background 0.25s ease;
+  background-color: #002244;
+  color: white;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  width: 30%;
+  height: 50px;
 }
 
-.confirm-button button:hover:not(:disabled) { background:#094183; }
-.confirm-button button:disabled            { background:black; cursor:not-allowed; }
-
-/* ---------- 成功 / 错误消息 ---------- */
-.message {
-  margin-top: 1.5rem;
-  text-align: center;
-  font-size: 0.95rem;
-  color: #0b3a6f;
+.confirm-button button:disabled {
+  background-color: black;
+  cursor: not-allowed;
 }
