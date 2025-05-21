@@ -117,7 +117,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:3000',
 ]
 
-CORS_ALLOW_CREDENTIALS = True  # 允许凭证（如 Cookies）
+CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
@@ -136,20 +136,17 @@ SMTP_USER = os.getenv("SMTP_USER")
 SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
 
 # ---- Auto Delete ----
-# Celery Broker 和 Result Backend 配置
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
-# Celery 时区配置（可与 Django TIME_ZONE 保持一致）
 CELERY_TIMEZONE = 'UTC'
 
-# Celery Beat 定时任务配置示例
 from celery.schedules import crontab
 
 CELERY_BEAT_SCHEDULE = {
     'cleanup-expired-files-daily': {
-        'task': 'transcription.tasks.cleanup_expired_files',  # 指向你定义的任务
-        'schedule': crontab(minute='*/5'),  # 每天午夜执行一次
+        'task': 'transcription.tasks.cleanup_expired_files',
+        'schedule': crontab(minute='*/5'),
     },
 }
 
