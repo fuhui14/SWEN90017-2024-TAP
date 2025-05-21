@@ -51,6 +51,9 @@ def transcribe(request):
             output_format_str = form.cleaned_data.get("outputFormat", "txt").lower()
             portal_base = settings.FRONTEND_BASE_URL
 
+            # get language
+            language = form.cleaned_data.get("language", "en").lower()
+
             # loop over each uploaded file
             for uploaded_file in upload_files:
                 # 1) generate upload_id and save file to disk
@@ -95,7 +98,8 @@ def transcribe(request):
                     file_path,
                     email,
                     output_format_str,
-                    portal_link
+                    portal_link,
+                    language
                 )
 
                 # 4) collect info for response

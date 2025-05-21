@@ -17,6 +17,12 @@ LANG_SPEAKER_MAP = {
 
 ALLOWED_TARGET_LANGS = {"zh", "en", "fr", "es"}
 
+LANG_MAP = {
+    "english": "en",
+    "mandarin": "zh",
+    "french": "fr",
+    "spanish": "es"
+}
 
 def ensure_model_exists(model_name):
     model_path = os.path.join(MODEL_DIR, model_name)
@@ -75,6 +81,9 @@ def split_dialogue_blocks(content):
 
 
 def translate(content, target_lang="zh"):
+    if target_lang.lower() in LANG_MAP.keys():
+        target_lang = LANG_MAP.get(target_lang.lower())
+
     if target_lang not in ALLOWED_TARGET_LANGS:
         return f"Error: Unsupported target language '{target_lang}'"
 
