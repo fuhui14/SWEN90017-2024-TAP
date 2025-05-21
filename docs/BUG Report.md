@@ -414,3 +414,40 @@ npm run start
 - Reason: Node core module polyfill is no longer automatically provided
 That is, even if you import { Buffer } from 'buffer', it will not be automatically packaged into the browser unless you handle it manually.
 - Solution: We use a tool called react-app-rewired to modify webpack config and add polyfills without ejecting, create config-overrides.js in the project root directory
+
+## Bug ID: BUG-20250519-01
+
+**Description**: Error occur when clicking the button to recieve the login link
+
+**Reproduction Steps**:
+1. Run the frontend and backend.
+2. Enter the History page.
+3. Enter email address and click "Send Email" Button
+
+**Reporter**: Zixuan Zhang
+
+**Assignee**: Jiangyu Chen
+
+**Status**: closed
+
+**Fix / PR Link**: 
+**Final Notes**: 
+
+## Bug ID: BUG-20250521-01
+
+**Description**: Wrong text format of email attached file
+
+**Reproduction Steps**:
+1. Run the frontend and backend.
+2. Upload a audio file and enter an email address.
+3. Cick "Transcribe" button and wait for the transcription.
+4. Recieve email and open attached file.
+
+**Reporter**: Zixuan Zhang
+
+**Assignee**: Fuhui Yang
+
+**Status**: closed
+
+**Fix / PR Link**: 
+**Final Notes**: 
