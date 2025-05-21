@@ -11,6 +11,9 @@ from pyannote.audio import Pipeline           # speaker identification pipline :
 from faster_whisper import WhisperModel       # faster Whisper deduction :contentReference[oaicite:2]{index=2}
 from tqdm import tqdm
 import re
+from config.settings import HF_TOKEN
+
+
 
 from transcription.task_registry import task_status, task_result, task_lock
 
@@ -199,8 +202,8 @@ def cleanup_transcripts(transcripts):
             prev_start, _, prev_speaker, prev_text = cleaned_transcripts[-1]
 
             # if the last segment does not end with a punctuation mark(e.g . ? !), add a period
-            if not re.search(r'[。\.!\?]$', prev_text.strip()):
-                prev_text = prev_text.rstrip() + "."
+            # if not re.search(r'[。\.!\?]$', prev_text.strip()):
+            #     prev_text = prev_text.rstrip() + "."
 
             # merge the text and update the end time
             merged_text = prev_text + " " + text.lstrip()
