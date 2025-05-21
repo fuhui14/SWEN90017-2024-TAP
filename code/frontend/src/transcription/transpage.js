@@ -145,8 +145,14 @@ function Transpage() {
     const timer = setInterval(async()=>{
       try{
         const res = await fetch(`${API}/transcription/api/status/${taskId}/`);
-        if(!res.ok){                       // The back end may return a 404 that has expired; Ignore
-          console.warn(`status ${res.status} for ${taskId}`); return;
+        if(!res.ok){
+          clearInterval(timer);
+          setTasks(prev=>prev.map(t=>
+            t.taskId===taskId ? {...t, status:'error'} : t
+          ));
+          alert(`An error occurred: Server returned status ${res.status}`);
+          setSubmit(false);
+          return;
         }
         const data = await res.json();
 
@@ -163,12 +169,19 @@ function Transpage() {
           }
           if(data.status==='error'){
             clearInterval(timer);
+            alert(`An error occurred: ${data.error || 'Unknown error'}`);
+            setSubmit(false);
             return {...t, status:'error'};
           }
           return t;
         }));
       }catch(e){
-        console.error('poll error:',e);
+        clearInterval(timer);
+        setTasks(prev=>prev.map(t=>
+          t.taskId===taskId ? {...t, status:'error'} : t
+        ));
+        alert('An error occurred: ' + e.message);
+        setSubmit(false);
       }
     }, 1000);
   };
