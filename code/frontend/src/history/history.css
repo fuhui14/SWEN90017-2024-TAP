@@ -146,3 +146,36 @@ button:hover { background-color: #002244; }
     font-size: small;
     font-weight: bold;
 }
+
+
+/* ---------- local centering for History page ---------- */
+.history-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;        /* horizontal center */
+  padding: 40px 20px;
+}
+
+.history-wrapper .file-result {
+  max-width: 980px;           /* adjust to taste */
+  width: 100%;
+  text-align: center;         /* headings & paragraphs */
+}
+
+/* keep table itself left-aligned inside the centered block */
+.history-wrapper table {
+  margin: 20px auto;          /* center table */
+  width: 100%;
+}
+
+/* optional: download button reset (matches small icon style used elsewhere) */
+.download-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  transition: transform .15s;
+}
+
+.download-btn:hover  { transform: scale(1.15); }
+.download-btn:active { transform: scale(.95);  }
