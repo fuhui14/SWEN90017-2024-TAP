@@ -202,9 +202,8 @@ button:hover {
     align-items: center;
 }
 
-/* --------- 下载按钮透明 + hover 浅蓝 --------- */
 .download-btn {
-    background: transparent;      /* 透明背景 */
+    background: transparent;      /* Transparent background */
     border: none;
     border-radius: 8px;
     padding: 6px;
@@ -213,7 +212,7 @@ button:hover {
 }
 
 .download-btn:hover:not(:disabled) {
-    background: #d4edda;          /* 浅绿色（可根据需要调整） */
+    background: #d4edda;
 }
 
 .download-btn:disabled {
@@ -221,13 +220,13 @@ button:hover {
     opacity: 0.6;
 }
 
-/* 让标题水平居中 */
+/* Center the title horizontally */
 .file-result h3 { text-align: center; }
 
-/* 1. 让按钮区与表格空一大段 */
+/* 1. Leave a large gap between the button area and the table */
 .buttons-with-gap { margin-top: 9rem; }
 
-/* 2. 自定义 tooltip */
+/* 2. Customize tooltip */
 .tooltip-wrapper { position:relative; display:inline-block; }
 
 .history-tooltip{
@@ -245,19 +244,19 @@ button:hover {
   opacity:1; visibility:visible;
 }
 
-/* 让 tooltip-wrapper 拥有固定宽度，与其它按钮保持一致 */
+/* Let the tooltip-wrapper have a fixed width to be consistent with other buttons */
 .tooltip-wrapper {
-    width: 30%;                  /* 与 .buttons > button 的 30% 一致 */
+    width: 30%;
     display: flex;
-    justify-content: center;     /* 让内部按钮水平居中 */
+    justify-content: center;
   }
   
-  /* wrapper 内的按钮占满自身宽度 */
+  /* The buttons within the wrapper fill up their own width */
   .tooltip-wrapper button { width: 100%; }
   
-/* ====== 表格下方独立下载按钮 ====== */
+/* ====== The independent download button below the table ====== */
 .download-area {
-    margin: 2.5rem 0 0;      /* 与表格间距 */
+    margin: 2.5rem 0 0;
     text-align: center;
   }
   
@@ -280,10 +279,10 @@ button:hover {
     width: 20px;
     height: 20px;
     vertical-align: middle;
-    filter: invert(1);       /* 让图标在深色背景下呈白色 */
+    filter: invert(1);
   }
   
-  /* 保留原来的 .download-icon 用于表格中的小图标（如果仍需要） */
+  /* Keep the original '.download-icon 'for the small ICONS in the table (if still needed) */
   
 .download-small-btn {
   background: transparent;
@@ -294,7 +293,6 @@ button:hover {
 .download-small-btn img {
   width: 20px;
   height: 20px;
-  /* 保持蓝色基调，可按需调色 */
   filter: invert(35%) sepia(98%) saturate(2093%) hue-rotate(198deg) brightness(96%) contrast(106%);
 }
 .download-small-btn {
@@ -323,20 +321,20 @@ button:hover {
   height: 18px;
 }
 
-/* 平时透明背景，去掉默认灰色 */
+/* The background is usually transparent. Remove the default gray*/
 .download-small-btn {
   background-color: transparent;
   border: none;
-  padding: 4px;         /* 根据需要微调内边距 */
+  padding: 4px;
   cursor: pointer;
 }
 
-/* hover 时加个浅灰底，或者你喜欢的任何高亮色 */
+/* Add a light gray background when hovering, or any highlight color you like */
 .download-small-btn:hover {
   background-color: rgba(0, 0, 0, 0.106);
 }
 
-/* 可选：focus 时也有视觉反馈 */
+/* Optional: Visual feedback is also available when focusing */
 .download-small-btn:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);

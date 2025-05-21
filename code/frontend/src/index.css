@@ -12,8 +12,8 @@ code {
     monospace;
 }
 
-/* ===== 全站统一 Logo 高度 ===== */
+/* ===== The Logo height is uniform across the entire site ===== */
 .header .logo img {
-  height: 80px !important;   /* 强制覆盖后面 40px/50px */
-  width: auto !important;    /* 保证等比 */
+  height: 80px !important;   /* Force cover the back 40px/50px */
+  width: auto !important;    /* Guarantee proportion */
 }

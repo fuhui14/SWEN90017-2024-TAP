@@ -30,7 +30,7 @@ function Transpage() {
     setValid(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
   };
 
-  /* ---------- 本地上传进度（与原 Demo 保持一致） ---------- */
+  /* ---------- Local upload progress (consistent with the original Demo) ---------- */
   const handleFileChange = e=>{
     const newFiles = Array.from(e.target.files);
     const base     = files.length;
@@ -61,7 +61,7 @@ function Transpage() {
   };
 
   /* ───────────────────────────────────────────
-       1. 并发上传；拿到各自 task_id
+       1. Concurrent upload Obtain the respective task_id
      ─────────────────────────────────────────── */
   const handleConfirm = async()=>{
     if(!isEmailValid || files.length===0){
@@ -91,7 +91,7 @@ function Transpage() {
           if(!res.ok) throw new Error('Upload failed');
           const data = await res.json();
 
-          /* ★ 后端两种返回格式兼容 */
+          /* The two return formats at the back end are compatible */
           let taskId = data.task_id;
           if(!taskId && Array.isArray(data.tasks) && data.tasks.length){
             taskId = data.tasks[0].task_id;
@@ -112,14 +112,14 @@ function Transpage() {
   };
 
   /* ───────────────────────────────────────────
-       2. 轮询单个 task_id
+       2. Poll a single task_id
      ─────────────────────────────────────────── */
   const startPolling = (taskId, fmt)=>{
     const API = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
     const timer = setInterval(async()=>{
       try{
         const res = await fetch(`${API}/transcription/api/status/${taskId}/`);
-        if(!res.ok){                         // 后端可能返回 404 已失效；忽略
+        if(!res.ok){                       // The back end may return a 404 that has expired; Ignore
           console.warn(`status ${res.status} for ${taskId}`); return;
         }
         const data = await res.json();
@@ -148,7 +148,7 @@ function Transpage() {
   };
 
   /* ───────────────────────────────────────────
-       3. 全部任务完成 => 跳转结果页
+       3. All tasks completed => Jump to the result page
      ─────────────────────────────────────────── */
   useEffect(()=>{
     if(isSubmitting && tasks.length && tasks.every(t=>t.status==='done')){
@@ -166,7 +166,7 @@ function Transpage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[tasks]);
 
-  /* ---------- 平均进度 ---------- */
+  /* ---------- Average Length ---------- */
   const avgProg = tasks.length
     ? Math.round(tasks.reduce((s,t)=>s+(t.progress||0),0)/tasks.length)
     : 0;
@@ -174,7 +174,7 @@ function Transpage() {
   /* ---------- UI ---------- */
   return (
     <>
-      {/* — 顶栏 — */}
+      {/* — Top bar — */}
       <div className="header">
         <div className="logo"><img src={log} alt="logo"/></div>
         <nav className="nav-links">
@@ -184,9 +184,9 @@ function Transpage() {
         </nav>
       </div>
 
-      {/* — 主体 — */}
+      {/* — main body — */}
       <div className="container">
-        {/* 左列：文件上传 */}
+        {/* Left column: File upload */}
         <div className="upload-section"
              onDragOver={e=>e.preventDefault()}
              onDrop={handleDrop}>
@@ -223,7 +223,7 @@ function Transpage() {
           )}
         </div>
 
-        {/* 右列：表单 */}
+        {/* Right column: Form */}
         <div className="input-section">
           {/* block-1 */}
           <div className="form-block">
@@ -261,7 +261,7 @@ function Transpage() {
         </div>
       </div>
 
-      {/* 全局进度条 */}
+      {/* Global progress bar */}
       {isSubmitting && tasks.length>0 && (
         <div className="transcribing-status">
           <span>Transcribing: {avgProg}%</span>
@@ -271,7 +271,7 @@ function Transpage() {
         </div>
       )}
 
-      {/* 底部按钮 */}
+      {/* Bottom button */}
       <div className="transcribe-footer">
         <div className="tooltip-wrapper">
           <button className="transcribe-button"

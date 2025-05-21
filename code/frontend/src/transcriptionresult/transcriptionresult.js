@@ -12,7 +12,7 @@ import './transcriptionresult.css';
 import log          from '../resources/icon/logo.svg';
 import downloadLogo from '../resources/icon/download.svg';
 
-/* ─── 工具：三种格式输出 ─── */
+/* ─── Tool: Output in three formats ─── */
 const genTXT  = (txt)      => new Blob([txt], { type: 'text/plain' });
 const genPDF  = (txt)      => {
   const d = new jsPDF();
@@ -36,7 +36,7 @@ const getBlob = async (txt, fmt) =>
   : fmt === 'docx'? await genDOCX(txt)
   : genTXT(txt);
 
-/* ─── 工具：把对象/数组格式化成纯文本 ─── */
+/* ─── Tool: Format objects/arrays into plain text ─── */
 const toPlain = (r) => {
   if (Array.isArray(r) && r.length > 0 && typeof r[0] === 'object') {
     return r
@@ -55,7 +55,7 @@ function TranscriptionResult() {
   const location = useLocation();
   const { demoData = {} } = location.state || {};
 
-  /* ─── 拆解多文件 ─── */
+  /* ─── Disassemble multiple files ─── */
   const files = Array.isArray(demoData.files)
     ? demoData.files
     : demoData.file
@@ -67,10 +67,10 @@ function TranscriptionResult() {
       ? [demoData.result]
       : [];
 
-  /* ─── 转成纯文本数组 ─── */
+  /* ─── Convert to a plain text array ─── */
   const results = resultsRaw.map(toPlain);
 
-  /* ─── 下载状态 —— idx → boolean ─── */
+  /* ─── Download status —— idx → boolean ─── */
   const [downloading, setDownloading] = useState({});
 
   const handleDownload = async (idx) => {
@@ -103,7 +103,7 @@ function TranscriptionResult() {
 
   return (
     <>
-      {/* — 顶部导航 — */}
+      {/* — Navigation Bar — */}
       <div className="header">
         <div className="logo"><img src={log} alt="logo" /></div>
         <nav className="nav-links">
@@ -113,7 +113,7 @@ function TranscriptionResult() {
         </nav>
       </div>
 
-      {/* — 结果主体 — */}
+      {/* — Result subject — */}
       <div className="container2">
         <div className="file-result">
           <h3>Transcription Completed</h3>
@@ -174,7 +174,7 @@ function TranscriptionResult() {
             </tbody>
           </table>
 
-          {/* — 批量下载 — */}
+          {/* — Batch download — */}
           {files.length > 1 && (
             <div className="download-area">
               <button
@@ -196,7 +196,7 @@ function TranscriptionResult() {
           )}
         </div>
 
-        {/* — 底部按钮 — */}
+        {/* — Bottom button — */}
         <div className="buttons buttons-with-gap">
           <div className="tooltip-wrapper">
             <button onClick={() => navigate('/historylogin')}>
