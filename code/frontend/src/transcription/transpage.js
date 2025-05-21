@@ -88,7 +88,33 @@ function Transpage() {
             credentials:'include',
             body:fd
           });
-          if(!res.ok) throw new Error('Upload failed');
+          if(!res.ok){
+            let msg = 'Upload failed';
+            try {
+              const err = await res.json();
+              if (err && err.error) {
+                // Try to parse the error string as JSON
+                let errorObj = err.error;
+                if (typeof errorObj === 'string') {
+                  try {
+                    errorObj = JSON.parse(errorObj);
+                  } catch {}
+                }
+                // Look for the language error message
+                if (errorObj.language && errorObj.language[0] && errorObj.language[0].message) {
+                  msg = errorObj.language[0].message;
+                } else if (typeof err.error === 'string') {
+                  msg = err.error;
+                }
+              }
+            } catch (e) {
+              try {
+                msg = await res.text();
+              } catch {}
+            }
+            throw new Error(msg);
+          }
+          
           const data = await res.json();
 
           /* The two return formats at the back end are compatible */
