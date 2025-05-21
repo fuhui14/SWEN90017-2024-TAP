@@ -21,7 +21,8 @@ LANG_MAP = {
     "english": "en",
     "mandarin": "zh",
     "french": "fr",
-    "spanish": "es"
+    "spanish": "es",
+    "chinese": "zh"
 }
 
 def ensure_model_exists(model_name):
