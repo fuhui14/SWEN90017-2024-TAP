@@ -4,8 +4,9 @@ from .models import Transcription
 from django.utils import timezone
 import datetime
 from .models import File
+from translation.translate import translate
 
-def process_transcription_and_send_email(transcription_id, portal_link=None, file_type=FileType.TXT):
+def process_transcription_and_send_email(transcription_id, portal_link=None, file_type=FileType.TXT, language="en"):
     """
     Function: Sends transcription results via email when processing is done.
     """
@@ -13,6 +14,7 @@ def process_transcription_and_send_email(transcription_id, portal_link=None, fil
         transcription = Transcription.objects.get(id=transcription_id)
         email = transcription.file.email  # Get user email
         transcription_text = transcription.transcribed_text
+        translated_text = translate(transcription_text, language)
 
         # Compose email body
         body = "Here is your transcription result.\n\n"
@@ -24,7 +26,7 @@ def process_transcription_and_send_email(transcription_id, portal_link=None, fil
             receiver=email,
             subject="Your Transcription Result",
             content=body,
-            file_content=transcription_text,
+            file_content=translated_text,
             file_type=file_type
         )
 

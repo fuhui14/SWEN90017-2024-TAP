@@ -123,10 +123,16 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:3000',
 ]
 # Email settings
-SMTP_SERVER = 'smtp.gmail.com'
-SMTP_PORT = 587
-SMTP_USER = 'perrinyu2001@gmail.com'
-SMTP_PASSWORD = 'thdj houx hcsn hrrt'
+from dotenv import load_dotenv
+
+# Read from .env
+load_dotenv()
+
+# Get SMTP Configuration
+SMTP_SERVER = os.getenv("SMTP_SERVER")
+SMTP_PORT = int(os.getenv("SMTP_PORT"))
+SMTP_USER = os.getenv("SMTP_USER")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
 
 # ---- Auto Delete ----
 # Celery Broker 和 Result Backend 配置

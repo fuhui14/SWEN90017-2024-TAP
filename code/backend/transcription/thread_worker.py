@@ -8,7 +8,7 @@ from .task_registry import task_status, task_result, task_lock
 from speaker_identify.transcribe_with_speaker_fasterWhisper import transcribe_with_speaker_fasterWhisper
 
 # thread worker for transcribing audio
-def transcribe_audio_task(task_id, db_file, file_path, email, output_format_str, frontend_link):
+def transcribe_audio_task(task_id, db_file, file_path, email, output_format_str, frontend_link, language):
     print("Start transcribing audio, task_id:", task_id)
     with task_lock:
         task_status[task_id] = "processing"
@@ -37,7 +37,8 @@ def transcribe_audio_task(task_id, db_file, file_path, email, output_format_str,
         process_transcription_and_send_email(
             transcribed_data.id,
             portal_link=frontend_link,
-            file_type=file_type
+            file_type=file_type,
+            language=language
         )
 
         # Mark task as completed and store the final result
