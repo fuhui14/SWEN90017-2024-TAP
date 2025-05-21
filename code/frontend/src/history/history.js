@@ -21,15 +21,26 @@ function History() {
       setLoading(false);
       return;
     }
-    fetch('http://127.0.0.1:8000/history/api/admin/history/', {
-      method : 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body   : JSON.stringify({ enc: encrypted })
+    fetch("http://127.0.0.1:8000/history/api/admin/history/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ enc: encrypted }),
+  })
+    .then(res => res.json())
+    .then(data => {
+      /* sort newest → oldest */
+      data.sort(
+        (a, b) => new Date(b.creationDate) - new Date(a.creationDate)
+      );
+
+      setHistoryData(data);   // update status
+      setLoading(false);
     })
-      .then(res => res.json())
-      .then(data => { setHistoryData(data); setLoading(false); })
-      .catch(()  => { setError('Failed to load history data.'); setLoading(false); });
-  }, [encrypted]);
+    .catch(() => {
+      setError("Failed to load history data.");
+      setLoading(false);
+    });
+}, [encrypted]);
 
   /* reset page when data changes */
   useEffect(() => setCurrentPage(1), [historyData]);
