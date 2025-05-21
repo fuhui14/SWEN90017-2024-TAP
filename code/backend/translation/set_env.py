@@ -1,5 +1,6 @@
 import nltk
 nltk.download('punkt')
+nltk.download('punkt_tab')
 from translate import ensure_model_exists
 
 ensure_model_exists("opus-mt-mul-en")
