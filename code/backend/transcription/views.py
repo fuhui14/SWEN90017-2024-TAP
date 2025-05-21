@@ -90,7 +90,6 @@ def transcribe(request):
 
                 with task_lock:
                     task_status[task_id] = "queued"
-
                 executor.submit(
                     transcribe_audio_task,
                     task_id,
