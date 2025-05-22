@@ -16,6 +16,13 @@ The purpose of this guide is to help you set up this project and start the serve
     - HuggingFace setting: Modify the "HF_TOKEN" to your own HuggingFace token, this token is used to download the AI model when you first time start the server.
 
 - Check the **Email Configuration Guideline.md** and modify your SMTP info.
+
+- Open the folder of this project in terminal and run the following command to install required packages and models for translation service.
+
+```
+python ./code/backend/translation/set_env.py
+```
+
 ## Start service
 Go to **code/backend** folder, enter:
 ```
