@@ -7,6 +7,9 @@ from .tasks import process_transcription_and_send_email
 from .task_registry import task_status, task_result, task_lock
 from speaker_identify.transcribe_with_speaker_fasterWhisper import transcribe_with_speaker_fasterWhisper
 
+from translation.translate import translate
+from emails.utils import format_transcription_content
+
 # thread worker for transcribing audio
 def transcribe_audio_task(task_id, db_file, file_path, email, output_format_str, frontend_link, language):
     print("Start transcribing audio, task_id:", task_id)
@@ -18,10 +21,14 @@ def transcribe_audio_task(task_id, db_file, file_path, email, output_format_str,
         # Change: use the fasterWhisper version with task_id support
         transcription_with_speaker = transcribe_with_speaker_fasterWhisper(task_id, file_path)
 
+        # translate the transcription text
+        formatted_text = format_transcription_content(transcription_with_speaker)
+        translated_text = translate(formatted_text, language)
+
         # Save transcription result to the database
         transcribed_data = Transcription.objects.create(
             file=db_file,
-            transcribed_text=transcription_with_speaker
+            transcribed_text=translated_text
         )
 
         # Determine file type based on the format specified by the frontend
@@ -44,7 +51,7 @@ def transcribe_audio_task(task_id, db_file, file_path, email, output_format_str,
         # Mark task as completed and store the final result
         with task_lock:
             task_status[task_id] = "completed"
-            task_result[task_id] = transcription_with_speaker
+            task_result[task_id] = translated_text
 
         print("Transcription completed, task_id:", task_id)
 
