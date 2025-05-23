@@ -24,6 +24,7 @@ class UploadFileForm(forms.Form):
             ('english', 'English'),
             ('spanish', 'Spanish'),
             ('french',  'French'),
+            ('chinese', 'Chinese')
         ],
         initial='english',
         label='Language'
