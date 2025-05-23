@@ -20,8 +20,6 @@ def process_transcription_and_send_email(transcription_id, portal_link=None, fil
 
         # Compose email body
         body = "Here is your transcription result.\n\n"
-        if portal_link:
-            body += f"You can view all your transcription history here:\n{portal_link}\n\n"
         body += "Best regards,\nTranscription Aide Platform"
 
         send_email(
