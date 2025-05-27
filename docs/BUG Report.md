@@ -451,3 +451,24 @@ That is, even if you import { Buffer } from 'buffer', it will not be automatical
 
 **Fix / PR Link**: 
 **Final Notes**: 
+
+## Bug ID: BUG-20250524-01
+
+**Description**: Wrong text content in Chinese pdf.
+
+**Reproduction Steps**:
+1. Run the frontend and backend.
+2. Upload a audio file and enter an email address.
+3. Select result form "pdf" and language "Chinese".
+4. Cick "Transcribe" button and wait for the transcription.
+5. Download the transcription file and check the content.
+
+**Reporter**: Zixuan Zhang
+
+**Assignee**: Lecheng Chen
+
+**Status**: fixing
+
+**Fix / PR Link**: 
+**Final Notes**: 
+
