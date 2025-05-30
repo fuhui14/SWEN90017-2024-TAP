@@ -1,6 +1,4 @@
-
-
-# **Frontend-Backend Integration - Epic 3 (Transcription)**
+# **Frontend-Backend Integration - Epic 3 (Speaker Diarisation)**
 
 ## **Overview**
 
