@@ -104,10 +104,34 @@ Mingye Li. Email Address: [ming.li1@unimelb.edu.au]()
 
 ### Sprint 3
 
-- Develop user stories for the priority of "Must Have"
+- Develop user stories for the priority of *Must Have*
 - Separate development of front end and back end
 - Relevant tests
 - Integrate back end and front end
+
+### Sprint 4
+
+- Complete remaining *Must Have* user stories.
+- Start development on *Should Have* & *Could Have* user stories.
+- Ensure early front-end and back-end integration to prevent last-minute issues.
+- Improve performance of identifying different speakers.
+- Begin testing for completed features.
+
+### Sprint 5
+
+- Complete all remaining *Should Have* and *Could Have* user stories.
+- Finalize admin portal and history features.
+- Complete testing framework and ensure full integration.
+- Optimize database, API, and file management system.
+- Deliver feature-complete system for Sprint 6 validation.
+
+### Sprint 6
+
+- Complete regression and acceptance testing
+- Finalize technical documentation, user manual, and test report
+- Conduct client acceptance testing and address final feedback
+- Prepare materials for Endeavor Exhibition (poster, demo script, risk assessment)
+- Perform system handover and final delivery
 
 ## Important Links
 - Github: https://github.com/Eclipsezty/SWEN90017-2024-TAP
