@@ -4,6 +4,11 @@
 
 The purpose of this guide is to help you set up this project and start the server.
 
+## Recommended devices:
+- System: Mac OS 15.5
+- Chips: Apple M2
+- Memory: 24GB
+
 ## Preperation
 
 * Install **python 3.12.3** and **node.js**.
