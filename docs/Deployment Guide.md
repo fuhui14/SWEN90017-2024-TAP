@@ -55,6 +55,21 @@ The purpose of this guide is to help you set up this project and start the serve
 
   * HuggingFace setting: Modify the "HF\_TOKEN" to your own HuggingFace token, this token is used to download the AI model when you first time start the server.
 
+  * **Database setting**: Update the “DATABASES” configuration.  
+      For quick testing, you can switch to SQLite with the following setting:
+
+      ```python
+      DATABASES = {
+          'default': {
+              'ENGINE': 'django.db.backends.sqlite3',
+              'NAME': BASE_DIR / 'db.sqlite3',
+          }
+      }
+      ```
+
+      If you prefer using PostgreSQL locally, make sure to install it and update the credentials (NAME, USER, PASSWORD, HOST, PORT) accordingly.
+
+
 * Check the **Email Configuration Guideline.md** and modify your SMTP info.
 
 * Open the folder of this project in terminal and run the following command to install required packages and models for translation service.
@@ -77,6 +92,13 @@ to run the start server script. Both frontend and backend server will start.
 
 * When you start the server for the first time on a new computer, it will take some time to download the model. You can use the model offline without downloading it later.
 * If the start server fail with "no module" alert, download the python model with **pip install abc** (where abc is the module missing).
+* Estimated transcription time:
+
+  * Approximately **1 hour** is needed to transcribe **30 minutes** of audio.
+  * Approximately **2+ hours** is needed to transcribe **1 hour** of audio.
+
+  The actual time may vary depending on your device performance and system load.
+
 
 ## Usage Guidline:
 
