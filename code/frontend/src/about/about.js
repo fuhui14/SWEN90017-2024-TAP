@@ -37,6 +37,7 @@ function About(){
             {/* Tools Section */}
             <section className="tools-section">
                 <h2>All the tools you need for transcription in one place</h2>
+                <h3>Click on the icons below to get started</h3>
                 <div className="tools-cards">
                     <div className="tool-card">
                         <Link to="/Transcription">

@@ -84,6 +84,11 @@
   gap: 1rem;
 }
 
+.tool-card:hover{
+  background-color: #e0ebff;
+  transition: background-color 0.3s ease;
+}
+
 @media (min-width: 768px) {
   .tools-cards {
     flex-direction: row;
@@ -92,6 +97,7 @@
 }
 
 .tool-card {
+  text-align: left;
   background: #f5f5f5;
   padding: 1.5rem;
   border-radius: 6px;
