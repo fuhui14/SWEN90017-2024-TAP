@@ -113,7 +113,15 @@ function History() {
                     <tr key={rec.id}>
                       <td>{rec.taskName}</td>
                       <td>{rec.taskType}</td>
-                      <td>{new Date(rec.creationDate).toLocaleDateString()}</td>
+                      <td>
+                        {(() => {
+                          const d = new Date(rec.creationDate);
+                          const day = String(d.getDate()).padStart(2, '0');
+                          const month = String(d.getMonth() + 1).padStart(2, '0');
+                          const year = d.getFullYear();
+                          return `${day}/${month}/${year}`;
+                        })()}
+                      </td>
                       <td>{rec.daysLeft}</td>
                       <td>{rec.outputType}</td>
                       <td>
