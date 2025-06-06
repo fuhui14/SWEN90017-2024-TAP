@@ -60,7 +60,7 @@ function HistoryLogin() {
           <img src={log} alt="logo" />
         </div>
         <nav className="nav-links">
-          <Link to="/about">About</Link>
+          <Link to="/about">Home</Link>
           <Link to="/transcription">Transcription</Link>
           <Link to="/historylogin">History</Link>
         </nav>
