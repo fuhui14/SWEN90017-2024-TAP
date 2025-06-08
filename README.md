@@ -46,6 +46,58 @@ Mingye Li. Email Address: [ming.li1@unimelb.edu.au]()
 |Yongjie Ba<br>*yongjieb@student.unimelb.edu.au*|Pengyuan Yu<br>*pengyuany@student.unimelb.edu.au*|Jiangyu Chen<br>*jiangyuc2@student.unimelb.edu.au*|
 
 
+## Deployment Guide (Quick Setup)
+
+### Requirements
+- Python 3.12.3
+- Node.js
+- Redis ≥ 7.0 (ensure it's running: `redis-cli ping` → `PONG`)
+
+### Setup Steps
+
+1. **Install backend dependencies**  
+   ```bash
+   cd code/backend
+   pip install -r requirements.txt
+   ```
+
+2. **Configure settings**  
+   Edit `config/settings.py`:
+   - Set your `HF_TOKEN` (HuggingFace access token).
+   - Use SQLite (recommended for local testing):
+     ```python
+     DATABASES = {
+         'default': {
+             'ENGINE': 'django.db.backends.sqlite3',
+             'NAME': BASE_DIR / 'db.sqlite3',
+         }
+     }
+     ```
+
+3. **Set up email**  
+   Follow `Email Configuration Guideline.md` to fill in your SMTP credentials.
+
+4. **Prepare translation models**  
+   ```bash
+   python ./code/backend/translation/set_env.py
+   ```
+
+### Run the Server
+
+```bash
+./start.sh
+```
+
+This will start both frontend and backend servers locally.
+
+### Notes
+
+- On first launch, model downloads may take several minutes.
+- If you encounter a missing module error, install it manually using `pip install <module_name>`.
+- Transcription time varies by system:
+  - ~1 hour to transcribe 30 minutes of audio
+  - ~2+ hours to transcribe 1 hour of audio
+
 ### Directory Structure
 
 ```
@@ -63,10 +115,13 @@ Mingye Li. Email Address: [ming.li1@unimelb.edu.au]()
 │   │   └── Meeting Template
 │   └── requirement
 │   │   └── Personas
+│   └── risk management
 ├── prototypes
 │   ├── High Fidelity Prototype
 │   ├── Low Fidelity Prototype
 ├── tests
+│   ├── Unit Test
+│   ├── Usability Test
 └── README.md
 ```
 
@@ -134,8 +189,9 @@ Mingye Li. Email Address: [ming.li1@unimelb.edu.au]()
 - Perform system handover and final delivery
 
 ## Important Links
-- Github: https://github.com/Eclipsezty/SWEN90017-2024-TAP
-- Kanban: https://github.com/users/Eclipsezty/projects/1/views/1
-- Backlog(issues): https://github.com/Eclipsezty/SWEN90017-2024-TAP/issues
+- Github: https://github.com/fuhui14/SWEN90017-2024-TAP
+- Wiki: https://github.com/fuhui14/SWEN90017-2024-TAP/wiki
+- Kanban: https://github.com/users/Eclipsezty/projects/1/views/1; https://github.com/users/fuhui14/projects/4; https://github.com/users/fuhui14/projects/5
+- Backlog(issues): https://github.com/fuhui14/SWEN90017-2024-TAP/issues
 - Low Fidelity Prototype: https://www.figma.com/design/dUKziZzm2oo8kCkefUN3vS/TAP-Low-Fidelity?node-id=8-2349&t=vUWVQPpejumNpbcV-1
 - High Fidelity Prototype: https://www.figma.com/design/zgg9tm6Nl6iH9f8ilOzibW/TAP-High-Fidelity?node-id=0-1&t=kjIHFZw31TVJB1zR-1
